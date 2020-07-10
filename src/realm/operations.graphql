@@ -18,6 +18,12 @@ query getLesson($lesson_id: String) {
       _id
       description
       word
+      graphemes
+      syllables
+      phonemes {
+        _id
+        phoneme
+      }
     }
   }
 }
