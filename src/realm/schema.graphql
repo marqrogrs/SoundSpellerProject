@@ -19,51 +19,51 @@ input LessonInsertInput {
 }
 
 input LessonQueryInput {
-  _id_lte: ObjectId
-  lesson_id_gt: String
-  lesson_id_lt: String
-  lesson_id_ne: String
-  words_in: [WordQueryInput]
-  OR: [LessonQueryInput!]
-  AND: [LessonQueryInput!]
-  _id_gt: ObjectId
   _id_gte: ObjectId
-  _id: ObjectId
-  lesson_id_exists: Boolean
-  words_exists: Boolean
   lesson_id_lte: String
-  lesson_id_nin: [String]
-  _id_exists: Boolean
-  words: [WordQueryInput]
-  words_nin: [WordQueryInput]
-  lesson_id_gte: String
-  _id_in: [ObjectId]
-  lesson_id_in: [String]
-  _id_ne: ObjectId
+  lesson_id_lt: String
+  OR: [LessonQueryInput!]
   lesson_id: String
   _id_nin: [ObjectId]
+  lesson_id_gte: String
+  words: [WordQueryInput]
+  words_nin: [WordQueryInput]
+  AND: [LessonQueryInput!]
+  _id: ObjectId
+  _id_exists: Boolean
+  lesson_id_ne: String
+  _id_in: [ObjectId]
+  words_exists: Boolean
+  _id_lte: ObjectId
+  lesson_id_exists: Boolean
+  _id_ne: ObjectId
   _id_lt: ObjectId
+  lesson_id_nin: [String]
+  lesson_id_gt: String
+  _id_gt: ObjectId
+  lesson_id_in: [String]
+  words_in: [WordQueryInput]
 }
 
 enum LessonSortByInput {
+  LESSON_ID_DESC
   _ID_ASC
   _ID_DESC
   LESSON_ID_ASC
-  LESSON_ID_DESC
 }
 
 input LessonUpdateInput {
-  words_unset: Boolean
   _id: ObjectId
   _id_unset: Boolean
   lesson_id: String
   lesson_id_unset: Boolean
   words: LessonWordsRelationInput
+  words_unset: Boolean
 }
 
 input LessonWordsRelationInput {
-  link: [ObjectId]
   create: [WordInsertInput]
+  link: [ObjectId]
 }
 
 type Mutation {
@@ -86,21 +86,21 @@ type Mutation {
   ): Phoneme
   replaceOneWord(query: WordQueryInput, data: WordInsertInput!): Word
   updateManyLessons(
-    query: LessonQueryInput
     set: LessonUpdateInput!
+    query: LessonQueryInput
   ): UpdateManyPayload
   updateManyPhonemes(
     query: PhonemeQueryInput
     set: PhonemeUpdateInput!
   ): UpdateManyPayload
   updateManyWords(
-    set: WordUpdateInput!
     query: WordQueryInput
+    set: WordUpdateInput!
   ): UpdateManyPayload
   updateOneLesson(query: LessonQueryInput, set: LessonUpdateInput!): Lesson
   updateOnePhoneme(query: PhonemeQueryInput, set: PhonemeUpdateInput!): Phoneme
-  updateOneWord(query: WordQueryInput, set: WordUpdateInput!): Word
-  upsertOneLesson(data: LessonInsertInput!, query: LessonQueryInput): Lesson
+  updateOneWord(set: WordUpdateInput!, query: WordQueryInput): Word
+  upsertOneLesson(query: LessonQueryInput, data: LessonInsertInput!): Lesson
   upsertOnePhoneme(query: PhonemeQueryInput, data: PhonemeInsertInput!): Phoneme
   upsertOneWord(query: WordQueryInput, data: WordInsertInput!): Word
 }
@@ -114,34 +114,34 @@ type Phoneme {
 }
 
 input PhonemeInsertInput {
-  soundfile: PhonemeSoundfileInsertInput
   _id: ObjectId
   phoneme: String
+  soundfile: PhonemeSoundfileInsertInput
 }
 
 input PhonemeQueryInput {
-  _id_lt: ObjectId
   phoneme_nin: [String]
-  _id_gt: ObjectId
-  _id_lte: ObjectId
-  phoneme_gte: String
-  _id_gte: ObjectId
-  phoneme_gt: String
-  phoneme_lt: String
-  _id_in: [ObjectId]
-  _id_ne: ObjectId
-  _id: ObjectId
-  OR: [PhonemeQueryInput!]
-  soundfile: PhonemeSoundfileQueryInput
-  phoneme_ne: String
-  phoneme_lte: String
-  _id_exists: Boolean
-  phoneme: String
-  soundfile_exists: Boolean
   _id_nin: [ObjectId]
-  phoneme_in: [String]
+  soundfile: PhonemeSoundfileQueryInput
+  _id_lte: ObjectId
+  phoneme: String
   AND: [PhonemeQueryInput!]
+  _id_in: [ObjectId]
+  phoneme_gte: String
   phoneme_exists: Boolean
+  _id_exists: Boolean
+  _id_lt: ObjectId
+  _id_ne: ObjectId
+  phoneme_in: [String]
+  OR: [PhonemeQueryInput!]
+  _id: ObjectId
+  _id_gte: ObjectId
+  phoneme_ne: String
+  phoneme_lt: String
+  phoneme_lte: String
+  phoneme_gt: String
+  soundfile_exists: Boolean
+  _id_gt: ObjectId
 }
 
 enum PhonemeSortByInput {
@@ -160,17 +160,17 @@ input PhonemeSoundfileInsertInput {
 }
 
 input PhonemeSoundfileQueryInput {
-  AND: [PhonemeSoundfileQueryInput!]
   contentType_gte: String
   contentType_lt: String
-  contentType_lte: String
-  contentType_nin: [String]
-  contentType: String
-  contentType_exists: Boolean
   contentType_ne: String
-  contentType_in: [String]
+  contentType: String
   contentType_gt: String
   OR: [PhonemeSoundfileQueryInput!]
+  contentType_exists: Boolean
+  AND: [PhonemeSoundfileQueryInput!]
+  contentType_lte: String
+  contentType_in: [String]
+  contentType_nin: [String]
 }
 
 input PhonemeSoundfileUpdateInput {
@@ -179,12 +179,12 @@ input PhonemeSoundfileUpdateInput {
 }
 
 input PhonemeUpdateInput {
-  phoneme_unset: Boolean
-  soundfile: PhonemeSoundfileUpdateInput
   soundfile_unset: Boolean
   _id: ObjectId
   _id_unset: Boolean
   phoneme: String
+  phoneme_unset: Boolean
+  soundfile: PhonemeSoundfileUpdateInput
 }
 
 type Query {
@@ -196,9 +196,9 @@ type Query {
   ): [Lesson]!
   phoneme(query: PhonemeQueryInput): Phoneme
   phonemes(
-    sortBy: PhonemeSortByInput
     query: PhonemeQueryInput
     limit: Int = 100
+    sortBy: PhonemeSortByInput
   ): [Phoneme]!
   word(query: WordQueryInput): Word
   words(
@@ -237,69 +237,69 @@ input WordPhonemesRelationInput {
 }
 
 input WordQueryInput {
-  phonemes: [PhonemeQueryInput]
-  graphemes_exists: Boolean
   _id_gt: ObjectId
-  description_exists: Boolean
-  OR: [WordQueryInput!]
-  _id_in: [ObjectId]
-  _id_gte: ObjectId
-  word_ne: String
-  word_lte: String
-  _id: ObjectId
-  word_gt: String
-  syllables: [String]
-  phonemes_exists: Boolean
-  graphemes_nin: [String]
-  graphemes_in: [String]
-  phonemes_nin: [PhonemeQueryInput]
-  _id_exists: Boolean
-  syllables_exists: Boolean
-  word_nin: [String]
-  syllables_nin: [String]
-  word_in: [String]
   description_lt: String
+  description_lte: String
+  word_nin: [String]
+  word_gte: String
+  _id_exists: Boolean
+  syllables_in: [String]
   graphemes: [String]
   _id_lte: ObjectId
-  description_in: [String]
-  syllables_in: [String]
-  word_exists: Boolean
-  word: String
-  description_nin: [String]
-  word_gte: String
-  _id_lt: ObjectId
-  description_gte: String
-  description_lte: String
-  _id_nin: [ObjectId]
+  _id_in: [ObjectId]
   description_gt: String
-  _id_ne: ObjectId
-  description: String
-  word_lt: String
-  AND: [WordQueryInput!]
+  graphemes_nin: [String]
+  phonemes_nin: [PhonemeQueryInput]
   description_ne: String
+  word_lt: String
+  graphemes_in: [String]
+  OR: [WordQueryInput!]
+  word_ne: String
+  word_lte: String
+  syllables_nin: [String]
+  _id_ne: ObjectId
+  _id_lt: ObjectId
+  word: String
+  word_exists: Boolean
+  description_exists: Boolean
   phonemes_in: [PhonemeQueryInput]
+  _id_nin: [ObjectId]
+  word_in: [String]
+  phonemes_exists: Boolean
+  description_nin: [String]
+  syllables: [String]
+  AND: [WordQueryInput!]
+  phonemes: [PhonemeQueryInput]
+  graphemes_exists: Boolean
+  _id: ObjectId
+  description_in: [String]
+  _id_gte: ObjectId
+  description_gte: String
+  word_gt: String
+  description: String
+  syllables_exists: Boolean
 }
 
 enum WordSortByInput {
+  WORD_ASC
+  WORD_DESC
   _ID_ASC
   _ID_DESC
   DESCRIPTION_ASC
   DESCRIPTION_DESC
-  WORD_ASC
-  WORD_DESC
 }
 
 input WordUpdateInput {
-  _id: ObjectId
-  description: String
-  syllables: [String]
+  syllables_unset: Boolean
   _id_unset: Boolean
+  description: String
   graphemes: [String]
   phonemes_unset: Boolean
-  word: String
   word_unset: Boolean
   description_unset: Boolean
   graphemes_unset: Boolean
   phonemes: WordPhonemesRelationInput
-  syllables_unset: Boolean
+  _id: ObjectId
+  syllables: [String]
+  word: String
 }
