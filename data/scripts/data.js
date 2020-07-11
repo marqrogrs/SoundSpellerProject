@@ -200,7 +200,7 @@ const words = [
   [199,'ABSORB','AE B-Z OR B','A,B,S,OR,B','ab.sorb'],
   [200,'ABSORBED','AE B-Z OR B-D','A,B,S,OR,B,ED','ab.sorb.ed'],
   [201,'ABSORBENCY','AE B-Z OR B-EH N-S IY','A,B,S,OR,B,E,N,C,Y','ab.sorb.enc.y'],
-  [202,'ABSORBENT','AE B-ZOR B-EH N T','A,B,S,OR,B,E,N,T','ab.sorb.ent'],
+  [202,'ABSORBENT','AE B-Z OR B-EH N T','A,B,S,OR,B,E,N,T','ab.sorb.ent'],
   [203,'ABSORBER','AE-B-Z OR B-ER','A,B,S,OR,B,ER','ab.sorb.er'],
   [204,'ABSORBERS','AE-B-Z OR B-ER-Z','A,B,S,OR,B,ER,S','ab.sorb.er.s'],
   [205,'ABSORBING','AE-B-Z OR B-IH NG','A,B,S,OR,B,I,NG','ab.sorb.ing'],
