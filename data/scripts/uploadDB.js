@@ -1,18 +1,20 @@
 "use strict";
+require("dotenv").config();
 const fs = require("fs");
 const data = require("./data");
 const { ObjectID, MongoClient } = require("mongodb");
 const { words, lessons, phonemes } = data;
 
-const uri =
-  "mongodb+srv://soundspeller:SoundSpeller@cluster0-mbali.azure.mongodb.net/SoundSpeller2?retryWrites=true&w=majority";
+const uri = `mongodb+srv://soundspeller:${process.env.DB_PASSWORD}@cluster0-mbali.azure.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true });
 // const objectInstance = new ObjectID();
 client.connect(async (err) => {
   if (err) console.log(err);
-  const wordCollection = client.db("SoundSpeller2").collection("words");
-  const phonemeCollection = client.db("SoundSpeller2").collection("phonemes");
-  const lessonCollection = client.db("SoundSpeller2").collection("lessons");
+  const wordCollection = client.db(process.env.DB_NAME).collection("words");
+  const phonemeCollection = client
+    .db(process.env.DB_NAME)
+    .collection("phonemes");
+  const lessonCollection = client.db(process.env.DB_NAME).collection("lessons");
 
   var { phonemeDocs, phonemeIds } = await createPhonemeDocs();
   var { wordDocs, wordIds } = await createWordDocs(phonemeIds);
