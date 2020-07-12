@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as RealmWeb from "realm-web";
 
-const REALM_APP_ID = "sound_speller-enouy";
+const REALM_APP_ID = "sound_speller-qfocw";
 const app = new RealmWeb.App({ id: REALM_APP_ID });
 
 const RealmAppContext = React.createContext();
@@ -11,25 +11,31 @@ const RealmApp = ({ children }) => {
   const appRef = React.useRef(app);
   const [user, setUser] = React.useState(app.currentUser);
   React.useEffect(() => {
+    autoLogIn();
     setUser(app.currentUser);
   }, [appRef.current.currentUser]);
 
+  const autoLogIn = async () => {
+    return await app.logIn(RealmWeb.Credentials.anonymous());
+  };
   // Let new users register an account
   const registerUser = async (email, password) => {
     // TODO: Register a new user with the specified email and password
+    return await app.auth.emailPassword.registerUser(email, password);
   };
 
   // Let registered users log in
   const logIn = async (email, password) => {
     // TODO: Log in with the specified email and password
-
+    const credentials = RealmWeb.Credentials.emailPassword(email, password);
+    await app.logIn(credentials);
     setUser(app.currentUser);
   };
 
   // Let logged in users log out
   const logOut = async () => {
     // TODO: Log the current user out
-
+    await app.logOut();
     setUser(app.currentUser);
   };
 
