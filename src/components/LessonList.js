@@ -8,7 +8,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    maxWidth: 360,
+    // maxWidth: 360,
     backgroundColor: theme.palette.background.paper,
   },
 }));
@@ -22,7 +22,7 @@ export default function LessonList() {
     <div className={classes.root}>
       <List component="nav" aria-label="lessons">
         {lessons.map((lesson) => (
-          <ListItem button component="a" href={`lesson-${lesson}`}>
+          <ListItem button component="a" href={`lessons/${lesson}`}>
             <ListItemText primary={`Lesson ${lesson}`} />
           </ListItem>
         ))}
