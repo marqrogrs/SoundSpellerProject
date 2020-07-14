@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
-import Switch from "@material-ui/core/Switch";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormGroup from "@material-ui/core/FormGroup";
-
 import { default as MaterialAppBar } from "@material-ui/core/AppBar";
 import { Toolbar } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
@@ -29,14 +25,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AppBar({ user }) {
   const classes = useStyles();
-  //TODO: just for testing - should be using user and creating AuthProvider
-  const [auth, setAuth] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-
-  const handleChange = (e) => {
-    setAuth(e.target.checked);
-  };
 
   const handleMenu = (e) => {
     setAnchorEl(e.currentTarget);
@@ -61,7 +51,7 @@ export default function AppBar({ user }) {
           <Typography variant="h6" className={classes.title}>
             Sound Speller
           </Typography>
-          {auth && (
+          {user && (
             <div>
               <IconButton
                 aria-label="account of current user"
@@ -92,18 +82,6 @@ export default function AppBar({ user }) {
               </Menu>
             </div>
           )}
-          <FormGroup>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={auth}
-                  onChange={handleChange}
-                  aria-label="login switch"
-                />
-              }
-              label={auth ? "Logout" : "Login"}
-            />
-          </FormGroup>
         </Toolbar>
       </MaterialAppBar>
     </div>
