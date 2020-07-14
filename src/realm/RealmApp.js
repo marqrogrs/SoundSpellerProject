@@ -16,7 +16,8 @@ const RealmApp = ({ children }) => {
   }, [appRef.current.currentUser]);
 
   const autoLogIn = async () => {
-    return await app.logIn(RealmWeb.Credentials.anonymous());
+    return;
+    // await app.logIn(RealmWeb.Credentials.anonymous());
   };
   // Let new users register an account
   const registerUser = async (email, password) => {
