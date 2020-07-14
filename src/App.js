@@ -3,12 +3,17 @@ import RealmApp, { useRealmApp } from "./realm/RealmApp";
 import RealmApolloProvider from "./realm/RealmApolloProvider";
 import Landing from "./pages/Landing";
 import Home from "./pages/Home";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import AppBar from "./components/AppBar";
 
 const App = (props) => {
   return (
-    <RealmApp>
-      <RequireAuthentication />
-    </RealmApp>
+    <>
+      <CssBaseline />
+      <RealmApp>
+        <RequireAuthentication />
+      </RealmApp>
+    </>
   );
 };
 export default App;
@@ -20,10 +25,12 @@ function RequireAuthentication() {
   }
   return app.user ? (
     <RealmApolloProvider>
+      <AppBar user={app.user} />
       <Home />
     </RealmApolloProvider>
   ) : (
     <RealmApolloProvider>
+      <AppBar user={app.user} />
       <Landing />
     </RealmApolloProvider>
   );
