@@ -9,6 +9,8 @@ import AppBar from "./components/AppBar";
 import Switch from "@material-ui/core/Switch";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormGroup from "@material-ui/core/FormGroup";
+import PublicRoutes from "./routes/PublicRoutes";
+import PrivateRoutes from "./routes/PrivateRoutes";
 
 const App = (props) => {
   return (
@@ -29,7 +31,7 @@ function RequireAuthentication() {
   // }
   //TODO: just for testing - should be using user and creating AuthProvider
   const [auth, setAuth] = useState(true);
-  
+
   const handleChange = (e) => {
     setAuth(e.target.checked);
   };
@@ -48,16 +50,14 @@ function RequireAuthentication() {
           label={auth ? "Logout" : "Login"}
         />
       </FormGroup>
-
+      <AppBar user={auth} />
       {auth ? (
         <RealmApolloProvider>
-          <AppBar user={auth} />
-          <Home />
+          <PrivateRoutes />
         </RealmApolloProvider>
       ) : (
         <RealmApolloProvider>
-          <AppBar user={auth} />
-          <Landing />
+          <PublicRoutes />
         </RealmApolloProvider>
       )}
     </>
