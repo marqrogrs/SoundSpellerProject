@@ -101,7 +101,12 @@ export default function AppBar({ user }) {
             const last = pathname.split("/").length - 1;
             if (index === 0) {
               return (
-                <Link color="inherit" href="/" onClick={handleBreadcrumbClick}>
+                <Link
+                  color="inherit"
+                  href="/"
+                  onClick={handleBreadcrumbClick}
+                  key={path}
+                >
                   Sound Speller
                 </Link>
               );
@@ -114,6 +119,7 @@ export default function AppBar({ user }) {
                   .slice(0, index + 1)
                   .join("/")}
                 aria-current="page"
+                key={path}
               >
                 {typeof path === "string"
                   ? path.charAt(0).toUpperCase() + path.slice(1)
