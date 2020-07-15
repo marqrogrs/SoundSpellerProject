@@ -99,7 +99,6 @@ export default function AppBar({ user }) {
         <Breadcrumbs aria-label="breadcrumb">
           {pathname.split("/").map((path, index) => {
             const last = pathname.split("/").length - 1;
-            console.log(path);
             if (index === 0) {
               return (
                 <Link color="inherit" href="/" onClick={handleBreadcrumbClick}>

@@ -25,15 +25,14 @@ const App = (props) => {
 export default App;
 
 function RequireAuthentication() {
-  // const app = useRealmApp();
-  // if (!app) {
-  //   return <div>Loading</div>;
-  // }
+  const app = useRealmApp();
+  if (!app) {
+    return <div>Loading</div>;
+  }
   //TODO: just for testing - should be using user and creating AuthProvider
-  const [auth, setAuth] = useState(true);
-
   const handleChange = (e) => {
-    setAuth(e.target.checked);
+    // console.log("Login=", e.target.checked)
+    app.autoLogIn(e.target.checked);
   };
 
   return (
@@ -42,21 +41,21 @@ function RequireAuthentication() {
         <FormControlLabel
           control={
             <Switch
-              checked={auth}
+              checked={app.user}
               onChange={handleChange}
               aria-label="login switch"
             />
           }
-          label={auth ? "Logout" : "Login"}
+          label={app.user ? "Logout" : "Login"}
         />
       </FormGroup>
-      {auth ? (
+      {app.user ? (
         <RealmApolloProvider>
-          <PrivateRoutes user={auth}/>
+          <PrivateRoutes user={app.user}/>
         </RealmApolloProvider>
       ) : (
         <RealmApolloProvider>
-          <PublicRoutes user={auth}/>
+          <PublicRoutes user={app.user}/>
         </RealmApolloProvider>
       )}
     </>
