@@ -1,12 +1,19 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
+
 import { makeStyles } from "@material-ui/core/styles";
 
 import { default as MaterialAppBar } from "@material-ui/core/AppBar";
-import { Toolbar } from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
 import MenuIcon from "@material-ui/icons/Menu";
+import {
+  Container,
+  Breadcrumbs,
+  Link,
+  Menu,
+  MenuItem,
+  Typography,
+  Toolbar,
+} from "@material-ui/core";
 
 import IconButton from "@material-ui/core/IconButton";
 import AccountCircle from "@material-ui/icons/AccountCircle";
@@ -25,6 +32,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AppBar({ user }) {
   const classes = useStyles();
+  const { pathname } = useLocation();
+  console.log(pathname);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -35,6 +44,8 @@ export default function AppBar({ user }) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleBreadcrumbClick = () => {};
 
   return (
     <div className={classes.root}>
@@ -84,6 +95,45 @@ export default function AppBar({ user }) {
           )}
         </Toolbar>
       </MaterialAppBar>
+      <Breadcrumbs aria-label="breadcrumb">
+        {pathname.split("/").map((path, index) => {
+          const last = pathname.split("/").length - 1;
+          console.log(path);
+          if (index === 0) {
+            return (
+              <Link color="inherit" href="/" onClick={handleBreadcrumbClick}>
+                Sound Speller
+              </Link>
+            );
+          }
+          return (
+            <Link
+              color={index === last ? "textPrimary" : "textSecondary"}
+              href={pathname
+                .split("/")
+                .slice(0, index + 1)
+                .join("/")}
+              aria-current="page"
+            >
+              {typeof path === "string"
+                ? path.charAt(0).toUpperCase() + path.slice(1)
+                : path}
+            </Link>
+          );
+        })}
+
+        {/* <Link color="inherit" href="/lessons" onClick={handleBreadcrumbClick}>
+          Lessons
+        </Link>
+        <Link
+          color="textPrimary"
+          // href={`/lessons/${lesson}`}
+          onClick={handleBreadcrumbClick}
+          aria-current="page"
+        >
+          Lesson
+        </Link> */}
+      </Breadcrumbs>
     </div>
   );
 }

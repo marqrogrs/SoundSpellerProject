@@ -50,14 +50,13 @@ function RequireAuthentication() {
           label={auth ? "Logout" : "Login"}
         />
       </FormGroup>
-      <AppBar user={auth} />
       {auth ? (
         <RealmApolloProvider>
-          <PrivateRoutes />
+          <PrivateRoutes user={auth}/>
         </RealmApolloProvider>
       ) : (
         <RealmApolloProvider>
-          <PublicRoutes />
+          <PublicRoutes user={auth}/>
         </RealmApolloProvider>
       )}
     </>
