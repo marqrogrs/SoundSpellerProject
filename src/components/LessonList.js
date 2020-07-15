@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
+import { useLessons } from "../hooks/useLessons";
 
 //TODO: refactor and export all these styles
 const useStyles = makeStyles((theme) => ({
@@ -14,9 +15,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function LessonList() {
+  const { lessons, loading } = useLessons();
+  console.log(lessons);
   const classes = useStyles();
   //TODO: replace with real lessons
-  const lessons = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
   return (
     <div className={classes.root}>
