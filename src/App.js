@@ -26,6 +26,7 @@ export default App;
 
 function RequireAuthentication() {
   const app = useRealmApp();
+  const user = app.user ? true : false
   if (!app) {
     return <div>Loading</div>;
   }
@@ -41,21 +42,21 @@ function RequireAuthentication() {
         <FormControlLabel
           control={
             <Switch
-              checked={app.user}
+              checked={user}
               onChange={handleChange}
               aria-label="login switch"
             />
           }
-          label={app.user ? "Logout" : "Login"}
+          label={user ? "Logout" : "Login"}
         />
       </FormGroup>
-      {app.user ? (
+      {user ? (
         <RealmApolloProvider>
-          <PrivateRoutes user={app.user}/>
+          <PrivateRoutes user={user}/>
         </RealmApolloProvider>
       ) : (
         <RealmApolloProvider>
-          <PublicRoutes user={app.user}/>
+          <PublicRoutes user={user}/>
         </RealmApolloProvider>
       )}
     </>
