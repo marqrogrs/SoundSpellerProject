@@ -16,6 +16,9 @@ export function useLessons(): {
         setLessons(data.lessons as Lesson[]);
       }
     },
+    onError: (error) => {
+      console.log("Error getting lessons: ", error)
+    }
   });
 
   return {
