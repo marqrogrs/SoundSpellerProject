@@ -95,45 +95,35 @@ export default function AppBar({ user }) {
           )}
         </Toolbar>
       </MaterialAppBar>
-      <Breadcrumbs aria-label="breadcrumb">
-        {pathname.split("/").map((path, index) => {
-          const last = pathname.split("/").length - 1;
-          console.log(path);
-          if (index === 0) {
+      {user && (
+        <Breadcrumbs aria-label="breadcrumb">
+          {pathname.split("/").map((path, index) => {
+            const last = pathname.split("/").length - 1;
+            console.log(path);
+            if (index === 0) {
+              return (
+                <Link color="inherit" href="/" onClick={handleBreadcrumbClick}>
+                  Sound Speller
+                </Link>
+              );
+            }
             return (
-              <Link color="inherit" href="/" onClick={handleBreadcrumbClick}>
-                Sound Speller
+              <Link
+                color={index === last ? "textPrimary" : "textSecondary"}
+                href={pathname
+                  .split("/")
+                  .slice(0, index + 1)
+                  .join("/")}
+                aria-current="page"
+              >
+                {typeof path === "string"
+                  ? path.charAt(0).toUpperCase() + path.slice(1)
+                  : path}
               </Link>
             );
-          }
-          return (
-            <Link
-              color={index === last ? "textPrimary" : "textSecondary"}
-              href={pathname
-                .split("/")
-                .slice(0, index + 1)
-                .join("/")}
-              aria-current="page"
-            >
-              {typeof path === "string"
-                ? path.charAt(0).toUpperCase() + path.slice(1)
-                : path}
-            </Link>
-          );
-        })}
-
-        {/* <Link color="inherit" href="/lessons" onClick={handleBreadcrumbClick}>
-          Lessons
-        </Link>
-        <Link
-          color="textPrimary"
-          // href={`/lessons/${lesson}`}
-          onClick={handleBreadcrumbClick}
-          aria-current="page"
-        >
-          Lesson
-        </Link> */}
-      </Breadcrumbs>
+          })}
+        </Breadcrumbs>
+      )}
     </div>
   );
 }
