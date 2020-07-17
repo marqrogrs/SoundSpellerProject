@@ -16,7 +16,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function LessonList() {
   const { lessons, loading } = useLessons();
-  console.log(lessons);
   const classes = useStyles();
   //TODO: replace with real lessons
 
