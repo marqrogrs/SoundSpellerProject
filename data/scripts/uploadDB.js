@@ -81,6 +81,7 @@ const createLessonDocs = (wordIds) => {
     var lessonDocs = lessons.map((lessonItem) => {
       const lesson_id = lessonItem[0];
       var words = lessonItem[1].split(/\s/);
+      words = words.map((word) => word.toUpperCase());
       const _id = new ObjectID();
       return {
         _id,
