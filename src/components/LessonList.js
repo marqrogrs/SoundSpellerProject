@@ -24,8 +24,8 @@ export default function LessonList() {
     <div className={classes.root}>
       <List component="nav" aria-label="lessons">
         {lessons.map((lesson) => (
-          <ListItem button component="a" href={`lessons/${lesson}`}>
-            <ListItemText primary={`Lesson ${lesson}`} />
+          <ListItem button component="a" href={`lessons/${lesson.lesson_id}`}>
+            <ListItemText primary={`Lesson ${lesson.lesson_id}`} />
           </ListItem>
         ))}
       </List>

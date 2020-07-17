@@ -1,21 +1,19 @@
-import * as Types from "./types";
+import * as Types from './types';
 
-import gql from "graphql-tag";
-import * as ApolloReactCommon from "@apollo/client";
-import * as ApolloReactHooks from "@apollo/client";
+import gql from 'graphql-tag';
+import * as ApolloReactCommon from '@apollo/client';
+import * as ApolloReactHooks from '@apollo/client';
+
 
 export const GetAllLessonsDocument = gql`
-  query getAllLessons {
-    lessons {
-      _id
-      lesson_id
-      words {
-        _id
-        word
-      }
-    }
+    query getAllLessons {
+  lessons {
+    _id
+    lesson_id
+    words
   }
-`;
+}
+    `;
 
 /**
  * __useGetAllLessonsQuery__
@@ -32,56 +30,24 @@ export const GetAllLessonsDocument = gql`
  *   },
  * });
  */
-export function useGetAllLessonsQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    Types.GetAllLessonsQuery,
-    Types.GetAllLessonsQueryVariables
-  >
-) {
-  return ApolloReactHooks.useQuery<
-    Types.GetAllLessonsQuery,
-    Types.GetAllLessonsQueryVariables
-  >(GetAllLessonsDocument, baseOptions);
-}
-export function useGetAllLessonsLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    Types.GetAllLessonsQuery,
-    Types.GetAllLessonsQueryVariables
-  >
-) {
-  return ApolloReactHooks.useLazyQuery<
-    Types.GetAllLessonsQuery,
-    Types.GetAllLessonsQueryVariables
-  >(GetAllLessonsDocument, baseOptions);
-}
-export type GetAllLessonsQueryHookResult = ReturnType<
-  typeof useGetAllLessonsQuery
->;
-export type GetAllLessonsLazyQueryHookResult = ReturnType<
-  typeof useGetAllLessonsLazyQuery
->;
-export type GetAllLessonsQueryResult = ApolloReactCommon.QueryResult<
-  Types.GetAllLessonsQuery,
-  Types.GetAllLessonsQueryVariables
->;
-export const GetLessonDocument = gql`
-  query getLesson($lesson_id: String) {
-    lesson(query: { lesson_id: $lesson_id }) {
-      _id
-      lesson_id
-      words {
-        _id
-        word
-        graphemes
-        syllables
-        phonemes {
-          _id
-          phoneme
-        }
+export function useGetAllLessonsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<Types.GetAllLessonsQuery, Types.GetAllLessonsQueryVariables>) {
+        return ApolloReactHooks.useQuery<Types.GetAllLessonsQuery, Types.GetAllLessonsQueryVariables>(GetAllLessonsDocument, baseOptions);
       }
-    }
+export function useGetAllLessonsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<Types.GetAllLessonsQuery, Types.GetAllLessonsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<Types.GetAllLessonsQuery, Types.GetAllLessonsQueryVariables>(GetAllLessonsDocument, baseOptions);
+        }
+export type GetAllLessonsQueryHookResult = ReturnType<typeof useGetAllLessonsQuery>;
+export type GetAllLessonsLazyQueryHookResult = ReturnType<typeof useGetAllLessonsLazyQuery>;
+export type GetAllLessonsQueryResult = ApolloReactCommon.QueryResult<Types.GetAllLessonsQuery, Types.GetAllLessonsQueryVariables>;
+export const GetLessonDocument = gql`
+    query getLesson($lesson_id: String) {
+  lesson(query: {lesson_id: $lesson_id}) {
+    _id
+    lesson_id
+    words
   }
-`;
+}
+    `;
 
 /**
  * __useGetLessonQuery__
@@ -99,33 +65,53 @@ export const GetLessonDocument = gql`
  *   },
  * });
  */
-export function useGetLessonQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    Types.GetLessonQuery,
-    Types.GetLessonQueryVariables
-  >
-) {
-  return ApolloReactHooks.useQuery<
-    Types.GetLessonQuery,
-    Types.GetLessonQueryVariables
-  >(GetLessonDocument, baseOptions);
-}
-export function useGetLessonLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    Types.GetLessonQuery,
-    Types.GetLessonQueryVariables
-  >
-) {
-  return ApolloReactHooks.useLazyQuery<
-    Types.GetLessonQuery,
-    Types.GetLessonQueryVariables
-  >(GetLessonDocument, baseOptions);
-}
+export function useGetLessonQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<Types.GetLessonQuery, Types.GetLessonQueryVariables>) {
+        return ApolloReactHooks.useQuery<Types.GetLessonQuery, Types.GetLessonQueryVariables>(GetLessonDocument, baseOptions);
+      }
+export function useGetLessonLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<Types.GetLessonQuery, Types.GetLessonQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<Types.GetLessonQuery, Types.GetLessonQueryVariables>(GetLessonDocument, baseOptions);
+        }
 export type GetLessonQueryHookResult = ReturnType<typeof useGetLessonQuery>;
-export type GetLessonLazyQueryHookResult = ReturnType<
-  typeof useGetLessonLazyQuery
->;
-export type GetLessonQueryResult = ApolloReactCommon.QueryResult<
-  Types.GetLessonQuery,
-  Types.GetLessonQueryVariables
->;
+export type GetLessonLazyQueryHookResult = ReturnType<typeof useGetLessonLazyQuery>;
+export type GetLessonQueryResult = ApolloReactCommon.QueryResult<Types.GetLessonQuery, Types.GetLessonQueryVariables>;
+export const GetWordDocument = gql`
+    query getWord($word: String) {
+  word(query: {word: $word}) {
+    _id
+    word
+    phonemes {
+      _id
+      phoneme
+      files
+    }
+    graphemes
+    syllables
+  }
+}
+    `;
+
+/**
+ * __useGetWordQuery__
+ *
+ * To run a query within a React component, call `useGetWordQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetWordQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetWordQuery({
+ *   variables: {
+ *      word: // value for 'word'
+ *   },
+ * });
+ */
+export function useGetWordQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<Types.GetWordQuery, Types.GetWordQueryVariables>) {
+        return ApolloReactHooks.useQuery<Types.GetWordQuery, Types.GetWordQueryVariables>(GetWordDocument, baseOptions);
+      }
+export function useGetWordLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<Types.GetWordQuery, Types.GetWordQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<Types.GetWordQuery, Types.GetWordQueryVariables>(GetWordDocument, baseOptions);
+        }
+export type GetWordQueryHookResult = ReturnType<typeof useGetWordQuery>;
+export type GetWordLazyQueryHookResult = ReturnType<typeof useGetWordLazyQuery>;
+export type GetWordQueryResult = ApolloReactCommon.QueryResult<Types.GetWordQuery, Types.GetWordQueryVariables>;

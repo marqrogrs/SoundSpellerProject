@@ -2,10 +2,7 @@ query getAllLessons {
   lessons {
     _id
     lesson_id
-    words {
-      _id
-      word
-    }
+    words
   }
 }
 
@@ -13,15 +10,20 @@ query getLesson($lesson_id: String) {
   lesson(query: { lesson_id: $lesson_id }) {
     _id
     lesson_id
-    words {
+    words
+  }
+}
+
+query getWord($word: String) {
+  word(query: { word: $word }) {
+    _id
+    word
+    phonemes {
       _id
-      word
-      graphemes
-      syllables
-      phonemes {
-        _id
-        phoneme
-      }
+      phoneme
+      files
     }
+    graphemes
+    syllables
   }
 }
