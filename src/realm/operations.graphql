@@ -1,16 +1,22 @@
 query getAllLessons {
   lessons {
     _id
-    lesson_id
-    words
+		description
+		lesson_id
+		lesson_section
+		title
+		words
   }
 }
 
 query getLesson($lesson_id: String) {
   lesson(query: { lesson_id: $lesson_id }) {
     _id
-    lesson_id
-    words
+		description
+		lesson_id
+		lesson_section
+		title
+		words
   }
 }
 

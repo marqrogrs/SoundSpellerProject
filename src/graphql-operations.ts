@@ -9,7 +9,10 @@ export const GetAllLessonsDocument = gql`
     query getAllLessons {
   lessons {
     _id
+    description
     lesson_id
+    lesson_section
+    title
     words
   }
 }
@@ -43,7 +46,10 @@ export const GetLessonDocument = gql`
     query getLesson($lesson_id: String) {
   lesson(query: {lesson_id: $lesson_id}) {
     _id
+    description
     lesson_id
+    lesson_section
+    title
     words
   }
 }
