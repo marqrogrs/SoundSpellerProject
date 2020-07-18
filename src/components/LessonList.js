@@ -77,7 +77,7 @@ export default function LessonList() {
                     component="a"
                     href={`lessons/${lesson.lesson_id}`}
                   >
-                    <ListItemText primary={lesson.title} />
+                    <ListItemText primary={lesson.description} />
                   </ListItem>
                 );
               } else {
@@ -101,7 +101,7 @@ export default function LessonList() {
                     component="a"
                     href={`lessons/${lesson.lesson_id}`}
                   >
-                    <ListItemText primary={lesson.title} />
+                    <ListItemText primary={lesson.description} />
                   </ListItem>
                 );
               } else {
@@ -125,7 +125,7 @@ export default function LessonList() {
                     component="a"
                     href={`lessons/${lesson.lesson_id}`}
                   >
-                    <ListItemText primary={lesson.title} />
+                    <ListItemText primary={lesson.description} />
                   </ListItem>
                 );
               } else {
@@ -149,7 +149,7 @@ export default function LessonList() {
                     component="a"
                     href={`lessons/${lesson.lesson_id}`}
                   >
-                    <ListItemText primary={lesson.title} />
+                    <ListItemText primary={lesson.description} />
                   </ListItem>
                 );
               } else {
