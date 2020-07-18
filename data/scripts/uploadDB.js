@@ -1,9 +1,40 @@
 "use strict";
 require("dotenv").config();
 const fs = require("fs");
-const data = require("./data");
 const { ObjectID, MongoClient } = require("mongodb");
-const { words, lessons, phonemes } = data;
+// const data = require("./data");
+// const { words, lessons, phonemes } = data;
+
+const expectedPhonemes = 44;
+const expectedLessons = 70;
+const expectedWords = 53719;
+
+const data = require("../SoundSpellerDatabase.json");
+const words = data.ssLexicon;
+const lessons = data.les;
+const { phonemes } = require("./data");
+// var phonemes = [];
+// words.forEach((word, index) => {
+//   if (!word) {
+//     console.log(index);
+//     return;
+//   }
+//   var phonemesInWord = word["phon"].split(/\s|-/);
+//   phonemesInWord.forEach((phoneme) => {
+//     if (!phonemes.includes(phoneme)) {
+//       phonemes.push(phoneme);
+//     }
+//   });
+// });
+// if (isExpectedLength("phonemes", phonemes)) {
+//   console.log("Got all phonemes");
+// }
+// if (isExpectedLength("words", words)) {
+//   console.log("Got all words");
+// }
+// if (isExpectedLength("lessons", lessons)) {
+//   console.log("Got all lessons");
+// }
 
 const uri = `mongodb+srv://soundspeller:${process.env.DB_PASSWORD}@cluster0-mbali.azure.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true });
@@ -18,7 +49,7 @@ client.connect(async (err) => {
 
   var { phonemeDocs, phonemeIds } = await createPhonemeDocs();
   var { wordDocs, wordIds } = await createWordDocs(phonemeIds);
-  var lessonDocs = await createLessonDocs(wordIds);
+  var { lessonDocs } = await createLessonDocs(wordIds);
   const uploadPhonemes = phonemeCollection.insertMany(phonemeDocs);
   const uploadWords = wordCollection.insertMany(wordDocs);
   const uploadLessons = lessonCollection.insertMany(lessonDocs);
@@ -46,8 +77,18 @@ const createPhonemeDocs = () => {
         files,
       };
     });
-    console.log(`Phoneme docs created. n=${phonemeDocs.length}`);
-    resolve({ phonemeDocs, phonemeIds });
+    console.log(
+      `Phoneme docs created. n=${phonemeDocs.length}\nSample=${JSON.stringify(
+        phonemeDocs[0],
+        null,
+        2
+      )}`
+    );
+    if (isExpectedLength("phonemes", phonemeDocs)) {
+      resolve({ phonemeDocs, phonemeIds });
+    } else {
+      reject();
+    }
   });
 };
 
@@ -55,10 +96,10 @@ const createWordDocs = (phonemeIds) => {
   return new Promise((resolve, reject) => {
     var wordIds = {};
     var wordDocs = words.map((wordItem) => {
-      const word = wordItem[1];
-      const graphemes = wordItem[3].split(",");
-      const syllables = wordItem[4].split(".");
-      var phonemes = wordItem[2].split(/\s|-/);
+      const word = wordItem.word;
+      const graphemes = wordItem["grap"] ? wordItem["grap"].split(",") : "";
+      const syllables = wordItem["syll"] ? wordItem["syll"].split(".") : "";
+      var phonemes = wordItem["phon"] ? wordItem["phon"].split(/\s|-/) : "";
       //Get phoneme IDs
       phonemes = phonemes.map((phoneme) => phonemeIds[phoneme]);
       const _id = new ObjectID();
@@ -71,25 +112,78 @@ const createWordDocs = (phonemeIds) => {
         syllables,
       };
     });
-    console.log(`Lesson docs created. n=${wordDocs.length}`);
-    resolve({ wordDocs, wordIds });
+    console.log(
+      `Word docs created. n=${wordDocs.length}\nSample=${JSON.stringify(
+        wordDocs[0],
+        null,
+        2
+      )}`
+    );
+    if (isExpectedLength("words", wordDocs)) {
+      resolve({ wordDocs, wordIds });
+    } else {
+      reject();
+    }
   });
 };
 
-const createLessonDocs = (wordIds) => {
+const createLessonDocs = () => {
   return new Promise((resolve, reject) => {
     var lessonDocs = lessons.map((lessonItem) => {
-      const lesson_id = lessonItem[0];
-      var words = lessonItem[1].split(/\s/);
+      const lesson_section = lessonItem.les_sec_num;
+      const lesson_id = lessonItem.les_num;
+      var wordListObj = data.wLst.filter((wListObj) => {
+        return wListObj.word_list_id === lesson_id;
+      })[0];
+      var words = wordListObj.word_list.split(/\s/);
       words = words.map((word) => word.toUpperCase());
+      const title = lessonItem.les_title;
+      const description = lessonItem.les_desc;
+
       const _id = new ObjectID();
       return {
         _id,
-        words,
+        lesson_section,
         lesson_id,
+        words,
+        title,
+        description,
       };
     });
-    console.log(`Lesson docs created. n=${lessonDocs.length}`);
-    resolve(lessonDocs);
+    console.log(
+      `Lesson docs created. n=${lessonDocs.length}\nSample:${JSON.stringify(
+        lessonDocs[0],
+        null,
+        2
+      )}`
+    );
+    if (isExpectedLength("lessons", lessonDocs)) {
+      resolve({ lessonDocs });
+    } else {
+      reject();
+    }
   });
 };
+
+function isExpectedLength(type, data) {
+  var expected;
+  switch (type) {
+    case "phonemes":
+      expected = expectedPhonemes;
+      break;
+    case "lessons":
+      expected = expectedLessons;
+      break;
+    case "words":
+      expected = expectedWords;
+      break;
+    default:
+      break;
+  }
+  if (data.length === expected) {
+    return true;
+  } else {
+    console.log(`${data.length}/${expected} ${type} found... Terminating.`);
+    process.exit(1);
+  }
+}
