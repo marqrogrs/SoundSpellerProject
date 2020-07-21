@@ -2,6 +2,8 @@ import React, { useRef, useState } from "react";
 import { default as ReactKeyboard } from "react-simple-keyboard";
 import "react-simple-keyboard/build/css/index.css";
 import TextField from "@material-ui/core/TextField";
+import { DEFAULT_BUTTONS_THEME } from "../constants";
+import "../styles/keyboard.css";
 
 export default function Keyboard() {
   const [input, setInput] = useState("");
@@ -21,16 +23,6 @@ export default function Keyboard() {
   };
 
   const keyboard = useRef();
-
-  const onChange = (inputValue) => {
-    setInput(inputValue);
-    console.log("Input changed", input, inputValue);
-  };
-  // const onKeyPress = (inputValue) => {
-  //   console.log("Key pressed", inputValue);
-  //   // setInput(inputValue);
-  //   // console.log("Input changed", input, inputValue);
-  // };
 
   const handleChange = (e) => {
     console.log(e.target.value);
@@ -58,8 +50,7 @@ export default function Keyboard() {
         layout={layout}
         display={display}
         physicalKeyboardHighlight={true}
-        onChange={onChange}
-        // onKeyPress={onKeyPress}
+        buttonTheme={DEFAULT_BUTTONS_THEME}
       />
     </>
   );
