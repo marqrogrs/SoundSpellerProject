@@ -27,6 +27,7 @@
     "react-simple-keyboard": "^2.3.97",
     "react-sound": "^1.2.0",
     "realm-web": "^0.6.0",
+    "speak-tts": "^2.0.8",
     "typescript": "^3.9.6"
   },
   "scripts": {

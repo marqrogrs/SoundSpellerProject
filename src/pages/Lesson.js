@@ -11,6 +11,7 @@ import {
 import { useParams } from "react-router-dom";
 import { useLessons } from "../hooks/useLessons";
 import { LEVELS } from "../constants";
+import { greet } from "../components/Speech";
 
 export default function Lesson() {
   const [level, setLevel] = useState(0);
@@ -29,7 +30,6 @@ export default function Lesson() {
   const handleChangeSpeed = (e, newSpeed) => {
     setSpeed(newSpeed);
   };
-
   return (
     <>
       <Container maxWidth="sm">
