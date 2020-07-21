@@ -36,3 +36,5 @@ export const DEFAULT_BUTTONS_THEME = [
     buttons: "N B H G Y T n b h y g t",
   },
 ];
+
+export const LEVELS = Array.apply(null, Array(4));
