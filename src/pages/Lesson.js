@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Keyboard from "../components/Keyboard";
 import {
   Container,
@@ -11,11 +11,19 @@ import {
 import { useParams } from "react-router-dom";
 import { useLessons } from "../hooks/useLessons";
 import { LEVELS } from "../constants";
-import { greet } from "../components/Speech";
+
+var synthesis;
+if ("speechSynthesis" in window) {
+  synthesis = window.speechSynthesis;
+} else {
+  console.log("Text-to-speech not supported.");
+}
 
 export default function Lesson() {
   const [level, setLevel] = useState(0);
   const [speed, setSpeed] = useState(50);
+  const [speech, setSpeech] = useState(null);
+
   const params = useParams();
   const { lessons } = useLessons();
   const selectedLesson = lessons.filter((lesson) => {
@@ -30,6 +38,65 @@ export default function Lesson() {
   const handleChangeSpeed = (e, newSpeed) => {
     setSpeed(newSpeed);
   };
+
+  const handleStartClicked = () => {
+    window.speechSynthesis.cancel();
+
+    // speech
+    //   .init({
+    //     volume: 1,
+    //     lang: "en-US",
+    //     rate: 1,
+    //     pitch: 1,
+    //     voice: "Google US English",
+    //     splitSentences: true,
+    //   })
+    //   .then(() => {
+    speech.text = "Get ready to type. Put your fingers on the home row.";
+    synthesis.speak(speech);
+    selectedLesson.words.forEach((word, index) => {
+      var text;
+      if (index === 0) {
+        text = `Your first word is ${word}`;
+      } else {
+        text = `Next word is ${word}`;
+      }
+      speech.text = text
+      synthesis.speak(speech);
+      synthesis.pause();
+    });
+    // })
+    // .catch((e) => {
+    //   console.error("An error occurred :", e);
+    // });
+  };
+
+  const getVoices = () => {
+    return new Promise((resolve, reject) => {
+      let id;
+
+      id = setInterval(() => {
+        if (synthesis.getVoices().length !== 0) {
+          resolve(synthesis.getVoices());
+          clearInterval(id);
+        }
+      }, 10);
+    });
+  };
+
+  useEffect(() => {
+    // Create an utterance object
+    var speech = new SpeechSynthesisUtterance();
+
+    getVoices().then((voices) => {
+      var voice = voices.filter(function (voice) {
+        return voice.name === "Google US English";
+      })[0];
+      speech.voice = voice;
+      setSpeech(speech);
+    });
+  }, []);
+
   return (
     <>
       <Container maxWidth="sm">
@@ -55,6 +122,15 @@ export default function Lesson() {
                 );
               })}
             </ButtonGroup>
+          </Grid>
+          <Grid item>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleStartClicked}
+            >
+              Start
+            </Button>
           </Grid>
           <Grid item>
             <Typography>Speed:</Typography>
