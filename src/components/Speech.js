@@ -5,6 +5,9 @@ if ('speechSynthesis' in window) {
   console.log('Text-to-speech not supported.')
 }
 
+//GLOBALS
+var SPEECH_RATE = 1.0
+
 const getVoices = () => {
   return new Promise((resolve, reject) => {
     let id
@@ -18,29 +21,51 @@ const getVoices = () => {
   })
 }
 
-export const startLessonSpeech = (words) => {
-  synthesis.cancel()
-  getVoices().then((voices) => {
-    var voice = voices.filter(function (voice) {
-      return voice.name === 'Google US English'
-    })[0]
-    return words.forEach((word, index) => {
-      var speech = new SpeechSynthesisUtterance()
+export const speakWord = (word, firstWord = false) => {
+  return new Promise((resolve, reject) => {
+    synthesis.cancel()
+
+    getVoices().then((voices) => {
+      var voice = voices.filter(function (voice) {
+        return voice.lang === 'en-US' && voice.localService === true
+      })[2]
+
+      var text = `${firstWord ? 'Your first' : 'Next'} word is ${word}.`
+      var speech = new SpeechSynthesisUtterance(word)
       speech.voice = voice
-      var text
-      if (index === 0) {
-        text = `Your first word is ${word}`
-      } else {
-        text = `Next word is ${word}`
-      }
       speech.text = text
+      speech.rate = SPEECH_RATE
+      speech.lang = 'en-US'
       synthesis.speak(speech)
-      synthesis.pause()
+      speech.onend = () => {
+        // synthesis.cancel()
+        resolve()
+      }
     })
   })
 }
 
-export const resumeLessonSpeech = () => {
-  synthesis.resume()
-  synthesis.pause()
+export const changeSpeechSpeed = (speed) => {
+  var transformedSpeed = SPEECH_RATE
+  switch (speed) {
+    case 0:
+      transformedSpeed = 0.5
+      break
+    case 25:
+      transformedSpeed = 0.6
+      break
+    case 50:
+      transformedSpeed = 1.0
+      break
+    case 75:
+      transformedSpeed = 1.5
+      break
+    case 100:
+      transformedSpeed = 2.0
+      break
+    default:
+      break
+  }
+
+  SPEECH_RATE = transformedSpeed
 }

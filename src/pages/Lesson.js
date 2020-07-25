@@ -1,62 +1,68 @@
 import React, { useState, useEffect } from 'react'
 import Keyboard from '../components/Keyboard'
+import SpeechSlider from '../components/SpeechSlider'
+import Word from '../components/Word'
 import {
   Container,
   Typography,
   ButtonGroup,
   Button,
-  Slider,
   Grid,
+  Paper,
 } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+
 import { useParams } from 'react-router-dom'
 import { useLessons } from '../hooks/useLessons'
 import { LEVELS } from '../constants'
-import { startLessonSpeech, resumeLessonSpeech } from '../components/Speech'
 
-var synthesis
-if ('speechSynthesis' in window) {
-  synthesis = window.speechSynthesis
-} else {
-  console.log('Text-to-speech not supported.')
-}
+const useStyles = makeStyles({
+  textbox: {
+    border: 0,
+    borderRadius: 3,
+    color: 'white',
+    height: 200,
+    padding: '0 30px',
+    display: 'flex',
+    alignContent: 'center',
+    justifyContent: 'center',
+  },
+})
 
 export default function Lesson() {
+  const classes = useStyles()
   const [level, setLevel] = useState(0)
-  const [speed, setSpeed] = useState(50)
-  const [speech, setSpeech] = useState(null)
+  const [words, setWords] = useState([])
+  const [currentWordIndex, setCurrentWordIndex] = useState('')
+  const [lessonStarted, setLessonStarted] = useState(false)
 
   const params = useParams()
+  //TODO: grab single lesson instead of all
   const { lessons } = useLessons()
   const selectedLesson = lessons.filter((lesson) => {
     return lesson.lesson_id === params.lesson
   })[0]
 
   const handleSelectLesson = (e) => {
-    console.log('Setting level to ', e.target.innerText)
     setLevel(parseInt(e.target.innerText))
   }
 
-  const handleChangeSpeed = (e, newSpeed) => {
-    setSpeed(newSpeed)
-  }
-
   const handleStartClicked = () => {
-    startLessonSpeech()
+    setCurrentWordIndex(0)
+    setLessonStarted(true)
   }
 
   const handleNextClicked = () => {
-    resumeLessonSpeech()
+    setCurrentWordIndex(currentWordIndex + 1)
   }
 
   useEffect(() => {
-    // Create an utterance object
-  }, [])
+    if (selectedLesson) setWords(selectedLesson.words)
+  }, [selectedLesson])
 
   return (
     <>
       <Container maxWidth='sm'>
-        {/* {selectedLesson &&
-          selectedLesson.words.map((word) => <Typography>{word}</Typography>)} */}
         <Grid container spacing={2} direction='column'>
           <Grid item>
             <Typography>Pick a level:</Typography>
@@ -97,15 +103,14 @@ export default function Lesson() {
             </Button>
           </Grid>
           <Grid item>
-            <Typography>Speed:</Typography>
-            <Slider
-              value={speed}
-              onChange={handleChangeSpeed}
-              aria-labelledby='continuous-slider'
-              valueLabelDisplay='auto'
-            />
+            <SpeechSlider />
           </Grid>
         </Grid>
+        <Paper className={classes.textbox}>
+          {lessonStarted && (
+            <Word word={words[currentWordIndex]} index={currentWordIndex} />
+          )}
+        </Paper>
         <Keyboard />
       </Container>
     </>
