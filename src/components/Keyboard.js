@@ -1,49 +1,51 @@
-import React, { useRef, useState } from "react";
-import { default as ReactKeyboard } from "react-simple-keyboard";
-import "react-simple-keyboard/build/css/index.css";
-import TextField from "@material-ui/core/TextField";
-import { DEFAULT_BUTTONS_THEME } from "../constants";
-import "../styles/keyboard.css";
+import React, { useRef, useState } from 'react'
+import { default as ReactKeyboard } from 'react-simple-keyboard'
+import KeyboardEventHandler from 'react-keyboard-event-handler'
 
-export default function Keyboard() {
-  const [input, setInput] = useState("");
+import 'react-simple-keyboard/build/css/index.css'
+import TextField from '@material-ui/core/TextField'
+import { DEFAULT_BUTTONS_THEME } from '../constants'
+import '../styles/keyboard.css'
+
+export default function Keyboard({ onChange }) {
+  const [input, setInput] = useState('')
   const layout = {
     default: [
-      "                      {bksp}",
-      " q w e r t y u i o p   ",
-      " a s d f g h j k l ;  {enter}",
-      " z x c v b n m , .  ",
-      " {space} ",
+      '                      {bksp}',
+      ' q w e r t y u i o p   ',
+      ' a s d f g h j k l ;  {enter}',
+      ' z x c v b n m , .  ',
+      ' {space} ',
     ],
-  };
+  }
   const display = {
-    "{bksp}": "delete",
-    "{enter}": "enter",
-    "{space}": "space",
-  };
+    '{bksp}': 'delete',
+    '{enter}': 'enter',
+    '{space}': 'space',
+  }
 
-  const keyboard = useRef();
+  const keyboard = useRef()
 
   const handleChange = (e) => {
-    setInput(e.target.value);
-  };
+    setInput(e.target.value)
+  }
 
   return (
     <>
-      <TextField
-        id="filled-full-width"
+      {/* <TextField
+        id='filled-full-width'
         style={{ margin: 8 }}
         fullWidth
-        margin="normal"
+        margin='normal'
         InputLabelProps={{
           shrink: true,
         }}
-        variant="filled"
+        variant='filled'
         value={input}
         onChange={handleChange}
         autoFocus={true}
-      />
-
+      /> */}
+      <KeyboardEventHandler handleKeys={['all']} onKeyEvent={onChange} />
       <ReactKeyboard
         keyboardRef={(r) => (keyboard.current = r)}
         layout={layout}
@@ -52,5 +54,5 @@ export default function Keyboard() {
         buttonTheme={DEFAULT_BUTTONS_THEME}
       />
     </>
-  );
+  )
 }

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import Keyboard from '../components/Keyboard'
 import SpeechSlider from '../components/SpeechSlider'
-import Word from '../components/Word'
+import OutputWord from '../components/OutputWord'
+import InputWord from '../components/InputWord'
 import {
   Container,
   Typography,
@@ -35,6 +36,7 @@ export default function Lesson() {
   const [words, setWords] = useState([])
   const [currentWordIndex, setCurrentWordIndex] = useState('')
   const [lessonStarted, setLessonStarted] = useState(false)
+  const [inputWord, setInputWord] = useState('')
 
   const params = useParams()
   //TODO: grab single lesson instead of all
@@ -52,8 +54,18 @@ export default function Lesson() {
     setLessonStarted(true)
   }
 
-  const handleNextClicked = () => {
-    setCurrentWordIndex(currentWordIndex + 1)
+  const handleKeyPressed = (key, e) => {
+    switch (key) {
+      case 'enter':
+        setCurrentWordIndex(currentWordIndex + 1)
+        break
+      case 'backspace':
+        setInputWord(inputWord.slice(0, -1))
+        break
+      default:
+        setInputWord(inputWord + key)
+        break
+    }
   }
 
   useEffect(() => {
@@ -94,24 +106,19 @@ export default function Lesson() {
             </Button>
           </Grid>
           <Grid item>
-            <Button
-              variant='contained'
-              color='primary'
-              onClick={handleNextClicked}
-            >
-              Next
-            </Button>
-          </Grid>
-          <Grid item>
             <SpeechSlider />
           </Grid>
         </Grid>
         <Paper className={classes.textbox}>
           {lessonStarted && (
-            <Word word={words[currentWordIndex]} index={currentWordIndex} />
+            <OutputWord
+              word={words[currentWordIndex]}
+              index={currentWordIndex}
+            />
           )}
+          <InputWord word={inputWord} />
         </Paper>
-        <Keyboard />
+        <Keyboard onChange={handleKeyPressed} />
       </Container>
     </>
   )

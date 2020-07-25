@@ -62,7 +62,7 @@ export default function LessonList() {
         className={classes.root}
       >
         {/* TODO: loooots of repetition here! Need to break these out into their own component */}
-        <ListItem button onClick={() => handleClick(1)}>
+        <ListItem button onClick={() => handleClick(1)} key={1}>
           <ListItemText primary='Part 1' />
           {part1Open ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
@@ -72,6 +72,7 @@ export default function LessonList() {
               if (parseInt(lesson.lesson_section) === 1) {
                 return (
                   <ListItem
+                    key={lesson.lesson_id}
                     button
                     className={classes.nested}
                     component='a'
@@ -86,7 +87,7 @@ export default function LessonList() {
             })}
           </List>
         </Collapse>
-        <ListItem button onClick={() => handleClick(2)}>
+        <ListItem button onClick={() => handleClick(2)} key={2}>
           <ListItemText primary='Part 2' />
           {part2Open ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
@@ -96,6 +97,7 @@ export default function LessonList() {
               if (parseInt(lesson.lesson_section) === 2) {
                 return (
                   <ListItem
+                    key={lesson.lesson_id}
                     button
                     className={classes.nested}
                     component='a'
@@ -110,7 +112,7 @@ export default function LessonList() {
             })}
           </List>
         </Collapse>
-        <ListItem button onClick={() => handleClick(3)}>
+        <ListItem button onClick={() => handleClick(3)} key={3}>
           <ListItemText primary='Part 3' />
           {part3Open ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
@@ -120,6 +122,7 @@ export default function LessonList() {
               if (parseInt(lesson.lesson_section) === 3) {
                 return (
                   <ListItem
+                    key={lesson.lesson_id}
                     button
                     className={classes.nested}
                     component='a'
@@ -134,7 +137,7 @@ export default function LessonList() {
             })}
           </List>
         </Collapse>
-        <ListItem button onClick={() => handleClick(4)}>
+        <ListItem button onClick={() => handleClick(4)} key={4}>
           <ListItemText primary='Part 4' />
           {part4Open ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
@@ -144,6 +147,7 @@ export default function LessonList() {
               if (parseInt(lesson.lesson_section) === 4) {
                 return (
                   <ListItem
+                    key={lesson.lesson_id}
                     button
                     className={classes.nested}
                     component='a'
