@@ -25,7 +25,6 @@ export default function Keyboard() {
   const keyboard = useRef();
 
   const handleChange = (e) => {
-    console.log(e.target.value);
     setInput(e.target.value);
   };
 
