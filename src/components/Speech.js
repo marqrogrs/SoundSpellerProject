@@ -1,24 +1,46 @@
-var synthesis;
-if ("speechSynthesis" in window) {
-  synthesis = window.speechSynthesis;
+var synthesis
+if ('speechSynthesis' in window) {
+  synthesis = window.speechSynthesis
 } else {
-  console.log("Text-to-speech not supported.");
+  console.log('Text-to-speech not supported.')
 }
-// Regex to match all English language tags e.g en, en-US, en-GB
-var langRegex = /^en(-[a-z]{2})?$/i;
 
-// Get the available voices and filter the list to only have English speakers
-var voices = synthesis
-  .getVoices()
-  .filter((voice) => langRegex.test(voice.lang));
+const getVoices = () => {
+  return new Promise((resolve, reject) => {
+    let id
 
-// Log the properties of the voices in the list
-voices.forEach(function (voice) {
-  console.log({
-    name: voice.name,
-    lang: voice.lang,
-    uri: voice.voiceURI,
-    local: voice.localService,
-    default: voice.default,
-  });
-});
+    id = setInterval(() => {
+      if (synthesis.getVoices().length !== 0) {
+        resolve(synthesis.getVoices())
+        clearInterval(id)
+      }
+    }, 10)
+  })
+}
+
+export const startLessonSpeech = (words) => {
+  synthesis.cancel()
+  getVoices().then((voices) => {
+    var voice = voices.filter(function (voice) {
+      return voice.name === 'Google US English'
+    })[0]
+    return words.forEach((word, index) => {
+      var speech = new SpeechSynthesisUtterance()
+      speech.voice = voice
+      var text
+      if (index === 0) {
+        text = `Your first word is ${word}`
+      } else {
+        text = `Next word is ${word}`
+      }
+      speech.text = text
+      synthesis.speak(speech)
+      synthesis.pause()
+    })
+  })
+}
+
+export const resumeLessonSpeech = () => {
+  synthesis.resume()
+  synthesis.pause()
+}
