@@ -1,10 +1,8 @@
-import React, { useState } from "react";
+import React from 'react'
 // import { useLessons } from "../hooks/useLessons";
 
 //Material UI
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Typography from "@material-ui/core/Typography";
-import Container from "@material-ui/core/Container";
+import Container from '@material-ui/core/Container'
 
 const Landing = () => {
   // const { lessons, loading } = useLessons();
@@ -12,9 +10,9 @@ const Landing = () => {
 
   return (
     <>
-      <Container maxWidth="sm">Hello from Landing</Container>
+      <Container maxWidth='sm'>Hello from Landing</Container>
     </>
-  );
-};
+  )
+}
 
-export default Landing;
+export default Landing

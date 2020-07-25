@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as RealmWeb from "realm-web";
+// import * as RealmWeb from "realm-web";
 import { useRealmApp } from "./RealmApp";
 
 // Apollo

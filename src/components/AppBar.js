@@ -1,22 +1,21 @@
-import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useState } from 'react'
+import { useLocation } from 'react-router-dom'
 
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from '@material-ui/core/styles'
 
-import { default as MaterialAppBar } from "@material-ui/core/AppBar";
-import MenuIcon from "@material-ui/icons/Menu";
+import { default as MaterialAppBar } from '@material-ui/core/AppBar'
+import MenuIcon from '@material-ui/icons/Menu'
 import {
-  Container,
   Breadcrumbs,
   Link,
   Menu,
   MenuItem,
   Typography,
   Toolbar,
-} from "@material-ui/core";
+} from '@material-ui/core'
 
-import IconButton from "@material-ui/core/IconButton";
-import AccountCircle from "@material-ui/icons/AccountCircle";
+import IconButton from '@material-ui/core/IconButton'
+import AccountCircle from '@material-ui/icons/AccountCircle'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,62 +27,62 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
-}));
+}))
 
 export default function AppBar({ user }) {
-  const classes = useStyles();
-  const { pathname } = useLocation();
-  console.log(pathname);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
+  const classes = useStyles()
+  const { pathname } = useLocation()
+  console.log(pathname)
+  const [anchorEl, setAnchorEl] = useState(null)
+  const open = Boolean(anchorEl)
 
   const handleMenu = (e) => {
-    setAnchorEl(e.currentTarget);
-  };
+    setAnchorEl(e.currentTarget)
+  }
 
   const handleClose = () => {
-    setAnchorEl(null);
-  };
+    setAnchorEl(null)
+  }
 
-  const handleBreadcrumbClick = () => {};
+  const handleBreadcrumbClick = () => {}
 
   return (
     <div className={classes.root}>
-      <MaterialAppBar position="static">
+      <MaterialAppBar position='static'>
         <Toolbar>
           <IconButton
-            edge="start"
+            edge='start'
             className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
+            color='inherit'
+            aria-label='menu'
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" className={classes.title}>
+          <Typography variant='h6' className={classes.title}>
             Sound Speller
           </Typography>
           {user && (
             <div>
               <IconButton
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
+                aria-label='account of current user'
+                aria-controls='menu-appbar'
+                aria-haspopup='true'
                 onClick={handleMenu}
-                color="inherit"
+                color='inherit'
               >
                 <AccountCircle />
               </IconButton>
               <Menu
-                id="menu-appbar"
+                id='menu-appbar'
                 anchorEl={anchorEl}
                 anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
+                  vertical: 'top',
+                  horizontal: 'right',
                 }}
                 keepMounted
                 transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
+                  vertical: 'top',
+                  horizontal: 'right',
                 }}
                 open={open}
                 onClose={handleClose}
@@ -96,39 +95,39 @@ export default function AppBar({ user }) {
         </Toolbar>
       </MaterialAppBar>
       {user && (
-        <Breadcrumbs aria-label="breadcrumb">
-          {pathname.split("/").map((path, index) => {
-            const last = pathname.split("/").length - 1;
+        <Breadcrumbs aria-label='breadcrumb'>
+          {pathname.split('/').map((path, index) => {
+            const last = pathname.split('/').length - 1
             if (index === 0) {
               return (
                 <Link
-                  color="inherit"
-                  href="/"
+                  color='inherit'
+                  href='/'
                   onClick={handleBreadcrumbClick}
                   key={path}
                 >
                   Sound Speller
                 </Link>
-              );
+              )
             }
             return (
               <Link
-                color={index === last ? "textPrimary" : "textSecondary"}
+                color={index === last ? 'textPrimary' : 'textSecondary'}
                 href={pathname
-                  .split("/")
+                  .split('/')
                   .slice(0, index + 1)
-                  .join("/")}
-                aria-current="page"
+                  .join('/')}
+                aria-current='page'
                 key={path}
               >
-                {typeof path === "string"
+                {typeof path === 'string'
                   ? path.charAt(0).toUpperCase() + path.slice(1)
                   : path}
               </Link>
-            );
+            )
           })}
         </Breadcrumbs>
       )}
     </div>
-  );
+  )
 }

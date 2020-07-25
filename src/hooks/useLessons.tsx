@@ -11,7 +11,7 @@ export function useLessons(): {
   // Query for Lessons
   const { loading } = useGetAllLessonsQuery({
     onCompleted: (data: GetAllLessonsQuery) => {
-      console.log("Completed: ", data);
+      // console.log("Completed: ", data);
 
       if (data?.lessons) {
         //Sort lessons
@@ -37,7 +37,7 @@ export function useLessons(): {
             return 0;
           }
         });
-        console.log(lessons);
+        // console.log(lessons);
         setLessons(lessons as Lesson[]);
       }
     },
