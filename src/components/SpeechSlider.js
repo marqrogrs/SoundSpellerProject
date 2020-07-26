@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Typography, Slider } from '@material-ui/core'
-import { changeSpeechSpeed } from '../components/Speech'
+import { changeSpeechSpeed } from '../util/Audio'
 
 const MARKS = [
   {

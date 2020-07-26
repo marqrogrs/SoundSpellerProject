@@ -1,3 +1,5 @@
+import tink from '../audio/phonemes/tink.mp3'
+
 var synthesis
 if ('speechSynthesis' in window) {
   synthesis = window.speechSynthesis
@@ -68,4 +70,22 @@ export const changeSpeechSpeed = (speed) => {
   }
 
   SPEECH_RATE = transformedSpeed
+}
+
+export const playStartBells = () => {
+  return new Promise((resolve, reject) => {
+    const TINK = new Audio(tink)
+    var numTinks = 0
+    TINK.play()
+    TINK.addEventListener('ended', () => {
+      setTimeout(() => {
+        if (numTinks < 2) {
+          TINK.play()
+          numTinks++
+        } else {
+          resolve()
+        }
+      }, 400)
+    })
+  })
 }
