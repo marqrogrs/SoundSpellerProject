@@ -9,17 +9,16 @@ import '../styles/keyboard.css'
 export default function Keyboard({ onChange }) {
   const layout = {
     default: [
-      '                      {bksp}',
-      ' q w e r t y u i o p   ',
-      ' a s d f g h j k l ;  {enter}',
-      ' z x c v b n m , .  ',
-      ' {space} ',
+      'Q W E R T Y U I O P {bksp}',
+      'A S D F G H J K L ; {enter}',
+      'Z X C V B N M , .   ',
+      '{space}',
     ],
   }
   const display = {
     '{bksp}': 'delete',
     '{enter}': 'enter',
-    '{space}': 'space',
+    '{space}': ' ',
   }
 
   const keyboard = useRef()
