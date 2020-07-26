@@ -88,7 +88,6 @@ export default function Lesson() {
             <SpeechSlider />
           </Grid>
           <Grid item>
-            Progress:
             <LessonProgress variant='determinate' value={progress} />
           </Grid>
         </Grid>
