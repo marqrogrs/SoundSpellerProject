@@ -8,7 +8,6 @@ import { DEFAULT_BUTTONS_THEME } from '../constants'
 import '../styles/keyboard.css'
 
 export default function Keyboard({ onChange }) {
-  const [input, setInput] = useState('')
   const layout = {
     default: [
       '                      {bksp}',
@@ -26,25 +25,8 @@ export default function Keyboard({ onChange }) {
 
   const keyboard = useRef()
 
-  const handleChange = (e) => {
-    setInput(e.target.value)
-  }
-
   return (
     <>
-      {/* <TextField
-        id='filled-full-width'
-        style={{ margin: 8 }}
-        fullWidth
-        margin='normal'
-        InputLabelProps={{
-          shrink: true,
-        }}
-        variant='filled'
-        value={input}
-        onChange={handleChange}
-        autoFocus={true}
-      /> */}
       <KeyboardEventHandler handleKeys={['all']} onKeyEvent={onChange} />
       <ReactKeyboard
         keyboardRef={(r) => (keyboard.current = r)}
