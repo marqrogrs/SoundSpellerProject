@@ -1,9 +1,8 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef } from 'react'
 import { default as ReactKeyboard } from 'react-simple-keyboard'
 import KeyboardEventHandler from 'react-keyboard-event-handler'
 
 import 'react-simple-keyboard/build/css/index.css'
-import TextField from '@material-ui/core/TextField'
 import { DEFAULT_BUTTONS_THEME } from '../constants'
 import '../styles/keyboard.css'
 
