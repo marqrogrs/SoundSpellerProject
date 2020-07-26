@@ -3,6 +3,7 @@ import Keyboard from '../components/Keyboard'
 import SpeechSlider from '../components/SpeechSlider'
 import OutputWord from '../components/OutputWord'
 import InputWord from '../components/InputWord'
+import LessonProgress from '../components/LessonProgress'
 import {
   Container,
   Typography,
@@ -34,9 +35,10 @@ export default function Lesson() {
   const classes = useStyles()
   const [level, setLevel] = useState(0)
   const [words, setWords] = useState([])
-  const [currentWordIndex, setCurrentWordIndex] = useState('')
+  const [currentWordIndex, setCurrentWordIndex] = useState(0)
   const [lessonStarted, setLessonStarted] = useState(false)
   const [inputWord, setInputWord] = useState('')
+  const progress = words.length > 0 ? currentWordIndex + 1 / words.length : 0
 
   const params = useParams()
   //TODO: grab single lesson instead of all
@@ -113,6 +115,10 @@ export default function Lesson() {
           </Grid>
           <Grid item>
             <SpeechSlider />
+          </Grid>
+          <Grid item>
+            Progress:
+            <LessonProgress variant='determinate' value={progress} />
           </Grid>
         </Grid>
         <Paper className={classes.textbox}>
