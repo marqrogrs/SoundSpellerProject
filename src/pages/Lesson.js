@@ -55,9 +55,15 @@ export default function Lesson() {
   }
 
   const handleKeyPressed = (key, e) => {
+    console.log(key)
     switch (key) {
       case 'enter':
-        setCurrentWordIndex(currentWordIndex + 1)
+        if (currentWordIndex < words.length - 1) {
+          setCurrentWordIndex(currentWordIndex + 1)
+        } else {
+          //Handle end of lesson
+        }
+        setInputWord('')
         break
       case 'backspace':
         setInputWord(inputWord.slice(0, -1))
