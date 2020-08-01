@@ -49,27 +49,48 @@ export const speakWord = (word, firstWord = false) => {
 
 export const changeSpeechSpeed = (speed) => {
   var transformedSpeed = SPEECH_RATE
+  var speedString
   switch (speed) {
     case 0:
       transformedSpeed = 0.5
+      speedString = 'slower'
       break
     case 25:
       transformedSpeed = 0.6
+      speedString = 'slow'
       break
     case 50:
       transformedSpeed = 1.0
+      speedString = 'normal'
       break
     case 75:
       transformedSpeed = 1.5
+      speedString = 'fast'
       break
     case 100:
       transformedSpeed = 2.0
+      speedString = 'faster'
       break
     default:
       break
   }
 
   SPEECH_RATE = transformedSpeed
+  synthesis.cancel()
+
+  getVoices().then((voices) => {
+    var voice = voices.filter(function (voice) {
+      return voice.lang === 'en-US' && voice.localService === true
+    })[2]
+
+    var text = `This is how ${speedString} speed sounds.`
+    var speech = new SpeechSynthesisUtterance(speedString)
+    speech.voice = voice
+    speech.text = text
+    speech.rate = SPEECH_RATE
+    speech.lang = 'en-US'
+    synthesis.speak(speech)
+  })
 }
 
 export const playStartBells = () => {

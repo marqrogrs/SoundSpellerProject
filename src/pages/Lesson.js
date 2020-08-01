@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import Keyboard from '../components/Keyboard'
-import SpeechSlider from '../components/SpeechSlider'
 import OutputWord from '../components/OutputWord'
 import InputWord from '../components/InputWord'
 import LessonProgress from '../components/LessonProgress'
@@ -83,9 +82,6 @@ export default function Lesson() {
             >
               Start
             </Button>
-          </Grid>
-          <Grid item>
-            <SpeechSlider />
           </Grid>
           <Grid item>
             <LessonProgress variant='determinate' value={progress} />

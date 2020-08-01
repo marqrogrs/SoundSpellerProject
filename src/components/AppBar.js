@@ -12,10 +12,21 @@ import {
   MenuItem,
   Typography,
   Toolbar,
+  Drawer,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Divider,
 } from '@material-ui/core'
 
+import ExpandLess from '@material-ui/icons/ExpandLess'
+import ExpandMore from '@material-ui/icons/ExpandMore'
+import Collapse from '@material-ui/core/Collapse'
 import IconButton from '@material-ui/core/IconButton'
 import AccountCircle from '@material-ui/icons/AccountCircle'
+import Settings from '@material-ui/icons/Settings'
+import SpeechSlider from '../components/SpeechSlider'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,13 +38,23 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
+  settingsMenu: {
+    width: 800,
+  },
+  nested: {
+    paddingLeft: theme.spacing(4),
+    paddingRight: theme.spacing(4),
+  },
 }))
 
 export default function AppBar({ user }) {
   const classes = useStyles()
   const { pathname } = useLocation()
-  console.log(pathname)
   const [anchorEl, setAnchorEl] = useState(null)
+  const [drawerOpen, setDrawerOpen] = useState(false)
+  const [speedMenuOpen, setSpeedMenuOpen] = useState(false)
+  const [sizeMenuOpen, setSizeMenuOpen] = useState(false)
+  const [volumeMenuOpen, setVolumeMenuOpen] = useState(false)
   const open = Boolean(anchorEl)
 
   const handleMenu = (e) => {
@@ -42,6 +63,10 @@ export default function AppBar({ user }) {
 
   const handleClose = () => {
     setAnchorEl(null)
+  }
+
+  const toggleSettingsDrawer = (open) => {
+    setDrawerOpen(open)
   }
 
   const handleBreadcrumbClick = () => {}
@@ -63,6 +88,51 @@ export default function AppBar({ user }) {
           </Typography>
           {user && (
             <div>
+              <IconButton
+                aria-label='account of current user'
+                aria-controls='menu-appbar'
+                aria-haspopup='true'
+                onClick={() => toggleSettingsDrawer(true)}
+                color='inherit'
+              >
+                <Settings />
+              </IconButton>
+              <Drawer
+                anchor={'right'}
+                open={drawerOpen}
+                onClose={() => toggleSettingsDrawer(false)}
+              >
+                <div className={classes.settingsMenu} role='presentation'>
+                  <List>
+                    <ListItem
+                      button
+                      onClick={() => setSpeedMenuOpen(!speedMenuOpen)}
+                    >
+                      <ListItemText>Speech Speed</ListItemText>
+                      {speedMenuOpen ? <ExpandLess /> : <ExpandMore />}
+                    </ListItem>
+                    <Collapse in={speedMenuOpen} timeout='auto' unmountOnExit>
+                      <div className={classes.nested}>
+                        <SpeechSlider />
+                      </div>
+                    </Collapse>
+                    <ListItem
+                      button
+                      onClick={() => setSizeMenuOpen(!sizeMenuOpen)}
+                    >
+                      <ListItemText>Font Size</ListItemText>
+                      {sizeMenuOpen ? <ExpandLess /> : <ExpandMore />}
+                    </ListItem>
+                    <ListItem
+                      button
+                      onClick={() => setVolumeMenuOpen(!volumeMenuOpen)}
+                    >
+                      <ListItemText>Volume</ListItemText>
+                      {volumeMenuOpen ? <ExpandLess /> : <ExpandMore />}
+                    </ListItem>
+                  </List>
+                </div>
+              </Drawer>
               <IconButton
                 aria-label='account of current user'
                 aria-controls='menu-appbar'

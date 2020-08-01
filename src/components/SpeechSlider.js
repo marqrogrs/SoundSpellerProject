@@ -1,6 +1,11 @@
 import React, { useState } from 'react'
-import { Typography, Slider } from '@material-ui/core'
+
+import Typography from '@material-ui/core/Typography'
+import Slider from '@material-ui/core/Slider'
 import { changeSpeechSpeed } from '../util/Audio'
+import IconButton from '@material-ui/core/IconButton'
+import VolumeUp from '@material-ui/icons/VolumeUp'
+import Grid from '@material-ui/core/Grid'
 
 const MARKS = [
   {
@@ -37,8 +42,7 @@ export default function SpeechSlider() {
   }
 
   return (
-    <>
-      <Typography>Speed:</Typography>
+    <Grid>
       <Slider
         value={speed}
         onChange={handleChangeSpeed}
@@ -48,6 +52,6 @@ export default function SpeechSlider() {
         marks={MARKS}
         step={25}
       />
-    </>
+    </Grid>
   )
 }
