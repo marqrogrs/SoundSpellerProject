@@ -90,7 +90,7 @@ export default function Lesson() {
         <Paper className={classes.textbox}>
           {lessonStarted && (
             <OutputWord
-              word={words[currentWordIndex]}
+              wordString={words[currentWordIndex]}
               index={currentWordIndex}
             />
           )}
