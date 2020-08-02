@@ -17,14 +17,16 @@ export default function OutputWord({ wordString, index }) {
   const { word, loading } = useWords(wordString)
 
   useEffect(() => {
-    if (word.word && !loading) {
-      console.log("ok time to speak!")
+    if (!loading && !word) {
+      //This isn't a word - just letters
+      console.log(wordString)
+    } else if (!loading && word.word) {
+      console.log('ok time to speak!')
       speakWord(word, index === 0)
         .then(() => {
           setDisplayWord(true)
         })
         .then(() => {
-          console.log("Setting timeout")
           setTimeout(async () => {
             await playStartBells()
             setDisplayWord(false)

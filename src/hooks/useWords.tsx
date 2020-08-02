@@ -9,7 +9,6 @@ import { useGetWordQuery } from './../graphql-operations'
 
 export const useWords = (wordString: string) => {
   const [word, setWord] = React.useState<Word>({})
-
   const { loading } = useGetWordQuery({
     variables: {
       word: wordString,
@@ -19,7 +18,7 @@ export const useWords = (wordString: string) => {
       setWord(data.word as Word)
     },
     onError: (error) => {
-      console.log('Error getting lessons: ', error)
+      console.log('Error getting words: ', error)
     },
   })
 

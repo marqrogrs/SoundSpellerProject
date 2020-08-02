@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import Keyboard from '../components/Keyboard'
 import OutputWord from '../components/OutputWord'
 import InputWord from '../components/InputWord'
@@ -8,6 +8,7 @@ import { Container, Button, Grid, Paper } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
 import { useParams } from 'react-router-dom'
+import { LessonContext } from '../providers/LessonProvider'
 import { useLessons } from '../hooks/useLessons'
 
 const useStyles = makeStyles({
@@ -25,6 +26,7 @@ const useStyles = makeStyles({
 
 export default function Lesson() {
   const classes = useStyles()
+  const { lessons } = useLessons()
   const [words, setWords] = useState([])
   const [currentWordIndex, setCurrentWordIndex] = useState(0)
   const [lessonStarted, setLessonStarted] = useState(false)
@@ -32,11 +34,7 @@ export default function Lesson() {
   const progress = words.length > 0 ? currentWordIndex + 1 / words.length : 0
 
   const params = useParams()
-  //TODO: grab single lesson instead of all
-  const { lessons } = useLessons()
-  const selectedLesson = lessons.filter((lesson) => {
-    return lesson.lesson_id === params.lesson
-  })[0]
+  const { setLesson, selectedLesson } = useContext(LessonContext)
 
   const handleStartClicked = () => {
     setCurrentWordIndex(0)
@@ -64,8 +62,18 @@ export default function Lesson() {
   }
 
   useEffect(() => {
-    if (selectedLesson) setWords(selectedLesson.words)
-  }, [selectedLesson])
+    if (!selectedLesson) {
+      console.log('Setting lesson')
+      //TODO: grab single lesson instead of all
+      const currentLesson = lessons.filter((lesson) => {
+        return lesson.lesson_id === params.lesson
+      })[0]
+      setLesson(currentLesson)
+    } else {
+      console.log(selectedLesson)
+      setWords(selectedLesson.words)
+    }
+  }, [selectedLesson, lessons, setLesson, params])
 
   return (
     <>

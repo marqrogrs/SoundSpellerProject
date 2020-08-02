@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import {
   List,
@@ -10,6 +10,8 @@ import {
 import ExpandLess from '@material-ui/icons/ExpandLess'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import { useLessons } from '../hooks/useLessons'
+import { LessonContext } from '../providers/LessonProvider'
+import { useHistory } from 'react-router-dom'
 
 //TODO: refactor and export all these styles
 const useStyles = makeStyles((theme) => ({
@@ -23,8 +25,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function LessonList() {
+export default function LessonList({ navigation }) {
   const { lessons } = useLessons()
+  let history = useHistory()
   const classes = useStyles()
   const [part1Open, setPart1Open] = React.useState(false)
   const [part2Open, setPart2Open] = React.useState(false)
@@ -75,8 +78,9 @@ export default function LessonList() {
                     key={lesson.lesson_id}
                     button
                     className={classes.nested}
-                    component='a'
-                    href={`lessons/${lesson.lesson_id}`}
+                    onClick={() => {
+                      history.push(`lessons/${lesson.lesson_id}`)
+                    }}
                   >
                     <ListItemText primary={lesson.description} />
                   </ListItem>
@@ -100,8 +104,9 @@ export default function LessonList() {
                     key={lesson.lesson_id}
                     button
                     className={classes.nested}
-                    component='a'
-                    href={`lessons/${lesson.lesson_id}`}
+                    onClick={() => {
+                      history.push(`lessons/${lesson.lesson_id}`)
+                    }}
                   >
                     <ListItemText primary={lesson.description} />
                   </ListItem>
@@ -125,8 +130,7 @@ export default function LessonList() {
                     key={lesson.lesson_id}
                     button
                     className={classes.nested}
-                    component='a'
-                    href={`lessons/${lesson.lesson_id}`}
+                    onClick={() => history.push(`lessons/${lesson.lesson_id}`)}
                   >
                     <ListItemText primary={lesson.description} />
                   </ListItem>
@@ -150,8 +154,7 @@ export default function LessonList() {
                     key={lesson.lesson_id}
                     button
                     className={classes.nested}
-                    component='a'
-                    href={`lessons/${lesson.lesson_id}`}
+                    onClick={() => history.push(`lessons/${lesson.lesson_id}`)}
                   >
                     <ListItemText primary={lesson.description} />
                   </ListItem>
