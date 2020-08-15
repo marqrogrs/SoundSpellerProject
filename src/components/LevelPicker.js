@@ -1,12 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Typography, ButtonGroup, Button } from '@material-ui/core'
 import { LEVELS } from '../constants'
+import { LessonContext } from '../providers/LessonProvider'
 
 export default function LevelPicker() {
-  const [level, setLevel] = useState(0)
+  const { setLevel, selectedLevel } = useContext(LessonContext)
 
   const handleSelectLevel = (e) => {
-    setLevel(parseInt(e.target.innerText))
+    setLevel(parseInt(e.target.innerText) - 1)
   }
 
   return (
@@ -18,10 +19,10 @@ export default function LevelPicker() {
           return (
             <Button
               key={index}
-              variant={level === index ? `contained` : `outlined`}
+              variant={selectedLevel === index ? `contained` : `outlined`}
               onClick={handleSelectLevel}
             >
-              {index}
+              {index + 1}
             </Button>
           )
         })}

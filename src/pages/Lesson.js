@@ -34,7 +34,7 @@ export default function Lesson() {
   const progress = words.length > 0 ? currentWordIndex + 1 / words.length : 0
 
   const params = useParams()
-  const { setLesson, selectedLesson } = useContext(LessonContext)
+  const { setLesson, selectedLesson, selectedLevel } = useContext(LessonContext)
 
   const handleStartClicked = () => {
     setCurrentWordIndex(0)
@@ -100,6 +100,7 @@ export default function Lesson() {
             <OutputWord
               wordString={words[currentWordIndex]}
               index={currentWordIndex}
+              level={selectedLevel}
             />
           )}
           <InputWord word={inputWord} />

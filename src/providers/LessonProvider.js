@@ -32,7 +32,7 @@ class LessonProvider extends Component {
   }
 
   render() {
-    // console.log(this.state)
+    // console.log(this.state.selectedLevel)
     return (
       <LessonContext.Provider value={this.state}>
         {this.props.children}

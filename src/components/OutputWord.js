@@ -11,7 +11,7 @@ const useStyles = makeStyles({
   },
 })
 
-export default function OutputWord({ wordString, index }) {
+export default function OutputWord({ wordString, index, level }) {
   const [displayWord, setDisplayWord] = useState(false)
   const classes = useStyles()
   const { word, loading } = useWords(wordString)
@@ -21,17 +21,35 @@ export default function OutputWord({ wordString, index }) {
       //This isn't a word - just letters
       console.log(wordString)
     } else if (!loading && word.word) {
-      console.log('ok time to speak!')
-      speakWord(word, index === 0)
-        .then(() => {
-          setDisplayWord(true)
-        })
-        .then(() => {
-          setTimeout(async () => {
-            await playStartBells()
-            setDisplayWord(false)
-          }, 1000)
-        })
+      switch (level) {
+        case 0:
+          console.log('level 1: ', word)
+          // speakWord(word, index === 0).then(() => {
+            
+          // })
+          break
+        case 1:
+          console.log('level 2')
+          break
+        case 2:
+          console.log('level 3')
+          break
+        case 3:
+          console.log('level 4')
+          break
+        default:
+          return
+      }
+      // speakWord(word, index === 0)
+      //   .then(() => {
+      //     setDisplayWord(true)
+      //   })
+      //   .then(() => {
+      //     setTimeout(async () => {
+      //       await playStartBells()
+      //       setDisplayWord(false)
+      //     }, 1000)
+      //   })
     } else {
       console.log('Still loading...')
     }
