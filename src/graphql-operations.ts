@@ -85,11 +85,7 @@ export const GetWordDocument = gql`
   word(query: {word: $word}) {
     _id
     word
-    phonemes {
-      _id
-      phoneme
-      files
-    }
+    phonemes
     graphemes
     syllables
   }

@@ -31,94 +31,94 @@ export type Lesson = {
 };
 
 export type LessonInsertInput = {
+  description?: Maybe<Scalars['String']>;
   lesson_id?: Maybe<Scalars['String']>;
   lesson_section?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   words?: Maybe<Array<Maybe<Scalars['String']>>>;
   _id?: Maybe<Scalars['ObjectId']>;
-  description?: Maybe<Scalars['String']>;
 };
 
 export type LessonQueryInput = {
-  lesson_section_nin?: Maybe<Array<Maybe<Scalars['String']>>>;
-  _id_ne?: Maybe<Scalars['ObjectId']>;
-  lesson_section_exists?: Maybe<Scalars['Boolean']>;
-  lesson_id_nin?: Maybe<Array<Maybe<Scalars['String']>>>;
-  words_nin?: Maybe<Array<Maybe<Scalars['String']>>>;
-  description_in?: Maybe<Array<Maybe<Scalars['String']>>>;
-  lesson_id?: Maybe<Scalars['String']>;
-  title_in?: Maybe<Array<Maybe<Scalars['String']>>>;
-  _id_gte?: Maybe<Scalars['ObjectId']>;
-  description_gte?: Maybe<Scalars['String']>;
-  lesson_id_gte?: Maybe<Scalars['String']>;
-  lesson_id_lte?: Maybe<Scalars['String']>;
-  title_ne?: Maybe<Scalars['String']>;
-  title?: Maybe<Scalars['String']>;
-  description_gt?: Maybe<Scalars['String']>;
-  lesson_section?: Maybe<Scalars['String']>;
-  description_exists?: Maybe<Scalars['Boolean']>;
-  title_exists?: Maybe<Scalars['Boolean']>;
-  lesson_section_gt?: Maybe<Scalars['String']>;
-  words_exists?: Maybe<Scalars['Boolean']>;
-  description_lt?: Maybe<Scalars['String']>;
-  description_lte?: Maybe<Scalars['String']>;
-  title_lt?: Maybe<Scalars['String']>;
-  _id_lte?: Maybe<Scalars['ObjectId']>;
-  OR?: Maybe<Array<LessonQueryInput>>;
-  lesson_id_gt?: Maybe<Scalars['String']>;
-  _id_lt?: Maybe<Scalars['ObjectId']>;
-  lesson_id_exists?: Maybe<Scalars['Boolean']>;
-  title_lte?: Maybe<Scalars['String']>;
-  lesson_section_gte?: Maybe<Scalars['String']>;
-  title_nin?: Maybe<Array<Maybe<Scalars['String']>>>;
-  _id_gt?: Maybe<Scalars['ObjectId']>;
-  lesson_id_ne?: Maybe<Scalars['String']>;
   lesson_id_in?: Maybe<Array<Maybe<Scalars['String']>>>;
-  title_gt?: Maybe<Scalars['String']>;
-  description_ne?: Maybe<Scalars['String']>;
-  title_gte?: Maybe<Scalars['String']>;
+  lesson_id_lte?: Maybe<Scalars['String']>;
+  lesson_id_gte?: Maybe<Scalars['String']>;
   _id?: Maybe<Scalars['ObjectId']>;
-  _id_exists?: Maybe<Scalars['Boolean']>;
-  words_in?: Maybe<Array<Maybe<Scalars['String']>>>;
-  AND?: Maybe<Array<LessonQueryInput>>;
-  lesson_section_ne?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  lesson_section_lt?: Maybe<Scalars['String']>;
-  words?: Maybe<Array<Maybe<Scalars['String']>>>;
-  lesson_id_lt?: Maybe<Scalars['String']>;
-  _id_in?: Maybe<Array<Maybe<Scalars['ObjectId']>>>;
-  lesson_section_lte?: Maybe<Scalars['String']>;
   lesson_section_in?: Maybe<Array<Maybe<Scalars['String']>>>;
-  _id_nin?: Maybe<Array<Maybe<Scalars['ObjectId']>>>;
   description_nin?: Maybe<Array<Maybe<Scalars['String']>>>;
+  lesson_section_nin?: Maybe<Array<Maybe<Scalars['String']>>>;
+  description_lt?: Maybe<Scalars['String']>;
+  lesson_section_gt?: Maybe<Scalars['String']>;
+  title_exists?: Maybe<Scalars['Boolean']>;
+  _id_ne?: Maybe<Scalars['ObjectId']>;
+  AND?: Maybe<Array<LessonQueryInput>>;
+  lesson_id_ne?: Maybe<Scalars['String']>;
+  words_exists?: Maybe<Scalars['Boolean']>;
+  title_lte?: Maybe<Scalars['String']>;
+  lesson_section?: Maybe<Scalars['String']>;
+  words_nin?: Maybe<Array<Maybe<Scalars['String']>>>;
+  title_ne?: Maybe<Scalars['String']>;
+  _id_gt?: Maybe<Scalars['ObjectId']>;
+  description_gte?: Maybe<Scalars['String']>;
+  lesson_id_lt?: Maybe<Scalars['String']>;
+  lesson_section_ne?: Maybe<Scalars['String']>;
+  _id_nin?: Maybe<Array<Maybe<Scalars['ObjectId']>>>;
+  title?: Maybe<Scalars['String']>;
+  lesson_id_exists?: Maybe<Scalars['Boolean']>;
+  words?: Maybe<Array<Maybe<Scalars['String']>>>;
+  description_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  lesson_id_gt?: Maybe<Scalars['String']>;
+  description_lte?: Maybe<Scalars['String']>;
+  lesson_section_lt?: Maybe<Scalars['String']>;
+  _id_exists?: Maybe<Scalars['Boolean']>;
+  title_lt?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  _id_lte?: Maybe<Scalars['ObjectId']>;
+  title_gt?: Maybe<Scalars['String']>;
+  lesson_id?: Maybe<Scalars['String']>;
+  lesson_id_nin?: Maybe<Array<Maybe<Scalars['String']>>>;
+  title_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  description_ne?: Maybe<Scalars['String']>;
+  lesson_section_lte?: Maybe<Scalars['String']>;
+  lesson_section_gte?: Maybe<Scalars['String']>;
+  words_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  _id_in?: Maybe<Array<Maybe<Scalars['ObjectId']>>>;
+  description_gt?: Maybe<Scalars['String']>;
+  lesson_section_exists?: Maybe<Scalars['Boolean']>;
+  title_nin?: Maybe<Array<Maybe<Scalars['String']>>>;
+  title_gte?: Maybe<Scalars['String']>;
+  _id_gte?: Maybe<Scalars['ObjectId']>;
+  OR?: Maybe<Array<LessonQueryInput>>;
+  description_exists?: Maybe<Scalars['Boolean']>;
+  _id_lt?: Maybe<Scalars['ObjectId']>;
 };
 
 export enum LessonSortByInput {
-  LessonSectionDesc = 'LESSON_SECTION_DESC',
-  TitleDesc = 'TITLE_DESC',
+  DescriptionDesc = 'DESCRIPTION_DESC',
   IdAsc = '_ID_ASC',
+  TitleAsc = 'TITLE_ASC',
+  TitleDesc = 'TITLE_DESC',
   IdDesc = '_ID_DESC',
   DescriptionAsc = 'DESCRIPTION_ASC',
-  DescriptionDesc = 'DESCRIPTION_DESC',
   LessonIdAsc = 'LESSON_ID_ASC',
   LessonIdDesc = 'LESSON_ID_DESC',
   LessonSectionAsc = 'LESSON_SECTION_ASC',
-  TitleAsc = 'TITLE_ASC'
+  LessonSectionDesc = 'LESSON_SECTION_DESC'
 }
 
 export type LessonUpdateInput = {
-  lesson_section_unset?: Maybe<Scalars['Boolean']>;
   words_unset?: Maybe<Scalars['Boolean']>;
-  lesson_section?: Maybe<Scalars['String']>;
-  lesson_id_unset?: Maybe<Scalars['Boolean']>;
-  title?: Maybe<Scalars['String']>;
-  description_unset?: Maybe<Scalars['Boolean']>;
-  words?: Maybe<Array<Maybe<Scalars['String']>>>;
-  _id?: Maybe<Scalars['ObjectId']>;
-  description?: Maybe<Scalars['String']>;
   _id_unset?: Maybe<Scalars['Boolean']>;
+  lesson_section?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  description_unset?: Maybe<Scalars['Boolean']>;
+  title?: Maybe<Scalars['String']>;
   lesson_id?: Maybe<Scalars['String']>;
+  lesson_id_unset?: Maybe<Scalars['Boolean']>;
   title_unset?: Maybe<Scalars['Boolean']>;
+  _id?: Maybe<Scalars['ObjectId']>;
+  lesson_section_unset?: Maybe<Scalars['Boolean']>;
+  words?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
 export type Mutation = {
@@ -211,8 +211,8 @@ export type MutationInsertOneWordArgs = {
 
 
 export type MutationReplaceOneLessonArgs = {
-  query?: Maybe<LessonQueryInput>;
   data: LessonInsertInput;
+  query?: Maybe<LessonQueryInput>;
 };
 
 
@@ -235,8 +235,8 @@ export type MutationUpdateManyLessonsArgs = {
 
 
 export type MutationUpdateManyPhonemesArgs = {
-  query?: Maybe<PhonemeQueryInput>;
   set: PhonemeUpdateInput;
+  query?: Maybe<PhonemeQueryInput>;
 };
 
 
@@ -247,8 +247,8 @@ export type MutationUpdateManyWordsArgs = {
 
 
 export type MutationUpdateOneLessonArgs = {
-  query?: Maybe<LessonQueryInput>;
   set: LessonUpdateInput;
+  query?: Maybe<LessonQueryInput>;
 };
 
 
@@ -277,8 +277,8 @@ export type MutationUpsertOnePhonemeArgs = {
 
 
 export type MutationUpsertOneWordArgs = {
-  query?: Maybe<WordQueryInput>;
   data: WordInsertInput;
+  query?: Maybe<WordQueryInput>;
 };
 
 
@@ -296,46 +296,46 @@ export type PhonemeInsertInput = {
 };
 
 export type PhonemeQueryInput = {
-  _id_ne?: Maybe<Scalars['ObjectId']>;
-  OR?: Maybe<Array<PhonemeQueryInput>>;
-  phoneme_lt?: Maybe<Scalars['String']>;
   _id?: Maybe<Scalars['ObjectId']>;
-  _id_nin?: Maybe<Array<Maybe<Scalars['ObjectId']>>>;
-  phoneme_in?: Maybe<Array<Maybe<Scalars['String']>>>;
-  files_nin?: Maybe<Array<Maybe<Scalars['String']>>>;
-  _id_lt?: Maybe<Scalars['ObjectId']>;
-  phoneme?: Maybe<Scalars['String']>;
-  AND?: Maybe<Array<PhonemeQueryInput>>;
-  _id_lte?: Maybe<Scalars['ObjectId']>;
-  phoneme_exists?: Maybe<Scalars['Boolean']>;
-  _id_gte?: Maybe<Scalars['ObjectId']>;
-  phoneme_gt?: Maybe<Scalars['String']>;
-  _id_exists?: Maybe<Scalars['Boolean']>;
-  phoneme_nin?: Maybe<Array<Maybe<Scalars['String']>>>;
-  phoneme_ne?: Maybe<Scalars['String']>;
-  _id_gt?: Maybe<Scalars['ObjectId']>;
   _id_in?: Maybe<Array<Maybe<Scalars['ObjectId']>>>;
-  phoneme_gte?: Maybe<Scalars['String']>;
+  phoneme_lt?: Maybe<Scalars['String']>;
   files_exists?: Maybe<Scalars['Boolean']>;
+  _id_gt?: Maybe<Scalars['ObjectId']>;
+  _id_gte?: Maybe<Scalars['ObjectId']>;
+  phoneme_nin?: Maybe<Array<Maybe<Scalars['String']>>>;
+  OR?: Maybe<Array<PhonemeQueryInput>>;
+  _id_ne?: Maybe<Scalars['ObjectId']>;
   phoneme_lte?: Maybe<Scalars['String']>;
+  phoneme_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  phoneme_ne?: Maybe<Scalars['String']>;
+  phoneme?: Maybe<Scalars['String']>;
+  phoneme_gte?: Maybe<Scalars['String']>;
+  phoneme_exists?: Maybe<Scalars['Boolean']>;
+  files_nin?: Maybe<Array<Maybe<Scalars['String']>>>;
+  AND?: Maybe<Array<PhonemeQueryInput>>;
+  _id_lt?: Maybe<Scalars['ObjectId']>;
+  _id_lte?: Maybe<Scalars['ObjectId']>;
+  _id_nin?: Maybe<Array<Maybe<Scalars['ObjectId']>>>;
   files?: Maybe<Array<Maybe<Scalars['String']>>>;
   files_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  phoneme_gt?: Maybe<Scalars['String']>;
+  _id_exists?: Maybe<Scalars['Boolean']>;
 };
 
 export enum PhonemeSortByInput {
-  PhonemeAsc = 'PHONEME_ASC',
-  PhonemeDesc = 'PHONEME_DESC',
   IdAsc = '_ID_ASC',
-  IdDesc = '_ID_DESC'
+  IdDesc = '_ID_DESC',
+  PhonemeAsc = 'PHONEME_ASC',
+  PhonemeDesc = 'PHONEME_DESC'
 }
 
 export type PhonemeUpdateInput = {
-  _id?: Maybe<Scalars['ObjectId']>;
-  _id_unset?: Maybe<Scalars['Boolean']>;
-  files?: Maybe<Array<Maybe<Scalars['String']>>>;
   files_unset?: Maybe<Scalars['Boolean']>;
   phoneme?: Maybe<Scalars['String']>;
   phoneme_unset?: Maybe<Scalars['Boolean']>;
+  _id?: Maybe<Scalars['ObjectId']>;
+  _id_unset?: Maybe<Scalars['Boolean']>;
+  files?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
 export type Query = {
@@ -355,9 +355,9 @@ export type QueryLessonArgs = {
 
 
 export type QueryLessonsArgs = {
+  sortBy?: Maybe<LessonSortByInput>;
   query?: Maybe<LessonQueryInput>;
   limit?: Maybe<Scalars['Int']>;
-  sortBy?: Maybe<LessonSortByInput>;
 };
 
 
@@ -367,9 +367,9 @@ export type QueryPhonemeArgs = {
 
 
 export type QueryPhonemesArgs = {
+  sortBy?: Maybe<PhonemeSortByInput>;
   query?: Maybe<PhonemeQueryInput>;
   limit?: Maybe<Scalars['Int']>;
-  sortBy?: Maybe<PhonemeSortByInput>;
 };
 
 
@@ -379,9 +379,9 @@ export type QueryWordArgs = {
 
 
 export type QueryWordsArgs = {
+  sortBy?: Maybe<WordSortByInput>;
   query?: Maybe<WordQueryInput>;
   limit?: Maybe<Scalars['Int']>;
-  sortBy?: Maybe<WordSortByInput>;
 };
 
 export type UpdateManyPayload = {
@@ -394,77 +394,72 @@ export type Word = {
   __typename?: 'Word';
   _id?: Maybe<Scalars['ObjectId']>;
   graphemes?: Maybe<Array<Maybe<Scalars['String']>>>;
-  phonemes?: Maybe<Array<Maybe<Phoneme>>>;
+  phonemes?: Maybe<Array<Maybe<Scalars['String']>>>;
   syllables?: Maybe<Array<Maybe<Scalars['String']>>>;
   word?: Maybe<Scalars['String']>;
 };
 
 export type WordInsertInput = {
-  graphemes?: Maybe<Array<Maybe<Scalars['String']>>>;
-  phonemes?: Maybe<WordPhonemesRelationInput>;
-  syllables?: Maybe<Array<Maybe<Scalars['String']>>>;
   word?: Maybe<Scalars['String']>;
   _id?: Maybe<Scalars['ObjectId']>;
-};
-
-export type WordPhonemesRelationInput = {
-  create?: Maybe<Array<Maybe<PhonemeInsertInput>>>;
-  link?: Maybe<Array<Maybe<Scalars['ObjectId']>>>;
+  graphemes?: Maybe<Array<Maybe<Scalars['String']>>>;
+  phonemes?: Maybe<Array<Maybe<Scalars['String']>>>;
+  syllables?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
 export type WordQueryInput = {
-  phonemes_exists?: Maybe<Scalars['Boolean']>;
-  _id_gt?: Maybe<Scalars['ObjectId']>;
-  AND?: Maybe<Array<WordQueryInput>>;
-  _id_in?: Maybe<Array<Maybe<Scalars['ObjectId']>>>;
-  phonemes?: Maybe<Array<Maybe<PhonemeQueryInput>>>;
-  syllables_nin?: Maybe<Array<Maybe<Scalars['String']>>>;
-  _id_exists?: Maybe<Scalars['Boolean']>;
-  word_in?: Maybe<Array<Maybe<Scalars['String']>>>;
-  graphemes_in?: Maybe<Array<Maybe<Scalars['String']>>>;
-  graphemes?: Maybe<Array<Maybe<Scalars['String']>>>;
   _id_lte?: Maybe<Scalars['ObjectId']>;
-  phonemes_nin?: Maybe<Array<Maybe<PhonemeQueryInput>>>;
-  graphemes_exists?: Maybe<Scalars['Boolean']>;
-  word_lte?: Maybe<Scalars['String']>;
-  _id_nin?: Maybe<Array<Maybe<Scalars['ObjectId']>>>;
-  _id?: Maybe<Scalars['ObjectId']>;
-  word?: Maybe<Scalars['String']>;
-  word_lt?: Maybe<Scalars['String']>;
-  _id_ne?: Maybe<Scalars['ObjectId']>;
-  OR?: Maybe<Array<WordQueryInput>>;
-  word_nin?: Maybe<Array<Maybe<Scalars['String']>>>;
-  word_gt?: Maybe<Scalars['String']>;
-  graphemes_nin?: Maybe<Array<Maybe<Scalars['String']>>>;
+  phonemes_exists?: Maybe<Scalars['Boolean']>;
   _id_lt?: Maybe<Scalars['ObjectId']>;
-  phonemes_in?: Maybe<Array<Maybe<PhonemeQueryInput>>>;
-  word_ne?: Maybe<Scalars['String']>;
-  syllables?: Maybe<Array<Maybe<Scalars['String']>>>;
-  _id_gte?: Maybe<Scalars['ObjectId']>;
-  word_gte?: Maybe<Scalars['String']>;
+  _id_nin?: Maybe<Array<Maybe<Scalars['ObjectId']>>>;
+  word?: Maybe<Scalars['String']>;
+  word_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  graphemes_nin?: Maybe<Array<Maybe<Scalars['String']>>>;
+  word_gt?: Maybe<Scalars['String']>;
+  _id_ne?: Maybe<Scalars['ObjectId']>;
+  _id_exists?: Maybe<Scalars['Boolean']>;
+  _id?: Maybe<Scalars['ObjectId']>;
+  graphemes_exists?: Maybe<Scalars['Boolean']>;
+  phonemes?: Maybe<Array<Maybe<Scalars['String']>>>;
   syllables_in?: Maybe<Array<Maybe<Scalars['String']>>>;
-  syllables_exists?: Maybe<Scalars['Boolean']>;
+  word_gte?: Maybe<Scalars['String']>;
+  word_nin?: Maybe<Array<Maybe<Scalars['String']>>>;
+  graphemes_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  _id_gte?: Maybe<Scalars['ObjectId']>;
+  phonemes_nin?: Maybe<Array<Maybe<Scalars['String']>>>;
+  graphemes?: Maybe<Array<Maybe<Scalars['String']>>>;
+  _id_in?: Maybe<Array<Maybe<Scalars['ObjectId']>>>;
+  phonemes_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  _id_gt?: Maybe<Scalars['ObjectId']>;
+  word_ne?: Maybe<Scalars['String']>;
+  AND?: Maybe<Array<WordQueryInput>>;
+  syllables?: Maybe<Array<Maybe<Scalars['String']>>>;
   word_exists?: Maybe<Scalars['Boolean']>;
+  syllables_nin?: Maybe<Array<Maybe<Scalars['String']>>>;
+  syllables_exists?: Maybe<Scalars['Boolean']>;
+  word_lt?: Maybe<Scalars['String']>;
+  word_lte?: Maybe<Scalars['String']>;
+  OR?: Maybe<Array<WordQueryInput>>;
 };
 
 export enum WordSortByInput {
-  IdAsc = '_ID_ASC',
   IdDesc = '_ID_DESC',
   WordAsc = 'WORD_ASC',
-  WordDesc = 'WORD_DESC'
+  WordDesc = 'WORD_DESC',
+  IdAsc = '_ID_ASC'
 }
 
 export type WordUpdateInput = {
-  _id_unset?: Maybe<Scalars['Boolean']>;
-  graphemes?: Maybe<Array<Maybe<Scalars['String']>>>;
-  phonemes?: Maybe<WordPhonemesRelationInput>;
-  phonemes_unset?: Maybe<Scalars['Boolean']>;
-  word_unset?: Maybe<Scalars['Boolean']>;
+  phonemes?: Maybe<Array<Maybe<Scalars['String']>>>;
   word?: Maybe<Scalars['String']>;
-  _id?: Maybe<Scalars['ObjectId']>;
-  syllables?: Maybe<Array<Maybe<Scalars['String']>>>;
-  syllables_unset?: Maybe<Scalars['Boolean']>;
+  word_unset?: Maybe<Scalars['Boolean']>;
+  graphemes?: Maybe<Array<Maybe<Scalars['String']>>>;
   graphemes_unset?: Maybe<Scalars['Boolean']>;
+  _id_unset?: Maybe<Scalars['Boolean']>;
+  phonemes_unset?: Maybe<Scalars['Boolean']>;
+  syllables_unset?: Maybe<Scalars['Boolean']>;
+  syllables?: Maybe<Array<Maybe<Scalars['String']>>>;
+  _id?: Maybe<Scalars['ObjectId']>;
 };
 
 export type GetAllLessonsQueryVariables = Exact<{ [key: string]: never; }>;
@@ -500,10 +495,6 @@ export type GetWordQuery = (
   { __typename?: 'Query' }
   & { word?: Maybe<(
     { __typename?: 'Word' }
-    & Pick<Word, '_id' | 'word' | 'graphemes' | 'syllables'>
-    & { phonemes?: Maybe<Array<Maybe<(
-      { __typename?: 'Phoneme' }
-      & Pick<Phoneme, '_id' | 'phoneme' | 'files'>
-    )>>> }
+    & Pick<Word, '_id' | 'word' | 'phonemes' | 'graphemes' | 'syllables'>
   )> }
 );
