@@ -1,7 +1,7 @@
 import { Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import React, { useEffect, useState } from 'react'
-import { speakWord, playStartBells } from '../util/Audio'
+import { speakWord, playStartBells, speakPhoneme } from '../util/Audio'
 import { useWords } from '../hooks/useWords'
 
 const useStyles = makeStyles({
@@ -12,7 +12,7 @@ const useStyles = makeStyles({
 })
 
 export default function OutputWord({ wordString, index, level }) {
-  const [displayWord, setDisplayWord] = useState(false)
+  const [displayWord, setDisplayWord] = useState('')
   const classes = useStyles()
   const { word, loading } = useWords(wordString)
 
@@ -24,9 +24,16 @@ export default function OutputWord({ wordString, index, level }) {
       switch (level) {
         case 0:
           console.log('level 1: ', word)
-          // speakWord(word, index === 0).then(() => {
-            
-          // })
+          speakWord(word, index === 0).then(async () => {
+            let i = 0
+            var displayWord = ''
+            for (const phoneme of word.phonemes) {
+              displayWord += word.graphemes[i]
+              await speakPhoneme(phoneme)
+              setDisplayWord(displayWord)
+              i++
+            }
+          })
           break
         case 1:
           console.log('level 2')
@@ -36,20 +43,25 @@ export default function OutputWord({ wordString, index, level }) {
           break
         case 3:
           console.log('level 4')
+          speakWord(word, index === 0).then(() => {
+            setTimeout(async () => {
+              await playStartBells()
+            }, 1000)
+          })
           break
         default:
           return
       }
       // speakWord(word, index === 0)
-      //   .then(() => {
-      //     setDisplayWord(true)
-      //   })
-      //   .then(() => {
-      //     setTimeout(async () => {
-      //       await playStartBells()
-      //       setDisplayWord(false)
-      //     }, 1000)
-      //   })
+      // .then(() => {
+      //   // setDisplayWord(true)
+      // })
+      // .then(() => {
+      //   setTimeout(async () => {
+      //     await playStartBells()
+      //     // setDisplayWord(false)
+      //   }, 1000)
+      // })
     } else {
       console.log('Still loading...')
     }
@@ -57,11 +69,9 @@ export default function OutputWord({ wordString, index, level }) {
 
   return (
     <>
-      {displayWord && (
-        <Typography className={classes.word} variant='h1'>
-          {wordString}
-        </Typography>
-      )}
+      <Typography className={classes.word} variant='h1'>
+        {displayWord}
+      </Typography>
     </>
   )
 }

@@ -1,4 +1,5 @@
 import tink from '../audio/phonemes/tink.mp3'
+import { PHONEMES } from '../constants'
 
 var synthesis
 if ('speechSynthesis' in window) {
@@ -23,6 +24,7 @@ const getVoices = () => {
   })
 }
 
+//TODO: pass in speechOn t/f
 export const speakWord = (word, firstWord = false) => {
   return new Promise((resolve, reject) => {
     synthesis.cancel()
@@ -38,12 +40,24 @@ export const speakWord = (word, firstWord = false) => {
       speech.text = text
       speech.rate = SPEECH_RATE
       speech.lang = 'en-US'
+      speech.volume = 0.1
       synthesis.speak(speech)
       speech.onend = () => {
         // synthesis.cancel()
         resolve()
       }
     })
+  })
+}
+
+//TODO: 400 should vary based on speech speed ( i htink? )
+export const speakPhoneme = (phoneme) => {
+  return new Promise((resolve, reject) => {
+    const sound = new Audio(require(`../audio/phonemes/${PHONEMES[phoneme]}`))
+    setTimeout(() => {
+      sound.play()
+      resolve(sound)
+    }, 400)
   })
 }
 
