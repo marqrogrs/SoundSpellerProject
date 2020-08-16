@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { default as ReactKeyboard } from 'react-simple-keyboard'
 import KeyboardEventHandler from 'react-keyboard-event-handler'
 
@@ -9,9 +9,9 @@ import '../styles/keyboard.css'
 export default function Keyboard({ onChange }) {
   const layout = {
     default: [
-      'Q W E R T Y U I O P {bksp}',
-      'A S D F G H J K L ; {enter}',
-      'Z X C V B N M , .   ',
+      'q w e r t y u i o p {bksp}',
+      'a s d f g h j k l ; {enter}',
+      'z x c v b n m , .   ',
       '{space}',
     ],
   }
@@ -23,6 +23,14 @@ export default function Keyboard({ onChange }) {
 
   const keyboard = useRef()
 
+  useEffect(() => {
+    //So the keyboard can be displayed in all caps
+    var keys = document.getElementsByClassName('hg-button hg-standardBtn')
+    Array.from(keys).forEach((key) => {
+      const letter = key.attributes['data-skbtn'].nodeValue
+      key.innerHTML = `<span>${letter.toUpperCase()}</span>`
+    })
+  }, [])
   return (
     <>
       <KeyboardEventHandler handleKeys={['all']} onKeyEvent={onChange} />
@@ -31,6 +39,7 @@ export default function Keyboard({ onChange }) {
         layout={layout}
         display={display}
         physicalKeyboardHighlight={true}
+        // syncInstanceInputs={true}
         buttonTheme={DEFAULT_BUTTONS_THEME}
       />
     </>
