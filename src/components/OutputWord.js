@@ -19,7 +19,7 @@ const useStyles = makeStyles({
 
 export default function OutputWord({ wordString, index, level }) {
   const classes = useStyles()
-  const { word, loading } = useWords(wordString)
+  const { word } = useWords(wordString)
 
   const pressKey = (key) => {
     return new Promise((resolve, reject) => {
@@ -42,11 +42,8 @@ export default function OutputWord({ wordString, index, level }) {
   }
 
   useEffect(() => {
-    console.log(loading, word)
-    if (!loading && !word) {
-      //This isn't a word - just letters
-      console.log(wordString)
-    } else if (!loading && word.word) {
+    // console.log('Using effect', word)
+    if (word && word.word) {
       switch (level) {
         case 0:
           speakWord(word, index === 0).then(async () => {
@@ -80,10 +77,10 @@ export default function OutputWord({ wordString, index, level }) {
         default:
           return
       }
-    } else {
-      console.log('Still loading...')
+    } else if (!word) {
+      console.log('Not a word...')
     }
-  }, [loading, word])
+  }, [word])
 
   return (
     <>

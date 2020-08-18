@@ -41,17 +41,29 @@ export default function Lesson() {
     setLessonStarted(true)
   }
 
+  const handleSubmit = () => {
+    //Check if correct
+    const expectedWord = words[currentWordIndex]
+    if (inputWord.toLowerCase() === expectedWord.toLowerCase()) {
+      console.log('Noice, you got it!')
+      if (currentWordIndex < words.length - 1) {
+        setCurrentWordIndex(currentWordIndex + 1)
+      } else {
+        //Handle end of lesson
+      }
+    } else {
+      console.log('Womp, no bueno')
+    }
+    setInputWord('')
+  }
+
   const handleKeyPressed = (key, e) => {
     if (key === 'other') {
       key = e.key
     }
     switch (key) {
       case 'enter':
-        if (currentWordIndex < words.length - 1) {
-          setCurrentWordIndex(currentWordIndex + 1)
-        } else {
-          //Handle end of lesson
-        }
+        handleSubmit()
         setInputWord('')
         break
       case 'backspace':
