@@ -13,6 +13,7 @@
 
 .simple-keyboard.hg-layout-default .hg-button {
   font-size: 25px;
+  cursor: default;
 }
 
 .simple-keyboard.hg-layout-default .hg-button.dark {
