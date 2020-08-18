@@ -57,7 +57,7 @@ export const speakPhoneme = (phoneme) => {
     setTimeout(() => {
       sound.play()
       resolve(sound)
-    }, 400)
+    }, 400 / SPEECH_RATE)
   })
 }
 
@@ -124,3 +124,5 @@ export const playStartBells = () => {
     })
   })
 }
+
+export { SPEECH_RATE }

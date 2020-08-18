@@ -1,8 +1,14 @@
 import { Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import React, { useEffect, useState } from 'react'
-import { speakWord, playStartBells, speakPhoneme } from '../util/Audio'
+import React, { useEffect, useState, useRef } from 'react'
+import {
+  speakWord,
+  playStartBells,
+  speakPhoneme,
+  SPEECH_RATE,
+} from '../util/Audio'
 import { useWords } from '../hooks/useWords'
+import simulateEvent from 'simulate-event'
 
 const useStyles = makeStyles({
   word: {
@@ -12,27 +18,49 @@ const useStyles = makeStyles({
 })
 
 export default function OutputWord({ wordString, index, level }) {
-  const [displayWord, setDisplayWord] = useState('')
   const classes = useStyles()
   const { word, loading } = useWords(wordString)
 
+  const pressKey = (key) => {
+    return new Promise((resolve, reject) => {
+      simulateEvent.simulate(document.body, 'keydown', {
+        key,
+      })
+      setTimeout(() => {
+        resolve()
+      }, 400 / SPEECH_RATE)
+    })
+  }
+
+  const unpressKey = (key) => {
+    return new Promise((resolve, reject) => {
+      simulateEvent.simulate(document.body, 'keyup', {
+        key,
+      })
+      resolve()
+    })
+  }
+
   useEffect(() => {
+    console.log(loading, word)
     if (!loading && !word) {
       //This isn't a word - just letters
       console.log(wordString)
     } else if (!loading && word.word) {
       switch (level) {
         case 0:
-          console.log('level 1: ', word)
           speakWord(word, index === 0).then(async () => {
             let i = 0
-            var displayWord = ''
             for (const phoneme of word.phonemes) {
-              displayWord += word.graphemes[i]
               await speakPhoneme(phoneme)
-              setDisplayWord(displayWord)
+              await pressKey(word.graphemes[i].toLowerCase())
+              await unpressKey(word.graphemes[i].toLowerCase())
               i++
             }
+            await playStartBells()
+            simulateEvent.simulate(document.body, 'keydown', {
+              key: 'esc',
+            })
           })
           break
         case 1:
@@ -52,26 +80,14 @@ export default function OutputWord({ wordString, index, level }) {
         default:
           return
       }
-      // speakWord(word, index === 0)
-      // .then(() => {
-      //   // setDisplayWord(true)
-      // })
-      // .then(() => {
-      //   setTimeout(async () => {
-      //     await playStartBells()
-      //     // setDisplayWord(false)
-      //   }, 1000)
-      // })
     } else {
       console.log('Still loading...')
     }
-  }, [word, index, loading])
+  }, [loading, word])
 
   return (
     <>
-      <Typography className={classes.word} variant='h1'>
-        {displayWord}
-      </Typography>
+      <Typography className={classes.word} variant='h1'></Typography>
     </>
   )
 }

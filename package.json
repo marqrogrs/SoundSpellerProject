@@ -57,6 +57,7 @@
     "@graphql-codegen/introspection": "^1.16.3",
     "@graphql-codegen/typescript": "^1.16.3",
     "@graphql-codegen/typescript-operations": "^1.16.3",
-    "@graphql-codegen/typescript-react-apollo": "^1.16.3"
+    "@graphql-codegen/typescript-react-apollo": "^1.16.3",
+    "simulate-event": "^1.4.0"
   }
 }

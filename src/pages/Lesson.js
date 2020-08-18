@@ -42,7 +42,7 @@ export default function Lesson() {
   }
 
   const handleKeyPressed = (key, e) => {
-    if(key === 'other'){
+    if (key === 'other') {
       key = e.key
     }
     switch (key) {
@@ -58,7 +58,10 @@ export default function Lesson() {
         setInputWord(inputWord.slice(0, -1))
         break
       case 'space':
-        setInputWord(inputWord + " ")
+        setInputWord(inputWord + ' ')
+        break
+      case 'esc':
+        setInputWord('')
         break
       default:
         setInputWord(inputWord + key)
