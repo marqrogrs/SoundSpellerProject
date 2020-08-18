@@ -39,7 +39,6 @@ export default function Keyboard({ onChange }) {
         layout={layout}
         display={display}
         physicalKeyboardHighlight={true}
-        // syncInstanceInputs={true}
         buttonTheme={DEFAULT_BUTTONS_THEME}
       />
     </>

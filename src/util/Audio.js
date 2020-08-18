@@ -56,8 +56,8 @@ export const speakPhoneme = (phoneme) => {
     const sound = new Audio(require(`../audio/phonemes/${PHONEMES[phoneme]}`))
     setTimeout(() => {
       sound.play()
-      resolve(sound)
-    }, 400 / SPEECH_RATE)
+      resolve()
+    }, 600 / SPEECH_RATE)
   })
 }
 

@@ -31,6 +31,8 @@ export default function Lesson() {
   const [currentWordIndex, setCurrentWordIndex] = useState(0)
   const [lessonStarted, setLessonStarted] = useState(false)
   const [inputWord, setInputWord] = useState('')
+  const [enableInput, setEnableInput] = useState(false)
+
   const progress = words.length > 0 ? currentWordIndex + 1 / words.length : 0
 
   const params = useParams()
@@ -55,28 +57,47 @@ export default function Lesson() {
       console.log('Womp, no bueno')
     }
     setInputWord('')
+    setEnableInput(false)
   }
 
   const handleKeyPressed = (key, e) => {
+    //TODO: this logic is horrendous
+    var simulated = false
     if (key === 'other') {
+      simulated = true
       key = e.key
     }
+
     switch (key) {
       case 'enter':
-        handleSubmit()
-        setInputWord('')
+        if (enableInput) {
+          handleSubmit()
+          setInputWord('')
+        }
         break
       case 'backspace':
-        setInputWord(inputWord.slice(0, -1))
+        if (enableInput) {
+          setInputWord(inputWord.slice(0, -1))
+        }
         break
       case 'space':
-        setInputWord(inputWord + ' ')
+        if (enableInput) {
+          setInputWord(inputWord + ' ')
+        }
         break
       case 'esc':
-        setInputWord('')
+        if (simulated) {
+          setInputWord('')
+          setEnableInput(true)
+        }
         break
       default:
-        setInputWord(inputWord + key)
+        if (simulated && selectedLevel > 0) {
+          break
+        }
+        if ((!simulated && enableInput) || simulated) {
+          setInputWord(inputWord + key)
+        }
         break
     }
   }
@@ -100,7 +121,7 @@ export default function Lesson() {
       <Container maxWidth='sm'>
         <Grid container spacing={2} direction='column'>
           <Grid item>
-            <LevelPicker />
+            <LevelPicker onChange={() => setLessonStarted(false)} />
           </Grid>
           <Grid item>
             <Button

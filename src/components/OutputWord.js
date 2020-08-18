@@ -1,6 +1,7 @@
 import { Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useContext, useRef } from 'react'
+import { LessonContext } from '../providers/LessonProvider'
 import {
   speakWord,
   playStartBells,
@@ -17,9 +18,10 @@ const useStyles = makeStyles({
   },
 })
 
-export default function OutputWord({ wordString, index, level }) {
+export default function OutputWord({ wordString, index }) {
   const classes = useStyles()
   const { word } = useWords(wordString)
+  const { selectedLevel } = useContext(LessonContext)
 
   const pressKey = (key) => {
     return new Promise((resolve, reject) => {
@@ -44,14 +46,14 @@ export default function OutputWord({ wordString, index, level }) {
   useEffect(() => {
     // console.log('Using effect', word)
     if (word && word.word) {
-      switch (level) {
+      switch (selectedLevel) {
         case 0:
           speakWord(word, index === 0).then(async () => {
             let i = 0
             for (const phoneme of word.phonemes) {
               await speakPhoneme(phoneme)
               await pressKey(word.graphemes[i].toLowerCase())
-              await unpressKey(word.graphemes[i].toLowerCase())
+              unpressKey(word.graphemes[i].toLowerCase())
               i++
             }
             await playStartBells()
@@ -61,13 +63,34 @@ export default function OutputWord({ wordString, index, level }) {
           })
           break
         case 1:
-          console.log('level 2')
+          speakWord(word, index === 0).then(async () => {
+            let i = 0
+            for (const phoneme of word.phonemes) {
+              await speakPhoneme(phoneme)
+              await pressKey(word.graphemes[i].toLowerCase())
+              unpressKey(word.graphemes[i].toLowerCase())
+              i++
+            }
+            await playStartBells()
+            simulateEvent.simulate(document.body, 'keydown', {
+              key: 'esc',
+            })
+          })
           break
         case 2:
-          console.log('level 3')
+          speakWord(word, index === 0).then(async () => {
+            for (const phoneme of word.phonemes) {
+              await speakPhoneme(phoneme)
+            }
+            setTimeout(async () => {
+              await playStartBells()
+              simulateEvent.simulate(document.body, 'keydown', {
+                key: 'esc',
+              })
+            }, 1000)
+          })
           break
         case 3:
-          console.log('level 4')
           speakWord(word, index === 0).then(() => {
             setTimeout(async () => {
               await playStartBells()

@@ -3,10 +3,13 @@ import { Typography, ButtonGroup, Button } from '@material-ui/core'
 import { LEVELS } from '../constants'
 import { LessonContext } from '../providers/LessonProvider'
 
-export default function LevelPicker() {
+export default function LevelPicker({ onChange }) {
   const { setLevel, selectedLevel } = useContext(LessonContext)
 
   const handleSelectLevel = (e) => {
+    if (onChange) {
+      onChange()
+    }
     setLevel(parseInt(e.target.innerText) - 1)
   }
 
