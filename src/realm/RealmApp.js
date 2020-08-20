@@ -32,7 +32,7 @@ const RealmApp = ({ children }) => {
   };
 
   // Let registered users log in
-  const logIn = async (email, password) => {
+  const signIn = async (email, password) => {
     // TODO: Log in with the specified email and password
     const credentials = RealmWeb.Credentials.emailPassword(email, password);
     await app.logIn(credentials);
@@ -50,7 +50,7 @@ const RealmApp = ({ children }) => {
   const context = {
     id: REALM_APP_ID,
     user,
-    logIn,
+    signIn,
     logOut,
     registerUser,
     autoLogIn,
