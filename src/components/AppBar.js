@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useLocation } from 'react-router-dom'
 
-import { makeStyles } from '@material-ui/core/styles'
+import { useStyles } from '../styles/material'
 
 import { default as MaterialAppBar } from '@material-ui/core/AppBar'
 import MenuIcon from '@material-ui/icons/Menu'
@@ -28,25 +28,6 @@ import AccountCircle from '@material-ui/icons/AccountCircle'
 import Settings from '@material-ui/icons/Settings'
 import SpeechSlider from '../components/SpeechSlider'
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    flexGrow: 1,
-  },
-  settingsMenu: {
-    width: 800,
-  },
-  nested: {
-    paddingLeft: theme.spacing(4),
-    paddingRight: theme.spacing(4),
-  },
-}))
-
 export default function AppBar({ user }) {
   const classes = useStyles()
   const { pathname } = useLocation()
@@ -72,7 +53,7 @@ export default function AppBar({ user }) {
   const handleBreadcrumbClick = () => {}
 
   return (
-    <div className={classes.root}>
+    <div>
       <MaterialAppBar position='static'>
         <Toolbar>
           <IconButton
@@ -83,7 +64,7 @@ export default function AppBar({ user }) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant='h6' className={classes.title}>
+          <Typography variant='h6' className={classes.menuTitle}>
             Sound Speller
           </Typography>
           {user && (
@@ -112,7 +93,7 @@ export default function AppBar({ user }) {
                       {speedMenuOpen ? <ExpandLess /> : <ExpandMore />}
                     </ListItem>
                     <Collapse in={speedMenuOpen} timeout='auto' unmountOnExit>
-                      <div className={classes.nested}>
+                      <div className={classes.nestedMenuItem}>
                         <SpeechSlider />
                       </div>
                     </Collapse>
