@@ -10,8 +10,8 @@ import Button from '@material-ui/core/Button'
 
 const Landing = () => {
   const classes = useStyles()
-  const [email, setEmail] = useState()
-  const [password, setPassword] = useState()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const app = useRealmApp()
 
   const handleChange = (e) => {
@@ -47,7 +47,7 @@ const Landing = () => {
         </Grid>
         <Grid item>
           <TextField
-            id='outlined-basic'
+            name='email'
             label='Email'
             variant='outlined'
             color='secondary'
@@ -57,10 +57,11 @@ const Landing = () => {
         </Grid>
         <Grid item>
           <TextField
-            id='outlined-basic'
+            name='password'
             label='Password'
             variant='outlined'
             color='secondary'
+            type='password'
             value={password}
             onChange={handleChange}
           ></TextField>
