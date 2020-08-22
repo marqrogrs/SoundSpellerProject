@@ -28,8 +28,11 @@ import AccountCircle from '@material-ui/icons/AccountCircle'
 import Settings from '@material-ui/icons/Settings'
 import SpeechSlider from '../components/SpeechSlider'
 
+import { useRealmApp } from '../realm/RealmApp'
+
 export default function AppBar({ user }) {
   const classes = useStyles()
+  const app = useRealmApp()
   const { pathname } = useLocation()
   const [anchorEl, setAnchorEl] = useState(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
@@ -50,7 +53,9 @@ export default function AppBar({ user }) {
     setDrawerOpen(open)
   }
 
-  const handleBreadcrumbClick = () => {}
+  const handleSignOut = () => {
+    app.signOut()
+  }
 
   return (
     <div>
@@ -139,7 +144,8 @@ export default function AppBar({ user }) {
                 onClose={handleClose}
               >
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={handleClose}>My Account</MenuItem>
+                <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
               </Menu>
             </div>
           )}
@@ -154,7 +160,6 @@ export default function AppBar({ user }) {
                 <Link
                   color='inherit'
                   href='/'
-                  onClick={handleBreadcrumbClick}
                   key={path}
                 >
                   Sound Speller
