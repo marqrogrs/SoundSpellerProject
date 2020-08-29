@@ -29,3 +29,10 @@ query getWord($word: String) {
     syllables
   }
 }
+
+mutation UpdateUser($userId: String, $updates: UserUpdateInput!) {
+  user: updateOneUser(query: {_id: $userId}, set: $updates) {
+    _id
+    progress
+  }
+}
