@@ -1,5 +1,6 @@
 import * as React from 'react'
 import * as RealmWeb from 'realm-web'
+import { triggerErrorAlert, prettyPrintErrorCode } from '../util/alerts'
 
 const REALM_APP_ID = 'soundspeller-ayydw'
 const app = new RealmWeb.App({ id: REALM_APP_ID })
@@ -26,17 +27,25 @@ const RealmApp = ({ children }) => {
     setUser(app.currentUser)
   }
   // Let new users register an account
-  const registerUser = async (email, password) => {
+  const registerUser = (email, password) => {
     // TODO: Register a new user with the specified email and password
-    return await app.auth.emailPassword.registerUser(email, password)
+    return app.emailPasswordAuth
+      .registerUser(email, password)
+      .then(() => signIn(email, password))
+      .catch((error) => {
+        triggerErrorAlert(prettyPrintErrorCode(error.errorCode))
+      })
   }
 
   // Let registered users log in
-  const signIn = async (email, password) => {
-    // TODO: Log in with the specified email and password
+  const signIn = (email, password) => {
     const credentials = RealmWeb.Credentials.emailPassword(email, password)
-    await app.logIn(credentials)
-    setUser(app.currentUser)
+    return app
+      .logIn(credentials)
+      .then(() => setUser(app.currentUser))
+      .catch((error) => {
+        triggerErrorAlert(prettyPrintErrorCode(error.errorCode))
+      })
   }
 
   // Let logged in users log out

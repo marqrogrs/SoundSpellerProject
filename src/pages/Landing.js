@@ -30,7 +30,7 @@ const Landing = () => {
     app.signIn(email, password)
   }
   const handleSignUp = () => {
-    console.log('sign up')
+    app.registerUser(email, password)
   }
 
   return (

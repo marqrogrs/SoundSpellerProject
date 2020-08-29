@@ -28,6 +28,7 @@
     "react-simple-keyboard": "^2.3.97",
     "realm-web": "^0.6.0",
     "speak-tts": "^2.0.8",
+    "sweetalert": "^2.1.2",
     "typescript": "^3.9.6"
   },
   "scripts": {
