@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
@@ -6,6 +6,7 @@ import ListItemText from '@material-ui/core/ListItemText'
 import Collapse from '@material-ui/core/Collapse'
 import ExpandLess from '@material-ui/icons/ExpandLess'
 import ExpandMore from '@material-ui/icons/ExpandMore'
+import { LessonContext } from '../providers/LessonProvider'
 
 import { useHistory } from 'react-router-dom'
 
@@ -15,24 +16,29 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function LessonListItem({ title, lessons, index }) {
+export default function LessonListItem({ title, section }) {
   const [open, setOpen] = useState(false)
+  const { lessons, progress } = useContext(LessonContext)
   const history = useHistory()
   const classes = useStyles()
 
   return (
     <>
-      <ListItem button onClick={() => setOpen(!open)} key={index}>
+      <ListItem button onClick={() => setOpen(!open)}>
         <ListItemText primary={title} />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
       <Collapse in={open} timeout='auto' unmountOnExit>
         <List component='div' disablePadding>
           {lessons.map((lesson) => {
-            if (parseInt(lesson.lesson_section) === index) {
+            if (parseInt(lesson.lesson_section) === section) {
               return (
                 <ListItem
                   key={lesson.lesson_id}
+                  disabled={
+                    parseFloat(lesson.lesson_id) >
+                    parseFloat(progress.substring(0, 3))
+                  }
                   button
                   className={classes.nested}
                   onClick={() => {

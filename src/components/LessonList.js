@@ -1,7 +1,6 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { List, ListSubheader } from '@material-ui/core'
-import { LessonContext } from '../providers/LessonProvider'
 import { useHistory } from 'react-router-dom'
 import LessonListItem from './LessonListItem'
 import { LESSON_SECTIONS } from '../constants'
@@ -15,9 +14,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function LessonList({ props, navigation }) {
-  const { lessons } = useContext(LessonContext)
-  let history = useHistory()
+export default function LessonList() {
   const classes = useStyles()
 
   return (
@@ -33,7 +30,11 @@ export default function LessonList({ props, navigation }) {
         className={classes.root}
       >
         {LESSON_SECTIONS.map((section, i) => (
-          <LessonListItem title={`Part ${i + 1}`} lessons={lessons} index={i} />
+          <LessonListItem
+            title={`Part ${i + 1}`}
+            section={i + 1}
+            key={i}
+          />
         ))}
       </List>
     </div>

@@ -37,7 +37,7 @@ export function useLessons(): {
             return 0;
           }
         });
-        // console.log(lessons);
+        console.log("Got lessons: ", lessons);
         setLessons(lessons as Lesson[]);
       }
     },
