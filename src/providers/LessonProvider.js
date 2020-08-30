@@ -7,7 +7,7 @@ const LessonContext = React.createContext({})
 
 const LessonProvider = ({ children }) => {
   const { user } = useRealmApp()
-  const { userProgress } = useUser(user.id)
+  const { userProgress, updateProgress } = useUser(user.id)
 
   const [currentLesson, setCurrentLesson] = useState()
   const [currentLevel, setCurrentLevel] = useState(0)
@@ -17,9 +17,16 @@ const LessonProvider = ({ children }) => {
   const setLesson = (lesson) => {
     setCurrentLesson(lesson)
   }
+
   const setLevel = (level) => {
     setCurrentLevel(level)
   }
+
+  const updateUserProgress = () => {
+    const progress = `${currentLesson}.${currentLevel}`
+    updateProgress(progress)
+  }
+
   return (
     <LessonContext.Provider
       value={{
@@ -29,6 +36,7 @@ const LessonProvider = ({ children }) => {
         setLesson,
         setLevel,
         progress: userProgress,
+        updateUserProgress,
       }}
     >
       {children}

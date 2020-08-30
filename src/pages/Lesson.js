@@ -25,7 +25,7 @@ const useStyles = makeStyles({
 
 export default function Lesson() {
   const classes = useStyles()
-  const { lessons } = useContext(LessonContext)
+  const { lessons, updateUserProgress } = useContext(LessonContext)
   const [words, setWords] = useState([])
   const [currentWordIndex, setCurrentWordIndex] = useState(0)
   const [lessonStarted, setLessonStarted] = useState(false)
@@ -52,6 +52,7 @@ export default function Lesson() {
         setCurrentWordIndex(currentWordIndex + 1)
       } else {
         //Handle end of lesson
+        updateUserProgress()
       }
     } else {
       console.log('Womp, no bueno')

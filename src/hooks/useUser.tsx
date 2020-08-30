@@ -20,9 +20,9 @@ export function useUser(userId: string) {
     },
   })
 
-  const updateProgress = async (user: string, progress: string) => {
+  const updateProgress = async (progress: string) => {
     const variables: UpdateUserMutationVariables = {
-      userId: user,
+      userId,
       updates: {
         progress
       }
