@@ -36,3 +36,10 @@ mutation UpdateUser($userId: String, $updates: UserUpdateInput!) {
     progress
   }
 }
+
+query getUser($userId: String){
+  user(query:{ _id: $userId}){
+    _id,
+    progress
+  }
+}

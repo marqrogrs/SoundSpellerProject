@@ -150,3 +150,37 @@ export function useUpdateUserMutation(baseOptions?: ApolloReactHooks.MutationHoo
 export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
 export type UpdateUserMutationResult = ApolloReactCommon.MutationResult<Types.UpdateUserMutation>;
 export type UpdateUserMutationOptions = ApolloReactCommon.BaseMutationOptions<Types.UpdateUserMutation, Types.UpdateUserMutationVariables>;
+export const GetUserDocument = gql`
+    query getUser($userId: String) {
+  user(query: {_id: $userId}) {
+    _id
+    progress
+  }
+}
+    `;
+
+/**
+ * __useGetUserQuery__
+ *
+ * To run a query within a React component, call `useGetUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useGetUserQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<Types.GetUserQuery, Types.GetUserQueryVariables>) {
+        return ApolloReactHooks.useQuery<Types.GetUserQuery, Types.GetUserQueryVariables>(GetUserDocument, baseOptions);
+      }
+export function useGetUserLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<Types.GetUserQuery, Types.GetUserQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<Types.GetUserQuery, Types.GetUserQueryVariables>(GetUserDocument, baseOptions);
+        }
+export type GetUserQueryHookResult = ReturnType<typeof useGetUserQuery>;
+export type GetUserLazyQueryHookResult = ReturnType<typeof useGetUserLazyQuery>;
+export type GetUserQueryResult = ApolloReactCommon.QueryResult<Types.GetUserQuery, Types.GetUserQueryVariables>;

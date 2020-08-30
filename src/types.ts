@@ -626,3 +626,16 @@ export type UpdateUserMutation = (
     & Pick<User, '_id' | 'progress'>
   )> }
 );
+
+export type GetUserQueryVariables = Exact<{
+  userId?: Maybe<Scalars['String']>;
+}>;
+
+
+export type GetUserQuery = (
+  { __typename?: 'Query' }
+  & { user?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, '_id' | 'progress'>
+  )> }
+);
