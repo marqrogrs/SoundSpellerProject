@@ -12,7 +12,6 @@ const RealmApp = ({ children }) => {
   const appRef = React.useRef(app)
   const [user, setUser] = React.useState(app.currentUser)
   React.useEffect(() => {
-    console.log("Hello from realmapp")
     setUser(app.currentUser)
   }, [appRef.current.currentUser])
 
