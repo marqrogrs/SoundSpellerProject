@@ -1,46 +1,39 @@
-import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom'
+import React, { useState } from 'react'
+import { useRealmApp } from '../realm/RealmApp'
+import { useLessons } from '../hooks/useLessons'
+import { useUser } from '../hooks/useUser'
 
-const LessonContext = React.createContext()
-const LessonConsumer = LessonContext.Consumer
+const LessonContext = React.createContext({})
 
-class LessonProvider extends Component {
-  constructor(props) {
-    super(props)
+const LessonProvider = ({ children }) => {
+  const { user } = useRealmApp()
+  const { userProgress } = useUser(user.id)
 
-    this.setLesson = (lesson) => {
-      this.setState({ selectedLesson: lesson })
-    }
-    this.setLevel = (level) => {
-      this.setState({ selectedLevel: level })
-    }
+  const [currentLesson, setCurrentLesson] = useState()
+  const [currentLevel, setCurrentLevel] = useState(0)
 
-    this.state = {
-      selectedLesson: null,
-      selectedLevel: 0,
-      setLesson: this.setLesson,
-      setLevel: this.setLevel,
-    }
+  const { lessons } = useLessons()
+
+  const setLesson = (lesson) => {
+    setCurrentLesson(lesson)
   }
-
-  componentDidMount() {
-    // console.log('MOunted provider')
+  const setLevel = (level) => {
+    setCurrentLevel(level)
   }
-
-  componentWillUnmount() {
-    // console.log('unmounted provider')
-  }
-
-  render() {
-    // console.log(this.state.selectedLevel)
-    return (
-      <LessonContext.Provider value={this.state}>
-        {this.props.children}
-      </LessonContext.Provider>
-    )
-  }
+  return (
+    <LessonContext.Provider
+      value={{
+        currentLesson,
+        currentLevel,
+        lessons,
+        setLesson,
+        setLevel,
+        progress: userProgress,
+      }}
+    >
+      {children}
+    </LessonContext.Provider>
+  )
 }
 
-LessonProvider = withRouter(LessonProvider)
-
-export { LessonProvider, LessonContext, LessonConsumer }
+export { LessonProvider, LessonContext }

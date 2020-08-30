@@ -9,7 +9,6 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import { useParams } from 'react-router-dom'
 import { LessonContext } from '../providers/LessonProvider'
-import { useLessons } from '../hooks/useLessons'
 
 const useStyles = makeStyles({
   textbox: {
@@ -26,7 +25,7 @@ const useStyles = makeStyles({
 
 export default function Lesson() {
   const classes = useStyles()
-  const { lessons } = useLessons()
+  const { lessons } = useContext(LessonContext)
   const [words, setWords] = useState([])
   const [currentWordIndex, setCurrentWordIndex] = useState(0)
   const [lessonStarted, setLessonStarted] = useState(false)

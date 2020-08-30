@@ -9,9 +9,9 @@ import {
 } from '@material-ui/core'
 import ExpandLess from '@material-ui/icons/ExpandLess'
 import ExpandMore from '@material-ui/icons/ExpandMore'
-import { useLessons } from '../hooks/useLessons'
 import { LessonContext } from '../providers/LessonProvider'
 import { useHistory } from 'react-router-dom'
+import { useUser } from '../hooks/useUser'
 
 //TODO: refactor and export all these styles
 const useStyles = makeStyles((theme) => ({
@@ -25,8 +25,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function LessonList({ navigation }) {
-  const { lessons } = useLessons()
+export default function LessonList({ props, navigation }) {
+  const { lessons } = useContext(LessonContext)
   let history = useHistory()
   const classes = useStyles()
   const [part1Open, setPart1Open] = React.useState(false)

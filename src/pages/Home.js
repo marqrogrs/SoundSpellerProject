@@ -5,8 +5,7 @@ import LessonList from '../components/LessonList'
 import { useRealmApp } from '../realm/RealmApp'
 
 const Home = () => {
-  const app = useRealmApp()
-  console.log(app.user)
+  console.log("Hello from Home")
   return (
     <Container maxWidth='sm'>
       <LessonList />
