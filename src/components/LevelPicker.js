@@ -4,25 +4,15 @@ import { LEVELS } from '../constants'
 import { LessonContext } from '../providers/LessonProvider'
 
 export default function LevelPicker({ onChange }) {
-  const { setLevel, selectedLevel, progress, currentLesson } = useContext(
+  const { setLevel, selectedLevel, currentLessonProgress } = useContext(
     LessonContext
   )
-  const [lastLevelCompleted, setLastLevelCompleted] = useState(false)
   const handleSelectLevel = (e) => {
     if (onChange) {
       onChange()
     }
     setLevel(parseInt(e.target.innerText) - 1)
   }
-
-  useEffect(() => {
-    if (progress.length > 0 && currentLesson) {
-      const progressObj = progress.filter((progressItem) => {
-        return progressItem.lesson === currentLesson.lesson_id
-      })[0]
-      setLastLevelCompleted(progressObj.level)
-    }
-  })
 
   return (
     <>
@@ -32,7 +22,11 @@ export default function LevelPicker({ onChange }) {
           return (
             <Button
               key={index}
-              disabled={index > lastLevelCompleted}
+              disabled={
+                currentLessonProgress
+                  ? index > currentLessonProgress.level
+                  : false
+              }
               variant={selectedLevel === index ? `contained` : `outlined`}
               onClick={handleSelectLevel}
             >

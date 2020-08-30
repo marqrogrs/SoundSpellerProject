@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import Keyboard from '../components/Keyboard'
 import OutputWord from '../components/OutputWord'
 import InputWord from '../components/InputWord'
@@ -25,34 +25,35 @@ const useStyles = makeStyles({
 
 export default function Lesson() {
   const classes = useStyles()
-  const { lessons, updateUserProgress } = useContext(LessonContext)
-  const [words, setWords] = useState([])
+  const {
+    lessons,
+    updateUserProgress,
+    setLesson,
+    currentLesson,
+    currentLevel,
+    currentLessonProgress,
+    lessonsLoading,
+  } = useContext(LessonContext)
+  const [words, setWords] = useState(null)
   const [currentWordIndex, setCurrentWordIndex] = useState(0)
   const [lessonStarted, setLessonStarted] = useState(false)
   const [inputWord, setInputWord] = useState('')
   const [enableInput, setEnableInput] = useState(false)
 
-  const currentLessonProgress =
-    words.length > 0 ? currentWordIndex + 1 / words.length : 0
+  // const currentLessonProgress = words ? currentWordIndex + 1 / words.length : 0
 
   const params = useParams()
-  const { setLesson, selectedLesson, selectedLevel } = useContext(LessonContext)
-
-  const handleStartClicked = () => {
-    setCurrentWordIndex(0)
-    setLessonStarted(true)
-  }
 
   const handleSubmit = () => {
     //Check if correct
     const expectedWord = words[currentWordIndex]
     if (inputWord.toLowerCase() === expectedWord.toLowerCase()) {
       console.log('Noice, you got it!')
+      updateUserProgress({ completed_words: currentWordIndex + 1 })
       if (currentWordIndex < words.length - 1) {
         setCurrentWordIndex(currentWordIndex + 1)
       } else {
         //Handle end of lesson
-        updateUserProgress()
       }
     } else {
       console.log('Womp, no bueno')
@@ -93,7 +94,7 @@ export default function Lesson() {
         }
         break
       default:
-        if (simulated && selectedLevel > 0) {
+        if (simulated && currentLevel > 0) {
           break
         }
         if ((!simulated && enableInput) || simulated) {
@@ -102,19 +103,31 @@ export default function Lesson() {
         break
     }
   }
+  const prevProgressRef = useRef()
+  const prevProgress = prevProgressRef.current
 
   useEffect(() => {
-    if (!selectedLesson) {
-      //TODO: grab single lesson instead of all
-      const currentLesson = lessons.filter((lesson) => {
-        return lesson.lesson_id === params.lesson
-      })[0]
-      setLesson(currentLesson)
-    } else {
-      console.log(selectedLesson)
-      setWords(selectedLesson.words)
+    console.log(
+      `Current lesson progress: ${JSON.stringify(currentLessonProgress)}`
+    )
+    prevProgressRef.current = currentLessonProgress
+    if (!lessonsLoading) {
+      setLesson({ lesson_id: params.lesson })
+      // console.log(`lesson_id: ${params.lesson}`)
+
+      if (currentLesson) {
+        setWords(currentLesson.words)
+        // console.log(`words: ${currentLesson.words}`)
+      }
+
+      if (currentLessonProgress && prevProgressRef.current !== prevProgress) {
+        setCurrentWordIndex(currentLessonProgress.completed_words)
+        console.log(
+          `Starting on word #${currentLessonProgress.completed_words}`
+        )
+      }
     }
-  }, [selectedLesson, lessons, setLesson, params])
+  }, [currentLesson, setLesson, params, currentLessonProgress, lessonsLoading])
 
   return (
     <>
@@ -127,7 +140,7 @@ export default function Lesson() {
             <Button
               variant='contained'
               color='primary'
-              onClick={handleStartClicked}
+              onClick={() => setLessonStarted(true)}
             >
               Start
             </Button>
@@ -135,7 +148,12 @@ export default function Lesson() {
           <Grid item>
             <LessonProgress
               variant='determinate'
-              value={currentLessonProgress}
+              value={
+                currentLessonProgress && words
+                  ? parseInt(currentLessonProgress.completed_words) /
+                    words.length
+                  : 0
+              }
             />
           </Grid>
         </Grid>
@@ -144,7 +162,6 @@ export default function Lesson() {
             <OutputWord
               wordString={words[currentWordIndex]}
               index={currentWordIndex}
-              level={selectedLevel}
             />
           )}
           <InputWord word={inputWord} />

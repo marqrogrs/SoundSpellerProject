@@ -20,20 +20,31 @@ export function useUser(userId: string) {
     },
   })
 
-  const updateProgress = async (progress: string) => {
-    // const variables: UpdateUserMutationVariables = {
-    //   userId,
-    //   updates: {
-    //     progress
-    //   }
-    // }
-    // try {
-    //   const result = await updateUser({ variables })
-    //   setUserProgress(progress)
-    // } catch (error) {
-    //   console.log(error)
-    //   triggerErrorAlert(prettyPrintErrorCode(error.errorCode))
-    // }
+  const updateProgress = async (progressUpdate: UserProgress) => {
+    console.log(`Updating progress in useUser`)
+    const currentProgress = userProgress
+    const updatedProgress = currentProgress.map(existingProgressObj => {
+      if(existingProgressObj.lesson === progressUpdate.lesson){
+        existingProgressObj = progressUpdate
+      }
+      const { lesson, level, completed_words } = existingProgressObj
+      return { lesson, level, completed_words }
+    })
+    console.log(`updated progress: `, updatedProgress)
+    const variables: UpdateUserMutationVariables = {
+      userId,
+      updates: {
+        progress: updatedProgress
+      }
+    }
+    try {
+      const result = await updateUser({ variables })
+      console.log(`Updated user progress`)
+      setUserProgress(updatedProgress)
+    } catch (error) {
+      console.log(error)
+      triggerErrorAlert(prettyPrintErrorCode(error.errorCode))
+    }
   }
   
   return {

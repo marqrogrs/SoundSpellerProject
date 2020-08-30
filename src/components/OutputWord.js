@@ -21,7 +21,7 @@ const useStyles = makeStyles({
 export default function OutputWord({ wordString, index }) {
   const classes = useStyles()
   const { word } = useWords(wordString)
-  const { selectedLevel } = useContext(LessonContext)
+  const { currentLevel } = useContext(LessonContext)
 
   const pressKey = (key) => {
     return new Promise((resolve, reject) => {
@@ -44,9 +44,9 @@ export default function OutputWord({ wordString, index }) {
   }
 
   useEffect(() => {
-    // console.log('Using effect', word)
+    console.log('OutputWord: ', wordString, index, word)
     if (word && word.word) {
-      switch (selectedLevel) {
+      switch (currentLevel) {
         case 0:
           speakWord(word, index === 0).then(async () => {
             let i = 0

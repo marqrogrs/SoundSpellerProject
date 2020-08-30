@@ -2,6 +2,7 @@ import * as React from "react";
 import { Lesson, GetAllLessonsQuery } from "../types";
 
 import { useGetAllLessonsQuery } from "./../graphql-operations";
+import { triggerErrorAlert, prettyPrintErrorCode } from '../util/alerts';
 
 export function useLessons(): {
   lessons: Array<Lesson>;
@@ -37,12 +38,12 @@ export function useLessons(): {
             return 0;
           }
         });
-        console.log("Got lessons: ", lessons);
         setLessons(lessons as Lesson[]);
       }
     },
     onError: (error) => {
       console.log("Error getting lessons: ", error);
+      triggerErrorAlert(error.message)
     },
   });
 
