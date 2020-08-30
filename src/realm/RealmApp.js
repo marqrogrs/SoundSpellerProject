@@ -50,8 +50,15 @@ const RealmApp = ({ children }) => {
 
   // Let logged in users log out
   const signOut = async () => {
-    await app.currentUser.logOut()
-    setUser(app.currentUser)
+    return app.currentUser
+      .logOut()
+      .then(() => {
+        console.log('Logged out')
+        setUser(app.currentUser)
+      })
+      .catch((error) => {
+        triggerErrorAlert(prettyPrintErrorCode(error.errorCode))
+      })
   }
 
   // Provide the current user and authentication methods to the wrapped tree
