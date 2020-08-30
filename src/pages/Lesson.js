@@ -32,7 +32,8 @@ export default function Lesson() {
   const [inputWord, setInputWord] = useState('')
   const [enableInput, setEnableInput] = useState(false)
 
-  const progress = words.length > 0 ? currentWordIndex + 1 / words.length : 0
+  const currentLessonProgress =
+    words.length > 0 ? currentWordIndex + 1 / words.length : 0
 
   const params = useParams()
   const { setLesson, selectedLesson, selectedLevel } = useContext(LessonContext)
@@ -103,7 +104,6 @@ export default function Lesson() {
 
   useEffect(() => {
     if (!selectedLesson) {
-      console.log('Setting lesson')
       //TODO: grab single lesson instead of all
       const currentLesson = lessons.filter((lesson) => {
         return lesson.lesson_id === params.lesson
@@ -132,7 +132,10 @@ export default function Lesson() {
             </Button>
           </Grid>
           <Grid item>
-            <LessonProgress variant='determinate' value={progress} />
+            <LessonProgress
+              variant='determinate'
+              value={currentLessonProgress}
+            />
           </Grid>
         </Grid>
         <Paper className={classes.textbox}>

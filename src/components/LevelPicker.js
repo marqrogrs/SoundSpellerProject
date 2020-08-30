@@ -4,7 +4,7 @@ import { LEVELS } from '../constants'
 import { LessonContext } from '../providers/LessonProvider'
 
 export default function LevelPicker({ onChange }) {
-  const { setLevel, selectedLevel } = useContext(LessonContext)
+  const { setLevel, selectedLevel, progress } = useContext(LessonContext)
 
   const handleSelectLevel = (e) => {
     if (onChange) {
@@ -17,11 +17,11 @@ export default function LevelPicker({ onChange }) {
     <>
       <Typography>Pick a level:</Typography>
       <ButtonGroup color='primary' aria-label='outlined primary button group'>
-        {/* TODO: disable levels */}
         {LEVELS.map((l, index) => {
           return (
             <Button
               key={index}
+              disabled={index > parseInt(progress.substr(-1, 1))}
               variant={selectedLevel === index ? `contained` : `outlined`}
               onClick={handleSelectLevel}
             >
