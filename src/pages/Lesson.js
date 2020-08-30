@@ -40,8 +40,6 @@ export default function Lesson() {
   const [inputWord, setInputWord] = useState('')
   const [enableInput, setEnableInput] = useState(false)
 
-  // const currentLessonProgress = words ? currentWordIndex + 1 / words.length : 0
-
   const params = useParams()
 
   const handleSubmit = () => {
@@ -107,9 +105,6 @@ export default function Lesson() {
   const prevProgress = prevProgressRef.current
 
   useEffect(() => {
-    console.log(
-      `Current lesson progress: ${JSON.stringify(currentLessonProgress)}`
-    )
     prevProgressRef.current = currentLessonProgress
     if (!lessonsLoading) {
       setLesson({ lesson_id: params.lesson })
@@ -146,15 +141,7 @@ export default function Lesson() {
             </Button>
           </Grid>
           <Grid item>
-            <LessonProgress
-              variant='determinate'
-              value={
-                currentLessonProgress && words
-                  ? parseInt(currentLessonProgress.completed_words) /
-                    words.length
-                  : 0
-              }
-            />
+            <LessonProgress variant='determinate' />
           </Grid>
         </Grid>
         <Paper className={classes.textbox}>
