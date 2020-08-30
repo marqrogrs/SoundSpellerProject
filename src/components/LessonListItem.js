@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function LessonListItem({ title, section }) {
   const [open, setOpen] = useState(false)
-  const { lessons, progress } = useContext(LessonContext)
+  const { lessons } = useContext(LessonContext)
   const history = useHistory()
   const classes = useStyles()
 
@@ -35,10 +35,6 @@ export default function LessonListItem({ title, section }) {
               return (
                 <ListItem
                   key={lesson.lesson_id}
-                  disabled={
-                    parseFloat(lesson.lesson_id) >
-                    parseFloat(progress.substring(0, 3))
-                  }
                   button
                   className={classes.nested}
                   onClick={() => {

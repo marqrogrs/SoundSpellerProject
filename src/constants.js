@@ -38,7 +38,7 @@ export const DEFAULT_BUTTONS_THEME = [
 ]
 
 export const LEVELS = Array.apply(null, Array(4))
-export const LESSON_SECTIONS = Array.apply(null, Array(4)) //TODO: this can be more programatic
+export const LESSON_SECTIONS = Array.apply(null, Array(13)) //TODO: this can be more programatic
 export const PHONEMES = {
   AE: 'a.mp3',
   AIR: 'air.mp3',

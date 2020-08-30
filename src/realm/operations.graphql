@@ -33,13 +33,21 @@ query getWord($word: String) {
 mutation UpdateUser($userId: String, $updates: UserUpdateInput!) {
   user: updateOneUser(query: {_id: $userId}, set: $updates) {
     _id
-    progress
+    progress {
+      level,
+      lesson,
+      completed_words
+    }
   }
 }
 
 query getUser($userId: String){
   user(query:{ _id: $userId}){
     _id,
-    progress
+    progress {
+      level,
+      lesson,
+      completed_words
+    }
   }
 }

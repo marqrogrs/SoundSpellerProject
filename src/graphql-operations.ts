@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/client';
 import * as ApolloReactHooks from '@apollo/client';
 
+
 export const GetAllLessonsDocument = gql`
     query getAllLessons {
   lessons {
@@ -120,7 +121,11 @@ export const UpdateUserDocument = gql`
     mutation UpdateUser($userId: String, $updates: UserUpdateInput!) {
   user: updateOneUser(query: {_id: $userId}, set: $updates) {
     _id
-    progress
+    progress {
+      level
+      lesson
+      completed_words
+    }
   }
 }
     `;
@@ -154,7 +159,11 @@ export const GetUserDocument = gql`
     query getUser($userId: String) {
   user(query: {_id: $userId}) {
     _id
-    progress
+    progress {
+      level
+      lesson
+      completed_words
+    }
   }
 }
     `;
