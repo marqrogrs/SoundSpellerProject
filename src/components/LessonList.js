@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { List, ListSubheader } from '@material-ui/core'
 import { useHistory } from 'react-router-dom'
 import LessonListItem from './LessonListItem'
-import { LESSON_SECTIONS } from '../constants'
+import { LESSON_SECTIONS } from '../util/constants'
 
 //TODO: refactor and export all these styles
 const useStyles = makeStyles((theme) => ({

@@ -42,6 +42,7 @@ export default App
 function RequireAuthentication() {
   const app = useRealmApp()
   const user = app.user ? true : false
+  console.log(user)
   if (!app) {
     return <div>Loading</div>
   }

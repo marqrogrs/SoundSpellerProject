@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { Typography, ButtonGroup, Button } from '@material-ui/core'
-import { LEVELS } from '../constants'
+import { LEVELS } from '../util/constants'
 import { LessonContext } from '../providers/LessonProvider'
 
 export default function LevelPicker({ onChange }) {
