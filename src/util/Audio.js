@@ -1,5 +1,5 @@
-import tink from '../audio/phonemes/tink.mp3'
-import { PHONEMES } from '../constants'
+var tink = require('../audio/phonemes/tink.mp3')
+var { PHONEMES } = require('./constants')
 
 var synthesis
 if ('speechSynthesis' in window) {
