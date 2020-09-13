@@ -15,7 +15,9 @@ const RealmApp = ({ children }) => {
     setUser(app.currentUser)
     if (app.currentUser) {
       const loginData = localStorage.getItem(`login.${app.currentUser.id}`)
-      if (Date.now() - loginData.lastLogin >= 30 * 60000) {
+      const { lastLogin } = JSON.parse(loginData)
+      if (Date.now() - lastLogin >= 30 * 60000) {
+        console.log('need to refresh!')
         //30 minutes since login, reauth
         app.currentUser.refreshAccessToken()
       }
