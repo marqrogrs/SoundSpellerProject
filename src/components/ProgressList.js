@@ -10,13 +10,22 @@ import Paper from '@material-ui/core/Paper'
 import { LessonContext } from '../providers/LessonProvider'
 import ProgressListItem from './ProgressListItem'
 
+import { makeStyles } from '@material-ui/core/styles'
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: '100%',
+    // maxWidth: 360,
+    backgroundColor: theme.palette.background.paper,
+  },
+}))
+
 export default function ProgressList() {
   const { userProgress, lessons } = useContext(LessonContext)
-  console.log(lessons)
-  useEffect(() => {}, [userProgress, lessons])
+  const classes = useStyles()
   return (
     <>
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} className={classes.root}>
         <Table aria-label='collapsible table'>
           <TableHead>
             <TableRow>

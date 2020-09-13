@@ -12,8 +12,19 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp'
 
 import { LEVELS } from '../util/constants'
 
+import { makeStyles } from '@material-ui/core/styles'
+
+const useStyles = makeStyles({
+  root: {
+    '& > *': {
+      borderBottom: 'unset',
+    },
+  },
+})
+
 export default function ProgressListItem({ lesson, progress }) {
   const [open, setOpen] = useState(false)
+  const classes = useStyles()
   var status
   if (
     lesson.words.length === progress.completed_words &&
@@ -28,7 +39,7 @@ export default function ProgressListItem({ lesson, progress }) {
 
   return (
     <>
-      <TableRow>
+      <TableRow className={classes.root}>
         <TableCell>
           <IconButton
             aria-label='expand row'
