@@ -9,18 +9,11 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp'
+import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 
 import { LEVELS } from '../util/constants'
 
-import { makeStyles } from '@material-ui/core/styles'
-
-const useStyles = makeStyles({
-  root: {
-    '& > *': {
-      borderBottom: 'unset',
-    },
-  },
-})
+import { useStyles } from '../styles/material'
 
 export default function ProgressListItem({ lesson, progress }) {
   const [open, setOpen] = useState(false)
@@ -30,7 +23,7 @@ export default function ProgressListItem({ lesson, progress }) {
     lesson.words.length === progress.completed_words &&
     progress.level === 3
   ) {
-    status = 'Complete'
+    status = <CheckCircleIcon color='primary' />
   } else if (progress.completed_words > 0) {
     status = 'In Progress'
   } else {
@@ -39,7 +32,7 @@ export default function ProgressListItem({ lesson, progress }) {
 
   return (
     <>
-      <TableRow className={classes.root}>
+      <TableRow className={classes.progressList}>
         <TableCell>
           <IconButton
             aria-label='expand row'
@@ -80,7 +73,7 @@ export default function ProgressListItem({ lesson, progress }) {
                       percent_complete = '0%'
                     }
                     return (
-                      <TableRow key={`${lesson.lesson_id}.${level}`}>
+                      <TableRow key={`${lesson.lesson_id}.${i}`}>
                         <TableCell component='th' scope='row'>
                           {i + 1}
                         </TableCell>
