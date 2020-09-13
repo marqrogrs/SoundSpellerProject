@@ -2,10 +2,8 @@ import * as React from 'react'
 import { Word, GetWordQuery } from '../types'
 
 import { useGetWordQuery } from './../graphql-operations'
-import { triggerErrorAlert, prettyPrintErrorCode } from '../util/alerts';
-// export interface Props {
-//   wordString: string
-// }
+import { triggerErrorAlert } from '../util/alerts';
+
 
 export const useWords = (wordString: string) => {
   const [word, setWord] = React.useState<Word>({})

@@ -26,7 +26,6 @@ const useStyles = makeStyles({
 export default function Lesson() {
   const classes = useStyles()
   const {
-    lessons,
     updateUserProgress,
     setLesson,
     currentLesson,
@@ -122,7 +121,14 @@ export default function Lesson() {
         )
       }
     }
-  }, [currentLesson, setLesson, params, currentLessonProgress, lessonsLoading])
+  }, [
+    currentLesson,
+    setLesson,
+    params,
+    currentLessonProgress,
+    lessonsLoading,
+    prevProgress,
+  ])
 
   return (
     <>

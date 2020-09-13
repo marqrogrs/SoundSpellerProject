@@ -2,7 +2,7 @@ import * as React from "react";
 import { Lesson, GetAllLessonsQuery } from "../types";
 
 import { useGetAllLessonsQuery } from "./../graphql-operations";
-import { triggerErrorAlert, prettyPrintErrorCode } from '../util/alerts';
+import { triggerErrorAlert } from '../util/alerts';
 
 export function useLessons(): {
   lessons: Array<Lesson>;

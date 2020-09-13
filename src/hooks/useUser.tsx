@@ -38,7 +38,7 @@ export function useUser(userId: string) {
       }
     }
     try {
-      const result = await updateUser({ variables })
+      await updateUser({ variables })
       console.log(`Updated user progress`)
       setUserProgress(updatedProgress)
     } catch (error) {

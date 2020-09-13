@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useHistory } from 'react-router-dom'
 
 import { useStyles } from '../styles/material'
 
@@ -15,9 +15,7 @@ import {
   Drawer,
   List,
   ListItem,
-  ListItemIcon,
   ListItemText,
-  Divider,
 } from '@material-ui/core'
 
 import ExpandLess from '@material-ui/icons/ExpandLess'
@@ -34,6 +32,7 @@ export default function AppBar({ user }) {
   const classes = useStyles()
   const app = useRealmApp()
   const { pathname } = useLocation()
+  const history = useHistory()
   const [anchorEl, setAnchorEl] = useState(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [speedMenuOpen, setSpeedMenuOpen] = useState(false)
@@ -55,6 +54,10 @@ export default function AppBar({ user }) {
 
   const handleSignOut = () => {
     app.signOut()
+  }
+
+  const handleViewProgress = () => {
+    history.push('/progress')
   }
 
   return (
@@ -144,7 +147,7 @@ export default function AppBar({ user }) {
                 onClose={handleClose}
               >
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My Account</MenuItem>
+                <MenuItem onClick={handleViewProgress}>View Progress</MenuItem>
                 <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
               </Menu>
             </div>
@@ -157,11 +160,7 @@ export default function AppBar({ user }) {
             const last = pathname.split('/').length - 1
             if (index === 0) {
               return (
-                <Link
-                  color='inherit'
-                  href='/'
-                  key={path}
-                >
+                <Link color='inherit' href='/' key={path}>
                   Sound Speller
                 </Link>
               )

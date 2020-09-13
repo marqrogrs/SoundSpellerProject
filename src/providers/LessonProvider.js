@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState } from 'react'
 import { useRealmApp } from '../realm/RealmApp'
 import { useLessons } from '../hooks/useLessons'
 import { useUser } from '../hooks/useUser'
