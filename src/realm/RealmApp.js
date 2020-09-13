@@ -13,19 +13,26 @@ const RealmApp = ({ children }) => {
   const [user, setUser] = React.useState(app.currentUser)
   React.useEffect(() => {
     setUser(app.currentUser)
+    if (app.currentUser) {
+      const loginData = localStorage.getItem(`login.${app.currentUser.id}`)
+      if (Date.now() - loginData.lastLogin >= 30 * 60000) {
+        //30 minutes since login, reauth
+        app.currentUser.refreshAccessToken()
+      }
+    }
   }, [appRef.current.currentUser])
 
-  const autoLogIn = async (login) => {
-    // console.log(app)
-    if (login) {
-      console.log('Logging in')
-      await app.logIn(RealmWeb.Credentials.anonymous())
-    } else {
-      console.log('Logging out')
-      await app.currentUser.logOut()
-    }
-    setUser(app.currentUser)
-  }
+  // const autoLogIn = async (login) => {
+  //   // console.log(app)
+  //   if (login) {
+  //     console.log('Logging in')
+  //     await app.logIn(RealmWeb.Credentials.anonymous())
+  //   } else {
+  //     console.log('Logging out')
+  //     await app.currentUser.logOut()
+  //   }
+  //   setUser(app.currentUser)
+  // }
   // Let new users register an account
   const registerUser = (email, password) => {
     // TODO: Register a new user with the specified email and password
@@ -42,7 +49,16 @@ const RealmApp = ({ children }) => {
     const credentials = RealmWeb.Credentials.emailPassword(email, password)
     return app
       .logIn(credentials)
-      .then(() => setUser(app.currentUser))
+      .then(() => {
+        const loginData = { user: app.currentUser.id, lastLogin: Date.now() }
+        return localStorage.setItem(
+          `login.${app.currentUser.id}`,
+          JSON.stringify(loginData)
+        )
+      })
+      .then(() => {
+        setUser(app.currentUser)
+      })
       .catch((error) => {
         triggerErrorAlert(prettyPrintErrorCode(error.errorCode))
       })
@@ -68,7 +84,7 @@ const RealmApp = ({ children }) => {
     signIn,
     signOut,
     registerUser,
-    autoLogIn,
+    // autoLogIn,
   }
   return (
     <RealmAppContext.Provider value={context}>
