@@ -22,4 +22,9 @@ export const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     top: '25%',
   },
+  progressList: {
+    '& > *': {
+      borderBottom: 'unset',
+    },
+  },
 }))
