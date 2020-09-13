@@ -25,6 +25,7 @@ export default function OutputWord({ wordString, index }) {
 
   const pressKey = (key) => {
     return new Promise((resolve, reject) => {
+      console.log(`Pressing ${key}`)
       simulateEvent.simulate(document.body, 'keydown', {
         key,
       })
@@ -36,6 +37,8 @@ export default function OutputWord({ wordString, index }) {
 
   const unpressKey = (key) => {
     return new Promise((resolve, reject) => {
+      console.log(`unpressing ${key}`)
+
       simulateEvent.simulate(document.body, 'keyup', {
         key,
       })
@@ -52,8 +55,16 @@ export default function OutputWord({ wordString, index }) {
             let i = 0
             for (const phoneme of word.phonemes) {
               await speakPhoneme(phoneme)
-              await pressKey(word.graphemes[i].toLowerCase())
-              unpressKey(word.graphemes[i].toLowerCase())
+              if (phoneme === 'AR' && word.graphemes[i] === 'A') { //TODO: clean up dealing with AR discrepencies
+                await pressKey(word.graphemes[i].toLowerCase())
+                unpressKey(word.graphemes[i].toLowerCase())
+                await pressKey(word.graphemes[i + 1].toLowerCase())
+                unpressKey(word.graphemes[i + 1].toLowerCase())
+                i++
+              } else {
+                await pressKey(word.graphemes[i].toLowerCase())
+                unpressKey(word.graphemes[i].toLowerCase())
+              }
               i++
             }
             await playStartBells()
