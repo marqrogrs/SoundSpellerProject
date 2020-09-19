@@ -54,6 +54,8 @@ export default function Lesson() {
       }
     } else {
       console.log('Womp, no bueno')
+      //TODO: what shall we do with incorrect words?
+      setCurrentWordIndex(currentWordIndex)
     }
     setInputWord('')
     setEnableInput(false)
