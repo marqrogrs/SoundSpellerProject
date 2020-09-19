@@ -125,9 +125,9 @@ export const UpdateUserDocument = gql`
       level
       lesson
       completed_words
+      score
     }
     name
-    score
   }
 }
     `;
@@ -165,9 +165,9 @@ export const GetUserDocument = gql`
       level
       lesson
       completed_words
+      score
     }
     name
-    score
   }
 }
     `;

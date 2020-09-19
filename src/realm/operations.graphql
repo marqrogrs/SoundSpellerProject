@@ -1,22 +1,22 @@
 query getAllLessons {
   lessons {
     _id
-		description
-		lesson_id
-		lesson_section
-		title
-		words
+    description
+    lesson_id
+    lesson_section
+    title
+    words
   }
 }
 
 query getLesson($lesson_id: String) {
   lesson(query: { lesson_id: $lesson_id }) {
     _id
-		description
-		lesson_id
-		lesson_section
-		title
-		words
+    description
+    lesson_id
+    lesson_section
+    title
+    words
   }
 }
 
@@ -24,34 +24,34 @@ query getWord($word: String) {
   word(query: { word: $word }) {
     _id
     word
-    phonemes 
+    phonemes
     graphemes
     syllables
   }
 }
 
 mutation UpdateUser($userId: String, $updates: UserUpdateInput!) {
-  user: updateOneUser(query: {_id: $userId}, set: $updates) {
+  user: updateOneUser(query: { _id: $userId }, set: $updates) {
     _id
     progress {
-      level,
-      lesson,
+      level
+      lesson
       completed_words
-    },
-    name,
-    score
+      score
+    }
+    name
   }
 }
 
-query getUser($userId: String){
-  user(query:{ _id: $userId}){
-    _id,
+query getUser($userId: String) {
+  user(query: { _id: $userId }) {
+    _id
     progress {
-      level,
-      lesson,
+      level
+      lesson
       completed_words
-    },
-    name,
-    score
+      score
+    }
+    name
   }
 }
