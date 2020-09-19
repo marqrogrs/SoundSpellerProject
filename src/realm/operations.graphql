@@ -37,7 +37,9 @@ mutation UpdateUser($userId: String, $updates: UserUpdateInput!) {
       level,
       lesson,
       completed_words
-    }
+    },
+    name,
+    score
   }
 }
 
@@ -48,6 +50,8 @@ query getUser($userId: String){
       level,
       lesson,
       completed_words
-    }
+    },
+    name,
+    score
   }
 }

@@ -126,6 +126,8 @@ export const UpdateUserDocument = gql`
       lesson
       completed_words
     }
+    name
+    score
   }
 }
     `;
@@ -164,6 +166,8 @@ export const GetUserDocument = gql`
       lesson
       completed_words
     }
+    name
+    score
   }
 }
     `;
