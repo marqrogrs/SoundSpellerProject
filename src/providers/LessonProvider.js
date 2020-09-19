@@ -7,7 +7,7 @@ const LessonContext = React.createContext({})
 
 const LessonProvider = ({ children }) => {
   const { user } = useRealmApp()
-  const { userProgress, updateProgress } = useUser(user.id)
+  const { userProgress, updateProgress, score, updateScore } = useUser(user.id)
   const userDataLoading = useUser(user.id).loading
 
   const [currentLesson, setCurrentLesson] = useState()
@@ -48,6 +48,10 @@ const LessonProvider = ({ children }) => {
     setCurrentLessonProgress({ ...currentProgress, __typename: 'UserProgress' })
   }
 
+  const updateUserScore = (score) => {
+    updateScore(score)
+  }
+
   return (
     <LessonContext.Provider
       value={{
@@ -59,6 +63,8 @@ const LessonProvider = ({ children }) => {
         userProgress, //All progress
         userDataLoading,
         lessonsLoading,
+        updateScore,
+        score,
         setLesson,
         setLevel,
         setWord,
