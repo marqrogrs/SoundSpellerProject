@@ -32,6 +32,7 @@ export default function Lesson() {
     currentLevel,
     currentLessonProgress,
     lessonsLoading,
+    updateUserScore,
   } = useContext(LessonContext)
   const [words, setWords] = useState(null)
   const [currentWordIndex, setCurrentWordIndex] = useState(0)
@@ -44,19 +45,20 @@ export default function Lesson() {
   const handleSubmit = () => {
     //Check if correct
     const expectedWord = words[currentWordIndex]
-    if (inputWord.toLowerCase() === expectedWord.toLowerCase()) {
-      console.log('Noice, you got it!')
-      updateUserProgress({ completed_words: currentWordIndex + 1 })
-      if (currentWordIndex < words.length - 1) {
-        setCurrentWordIndex(currentWordIndex + 1)
-      } else {
-        //Handle end of lesson
-      }
+    const isCorrect = inputWord.toLowerCase() === expectedWord.toLowerCase()
+    updateUserProgress({ completed_words: currentWordIndex + 1 }, isCorrect)
+    if (currentWordIndex < words.length - 1) {
+      setCurrentWordIndex(currentWordIndex + 1)
     } else {
-      console.log('Womp, no bueno')
-      //TODO: what shall we do with incorrect words?
-      setCurrentWordIndex(currentWordIndex)
+      //Handle end of lesson
     }
+
+    if (isCorrect) {
+      console.log('Yippee!')
+    } else {
+      console.log('oops :(')
+    }
+
     setInputWord('')
     setEnableInput(false)
   }
