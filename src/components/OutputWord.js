@@ -35,7 +35,6 @@ export default function OutputWord({ wordString, index }) {
 
   const pressKey = (key) => {
     return new Promise((resolve, reject) => {
-      console.log(`Pressing ${key}`)
       simulateEvent.simulate(document.body, 'keydown', {
         key,
       })
@@ -47,8 +46,6 @@ export default function OutputWord({ wordString, index }) {
 
   const unpressKey = (key) => {
     return new Promise((resolve, reject) => {
-      console.log(`unpressing ${key}`)
-
       simulateEvent.simulate(document.body, 'keyup', {
         key,
       })

@@ -5,7 +5,6 @@ import { triggerErrorAlert, prettyPrintErrorCode } from '../util/alerts';
 
 export function useUser(userId: string) {
   const [userProgress, setUserProgress] = React.useState<UserProgress[]>([]);
-  const [score, setScore] = React.useState(0);
   const [name, setName] = React.useState("");
   const [updateUser] = useUpdateUserMutation();
   
@@ -16,7 +15,6 @@ export function useUser(userId: string) {
     onCompleted: (data: GetUserQuery) => {
       console.log('Completed: ', data)
       setUserProgress(data.user?.progress as UserProgress[])
-      setScore(data.user?.score as number)
       setName(data.user?.name as string)
     },
     onError: (error) => {
@@ -31,8 +29,8 @@ export function useUser(userId: string) {
       if(existingProgressObj.lesson === progressUpdate.lesson){
         existingProgressObj = progressUpdate
       }
-      const { lesson, level, completed_words } = existingProgressObj
-      return { lesson, level, completed_words }
+      const { lesson, level, completed_words, score } = existingProgressObj
+      return { lesson, level, completed_words, score }
     })
     console.log(`updated progress: `, updatedProgress)
     const variables: UpdateUserMutationVariables = {
@@ -68,32 +66,12 @@ export function useUser(userId: string) {
       triggerErrorAlert(prettyPrintErrorCode(error.errorCode))
     }
   }
-
-  const updateScore = async (score: number) => {
-    console.log(`Updating name in useUser`)
-    const variables: UpdateUserMutationVariables = {
-      userId,
-      updates: {
-        score
-      }
-    }
-    try {
-      await updateUser({ variables })
-      console.log(`Updated user progress`)
-      setScore(score)
-    } catch (error) {
-      console.log(error)
-      triggerErrorAlert(prettyPrintErrorCode(error.errorCode))
-    }
-  }
   
   return {
     loading,
     updateProgress,
     updateName,
-    updateScore,
     userProgress,
     name,
-    score
   };
 }
