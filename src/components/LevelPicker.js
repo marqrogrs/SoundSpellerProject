@@ -4,7 +4,7 @@ import { LEVELS } from '../util/constants'
 import { LessonContext } from '../providers/LessonProvider'
 
 export default function LevelPicker({ onChange }) {
-  const { setLevel, selectedLevel, currentLessonProgress } = useContext(
+  const { setLevel, currentLevel, currentLessonProgress } = useContext(
     LessonContext
   )
   const handleSelectLevel = (e) => {
@@ -24,10 +24,10 @@ export default function LevelPicker({ onChange }) {
               key={index}
               disabled={
                 currentLessonProgress
-                  ? index > currentLessonProgress.level
+                  ? index > currentLessonProgress.current_level
                   : false
               }
-              variant={selectedLevel === index ? `contained` : `outlined`}
+              variant={currentLevel === index ? `contained` : `outlined`}
               onClick={handleSelectLevel}
             >
               {index + 1}
