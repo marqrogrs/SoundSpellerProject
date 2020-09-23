@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useRealmApp } from '../realm/RealmApp'
+import { useAuth } from '../hooks/useAuth'
 
 //Material UI
 import { useStyles } from '../styles/material'
@@ -12,7 +12,7 @@ const Landing = () => {
   const classes = useStyles()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const app = useRealmApp()
+  const auth = useAuth()
 
   const handleChange = (e) => {
     switch (e.target.name) {
@@ -28,10 +28,10 @@ const Landing = () => {
   }
 
   const handleSignIn = () => {
-    app.signIn(email, password)
+    auth.signInWithEmailAndPassword(email, password)
   }
   const handleSignUp = () => {
-    app.registerUser(email, password)
+    auth.createUserWithEmailAndPassword(email, password)
   }
 
   return (

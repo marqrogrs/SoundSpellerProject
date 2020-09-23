@@ -26,11 +26,11 @@ import AccountCircle from '@material-ui/icons/AccountCircle'
 import Settings from '@material-ui/icons/Settings'
 import SpeechSlider from '../components/SpeechSlider'
 
-import { useRealmApp } from '../realm/RealmApp'
+import { useAuth } from '../hooks/useAuth'
 
 export default function AppBar({ user }) {
   const classes = useStyles()
-  const app = useRealmApp()
+  const auth = useAuth()
   const { pathname } = useLocation()
   const history = useHistory()
   const [anchorEl, setAnchorEl] = useState(null)
@@ -53,7 +53,7 @@ export default function AppBar({ user }) {
   }
 
   const handleSignOut = () => {
-    app.signOut()
+    auth.signOut()
   }
 
   const handleViewProgress = () => {

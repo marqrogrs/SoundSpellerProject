@@ -12,6 +12,7 @@ const RealmApp = ({ children }) => {
   const appRef = React.useRef(app)
   const [user, setUser] = React.useState(app.currentUser)
   React.useEffect(() => {
+    // console.log(localStorage)
     setUser(app.currentUser)
     if (app.currentUser) {
       const loginData = localStorage.getItem(`login.${app.currentUser.id}`)
@@ -71,10 +72,11 @@ const RealmApp = ({ children }) => {
     return app.currentUser
       .logOut()
       .then(() => {
-        console.log('Logged out')
+        // console.log(app.currentUser)
         setUser(app.currentUser)
       })
       .catch((error) => {
+        setUser(null)
         triggerErrorAlert(prettyPrintErrorCode(error.errorCode))
       })
   }

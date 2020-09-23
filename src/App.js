@@ -1,7 +1,6 @@
 import './App.css'
 import React from 'react'
-import RealmApp, { useRealmApp } from './realm/RealmApp'
-import RealmApolloProvider from './realm/RealmApolloProvider'
+import Auth, { useAuth } from './hooks/useAuth'
 import CssBaseline from '@material-ui/core/CssBaseline'
 
 import PublicRoutes from './routes/PublicRoutes'
@@ -30,9 +29,9 @@ const App = (props) => {
     <>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <RealmApp>
+        <Auth>
           <RequireAuthentication />
-        </RealmApp>
+        </Auth>
       </ThemeProvider>
     </>
   )
@@ -40,18 +39,19 @@ const App = (props) => {
 export default App
 
 function RequireAuthentication() {
-  const app = useRealmApp()
-  const user = app.user ? true : false
-  console.log(user)
-  if (!app) {
+  const auth = useAuth()
+  console.log(auth.user)
+  if (!auth) {
     return <div>Loading</div>
   }
 
   return (
     <>
-      <RealmApolloProvider>
-        {user ? <PrivateRoutes user={user} /> : <PublicRoutes user={user} />}
-      </RealmApolloProvider>
+      {auth.user ? (
+        <PrivateRoutes user={auth.user} />
+      ) : (
+        <PublicRoutes user={auth.user} />
+      )}
     </>
   )
 }

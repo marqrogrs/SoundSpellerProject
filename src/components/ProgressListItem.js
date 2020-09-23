@@ -56,7 +56,7 @@ export default function ProgressListItem({ lesson, progress }) {
                 <TableHead>
                   <TableRow>
                     <TableCell>Level</TableCell>
-                    <TableCell>Completed Words</TableCell>
+                    <TableCell>High Score</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -77,7 +77,7 @@ export default function ProgressListItem({ lesson, progress }) {
                         <TableCell component='th' scope='row'>
                           {i + 1}
                         </TableCell>
-                        <TableCell>{percent_complete}</TableCell>
+                        <TableCell>{progress.score}</TableCell>
                       </TableRow>
                     )
                   })}

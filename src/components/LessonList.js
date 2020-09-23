@@ -29,11 +29,7 @@ export default function LessonList() {
         className={classes.root}
       >
         {LESSON_SECTIONS.map((section, i) => (
-          <LessonListItem
-            title={`Part ${i + 1}`}
-            section={i + 1}
-            key={i}
-          />
+          <LessonListItem title={`Part ${i + 1}`} section={i + 1} key={i} />
         ))}
       </List>
     </div>
