@@ -84,3 +84,8 @@ export const PHONEMES = {
   Z: 'z.mp3',
   ZH: 'zh.mp3',
 }
+export const INIT_PROGRESS_OBJ = {
+  current_level: 0,
+  completed_words: 0,
+  scores: { 0: 0, 1: 0, 2: 0, 3: 0 },
+}
