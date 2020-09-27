@@ -160,7 +160,11 @@ export default function AppBar({ user }) {
             const last = pathname.split('/').length - 1
             if (index === 0) {
               return (
-                <Link color='inherit' href='/' key={path}>
+                <Link
+                  color='inherit'
+                  onClick={() => history.push('/')}
+                  key={path}
+                >
                   Sound Speller
                 </Link>
               )
@@ -168,10 +172,14 @@ export default function AppBar({ user }) {
             return (
               <Link
                 color={index === last ? 'textPrimary' : 'textSecondary'}
-                href={pathname
-                  .split('/')
-                  .slice(0, index + 1)
-                  .join('/')}
+                onClick={() =>
+                  history.push(
+                    pathname
+                      .split('/')
+                      .slice(0, index + 1)
+                      .join('/')
+                  )
+                }
                 aria-current='page'
                 key={path}
               >

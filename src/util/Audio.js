@@ -34,8 +34,8 @@ export const speakWord = (word, firstWord = false) => {
         return voice.lang === 'en-US' && voice.localService === true
       })[2]
 
-      var text = `${firstWord ? 'Your first' : 'Next'} word is ${word.word}.`
-      var speech = new SpeechSynthesisUtterance(word.word)
+      var text = `${firstWord ? 'Your first' : 'Next'} word is ${word}.`
+      var speech = new SpeechSynthesisUtterance(word)
       speech.voice = voice
       speech.text = text
       speech.rate = SPEECH_RATE

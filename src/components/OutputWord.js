@@ -60,6 +60,7 @@ export default function OutputWord({ wordString, index }) {
       .then((wordDoc) => {
         if (wordDoc.exists) {
           const { word, phonemes, graphemes, syllables } = wordDoc.data()
+          console.log(`graphemes: ${graphemes}\nphonemes: ${phonemes}`)
           switch (currentLevel) {
             case 0:
               speakWord(word, index === 0).then(async () => {

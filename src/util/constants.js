@@ -84,8 +84,24 @@ export const PHONEMES = {
   Z: 'z.mp3',
   ZH: 'zh.mp3',
 }
+
+//Don't use this unless you want to create a custom clone or json parse/stringify - it WILL get mutated
+//https://stackoverflow.com/questions/43074256/changes-to-object-made-with-object-assign-mutates-source-object
 export const INIT_PROGRESS_OBJ = {
-  current_level: 0,
-  completed_words: 0,
-  scores: { 0: 0, 1: 0, 2: 0, 3: 0 },
+  0: {
+    score: 0,
+    completed_words: 0,
+  },
+  1: {
+    score: 0,
+    completed_words: 0,
+  },
+  2: {
+    score: 0,
+    completed_words: 0,
+  },
+  3: {
+    score: 0,
+    completed_words: 0,
+  },
 }

@@ -18,9 +18,12 @@ export default function UserProvider({ children }) {
         .onSnapshot((userDoc) => {
           if (!userDoc.exists) {
             console.log('first login - creating doc!')
-            db.collection('users').doc(user.uid).set({ email: user.email })
+            db.collection('users')
+              .doc(user.uid)
+              .set({ email: user.email, progress: {} })
           }
           setUserData(userDoc.data())
+          // console.log(userDoc.data())
         })
     }
 

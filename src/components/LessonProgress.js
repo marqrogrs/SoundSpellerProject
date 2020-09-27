@@ -3,19 +3,17 @@ import { LinearProgress, Box, Typography } from '@material-ui/core'
 import { LessonContext } from '../providers/LessonProvider'
 
 export default function LessonProgress(props) {
-  const { currentLessonProgress, currentLesson } = useContext(LessonContext)
+  const { currentLesson } = useContext(LessonContext)
   const [value, setValue] = useState(0)
   useEffect(() => {
-    if (currentLesson && currentLessonProgress) {
-      setValue(
-        Math.round(
-          (parseInt(currentLessonProgress.completed_words) /
-            currentLesson.words.length) *
-            100
-        )
-      )
+    console.log(currentLesson)
+    if (currentLesson) {
+      const { level, progress, lesson } = currentLesson
+      const { completed_words } = progress[level]
+      const total_words = lesson.words.length
+      setValue(Math.round((parseInt(completed_words) / total_words) * 100))
     }
-  }, [currentLessonProgress, currentLesson])
+  }, [currentLesson])
   return (
     <>
       <Typography>Progress:</Typography>

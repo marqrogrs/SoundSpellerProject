@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useContext, useRef } from 'react'
+import { Prompt } from 'react-router-dom'
+
 import Keyboard from '../components/Keyboard'
 import OutputWord from '../components/OutputWord'
 import InputWord from '../components/InputWord'
@@ -26,19 +28,19 @@ const useStyles = makeStyles({
 export default function Lesson() {
   const classes = useStyles()
   const {
-    updateUserProgress,
+    saveProgress,
     setLesson,
     currentLesson,
-    currentLevel,
-    currentLessonProgress,
     lessonsLoading,
-    updateUserScore,
+    setProgress,
+    updateScore,
   } = useContext(LessonContext)
   const [words, setWords] = useState(null)
   const [currentWordIndex, setCurrentWordIndex] = useState(0)
   const [lessonStarted, setLessonStarted] = useState(false)
   const [inputWord, setInputWord] = useState('')
   const [enableInput, setEnableInput] = useState(false)
+  const [isSaved, setIsSaved] = useState(true)
 
   const params = useParams()
 
@@ -46,21 +48,22 @@ export default function Lesson() {
     //Check if correct
     const expectedWord = words[currentWordIndex]
     const isCorrect = inputWord.toLowerCase() === expectedWord.toLowerCase()
-    updateUserProgress({ completed_words: currentWordIndex + 1 }, isCorrect)
+    setProgress(currentWordIndex + 1)
     if (currentWordIndex < words.length - 1) {
       setCurrentWordIndex(currentWordIndex + 1)
     } else {
       //Handle end of lesson
+      saveProgress().then(() => {
+        console.log('Level done! Saved.')
+        //Do some things
+      })
     }
 
-    if (isCorrect) {
-      console.log('Yippee!')
-    } else {
-      console.log('oops :(')
-    }
+    updateScore(expectedWord, isCorrect)
 
     setInputWord('')
     setEnableInput(false)
+    setIsSaved(false)
   }
 
   const handleKeyPressed = (key, e) => {
@@ -73,6 +76,7 @@ export default function Lesson() {
 
     switch (key) {
       case 'enter':
+      case 'space':
         if (enableInput) {
           handleSubmit()
           setInputWord('')
@@ -83,11 +87,6 @@ export default function Lesson() {
           setInputWord(inputWord.slice(0, -1))
         }
         break
-      case 'space':
-        if (enableInput) {
-          setInputWord(inputWord + ' ')
-        }
-        break
       case 'esc':
         if (simulated) {
           setInputWord('')
@@ -95,7 +94,7 @@ export default function Lesson() {
         }
         break
       default:
-        if (simulated && currentLevel > 0) {
+        if (simulated && currentLesson.level > 0) {
           break
         }
         if ((!simulated && enableInput) || simulated) {
@@ -104,38 +103,36 @@ export default function Lesson() {
         break
     }
   }
-  const prevProgressRef = useRef()
-  const prevProgress = prevProgressRef.current
+
+  const save = () => {
+    saveProgress().then(() => {
+      setIsSaved(true)
+    })
+  }
 
   useEffect(() => {
-    prevProgressRef.current = currentLessonProgress
+    console.log('Setting lesson to params')
     if (!lessonsLoading) {
       setLesson({ lesson_id: params.lesson })
-      // console.log(`lesson_id: ${params.lesson}`)
-
-      if (currentLesson) {
-        setWords(currentLesson.words)
-        // console.log(`words: ${currentLesson.words}`)
-      }
-
-      if (currentLessonProgress && prevProgressRef.current !== prevProgress) {
-        setCurrentWordIndex(currentLessonProgress.completed_words)
-        console.log(
-          `Starting on word #${currentLessonProgress.completed_words}`
-        )
-      }
     }
-  }, [
-    currentLesson,
-    setLesson,
-    params,
-    currentLessonProgress,
-    lessonsLoading,
-    prevProgress,
-  ])
+  }, [params, lessonsLoading])
+
+  useEffect(() => {
+    window.onbeforeunload = () => true
+    if (!lessonsLoading && currentLesson) {
+      console.log('Setting words and stuff')
+      const level = currentLesson.level
+      setWords(currentLesson.lesson.words)
+      setCurrentWordIndex(currentLesson.progress[level].completed_words)
+    }
+  }, [currentLesson, lessonsLoading, currentWordIndex])
 
   return (
     <>
+      <Prompt
+        message='You have unsaved changes, are you sure you want to leave?'
+        when={!isSaved}
+      />
       <Container maxWidth='sm'>
         <Grid container spacing={2} direction='column'>
           <Grid item>
@@ -164,6 +161,21 @@ export default function Lesson() {
           <InputWord word={inputWord} />
         </Paper>
         <Keyboard onChange={handleKeyPressed} />
+        <Grid item>
+          <Button
+            variant='contained'
+            color='primary'
+            onClick={save}
+            disabled={isSaved}
+          >
+            Save & Exit
+          </Button>
+        </Grid>
+        {currentLesson && (
+          <Grid item>
+            Score: {currentLesson.progress[currentLesson.level].score}
+          </Grid>
+        )}
       </Container>
     </>
   )
