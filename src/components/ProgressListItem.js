@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Box from '@material-ui/core/Box'
 import Collapse from '@material-ui/core/Collapse'
 import IconButton from '@material-ui/core/IconButton'
@@ -17,18 +17,40 @@ import { useStyles } from '../styles/material'
 
 export default function ProgressListItem({ lesson, progress }) {
   const [open, setOpen] = useState(false)
+  const [status, setStatus] = useState('')
+  const [totalScore, setTotalScore] = useState(0)
+  const [totalPossibleScore, setTotalPossibleScore] = useState(0)
+
   const classes = useStyles()
-  var status
-  if (
-    lesson.words.length === progress.completed_words &&
-    progress.level === 3
-  ) {
-    status = <CheckCircleIcon color='primary' />
-  } else if (progress.completed_words > 0) {
-    status = 'In Progress'
-  } else {
-    status = 'Not Started'
-  }
+
+  useEffect(() => {
+    const isInProgress = Object.values(progress).filter(
+      (p) => p.completed_words > 0
+    )[0]
+    const isCompleted =
+      progress[LEVELS.length - 1].completed_words === lesson.words.length
+    if (isCompleted) {
+      setStatus(<CheckCircleIcon color='primary' />)
+    } else if (isInProgress) {
+      setStatus('In Progress')
+    } else {
+      setStatus('Not Started')
+    }
+
+    const total_score = Object.values(progress).reduce(
+      (acc, current) => acc + current.score,
+      0
+    )
+    setTotalScore(total_score)
+
+    const total_possible_score =
+      lesson.words.length * 5 +
+      lesson.words.length * 10 +
+      lesson.words.length * 15 +
+      lesson.words.length * 20
+
+    setTotalPossibleScore(total_possible_score)
+  })
 
   return (
     <>
@@ -47,6 +69,9 @@ export default function ProgressListItem({ lesson, progress }) {
         </TableCell>
         <TableCell align='right'>{lesson.title}</TableCell>
         <TableCell align='right'>{status}</TableCell>
+        <TableCell align='right'>
+          {totalScore}/{totalPossibleScore}
+        </TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -57,27 +82,35 @@ export default function ProgressListItem({ lesson, progress }) {
                   <TableRow>
                     <TableCell>Level</TableCell>
                     <TableCell>High Score</TableCell>
+                    <TableCell>Status</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {LEVELS.map((level, i) => {
-                    var percent_complete
-                    if (progress.level === i) {
-                      percent_complete = `${(
-                        (progress.completed_words / lesson.words.length) *
-                        100
-                      ).toFixed(0)}%`
-                    } else if (progress.level > i) {
-                      percent_complete = '100%'
+                    const isCompleted =
+                      progress[i].completed_words === lesson.words.length
+                    const isInProgress =
+                      progress[i].completed_words > 0 && !isCompleted
+
+                    var levelStatus
+                    if (isCompleted) {
+                      levelStatus = <CheckCircleIcon color='primary' />
+                    } else if (isInProgress) {
+                      levelStatus = 'In Progress'
                     } else {
-                      percent_complete = '0%'
+                      levelStatus = 'Not Started'
                     }
+                    const highest_possible_score =
+                      lesson.words.length * (i + 1) * 5
                     return (
                       <TableRow key={`${lesson.lesson_id}.${i}`}>
                         <TableCell component='th' scope='row'>
                           {i + 1}
                         </TableCell>
-                        <TableCell>{progress.score}</TableCell>
+                        <TableCell>
+                          {progress[i].score}/{highest_possible_score}
+                        </TableCell>
+                        <TableCell>{levelStatus}</TableCell>
                       </TableRow>
                     )
                   })}
