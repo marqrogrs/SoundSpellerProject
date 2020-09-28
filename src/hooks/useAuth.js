@@ -7,12 +7,14 @@ const AuthContext = React.createContext()
 
 const Auth = ({ children }) => {
   const [user, setUser] = React.useState(auth.currentUser)
+  const [isEducator, setIsEducator] = React.useState(false)
 
   React.useEffect(() => {
     auth.onAuthStateChanged((user) => {
       setUser(user)
       if (user) {
         console.log('User signed in')
+        setIsEducator(user.email !== null)
         //do things
       } else {
         // do other things
@@ -72,6 +74,7 @@ const Auth = ({ children }) => {
 
   const context = {
     user,
+    isEducator,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     signInStudent,

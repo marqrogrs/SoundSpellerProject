@@ -5,6 +5,7 @@ import Error from '../pages/Error'
 import Lesson from '../pages/Lesson'
 import Lessons from '../pages/Lessons'
 import Progress from '../pages/Progress'
+import Students from '../pages/Students'
 import AppBar from '../components/AppBar'
 import { LessonProvider } from '../providers/LessonProvider'
 import UserProvider from '../providers/UserProvider'
@@ -25,6 +26,9 @@ export default function PrivateRoutes({ user }) {
             <Route path='/lessons/:lesson' children={<Lesson />} />
             <Route exact path='/progress'>
               <Progress />
+            </Route>
+            <Route exact path='/my-students'>
+              <Students />
             </Route>
             <Route>
               <Error />

@@ -14,7 +14,7 @@ exports.authenticateStudent = functions.https.onCall((data, context) => {
     .ref('/students/' + username)
     .once('value')
     .then((snap) => {
-      const hashed_pass = snap.val()
+      const hashed_pass = snap.val().p
       console.log(`Hashed password: ${hashed_pass}`)
       bcrypt.compare(password, hashed_pass, function (error, result) {
         if (error) {
@@ -35,7 +35,7 @@ exports.authenticateStudent = functions.https.onCall((data, context) => {
 })
 
 exports.createStudentAccount = functions.https.onCall((data, context) => {
-  const { username, password } = data
+  const { username, password, classroom } = data
   const educator_uid = context.auth.uid
   bcrypt.hash(password, saltRounds, function (error, hash) {
     // Store hash in your password DB.
@@ -46,12 +46,14 @@ exports.createStudentAccount = functions.https.onCall((data, context) => {
     console.log('Created hash - adding to realtime db')
     return db
       .ref('/students/' + username)
-      .set({ p: hash })
+      .set({ p: hash, educator: educator_uid })
       .then(() => {
         console.log('Created realtime db entry - adding to teacher doc')
         return firestore
           .collection('users')
           .doc(educator_uid)
+          .collection('classes')
+          .doc(classroom)
           .update({
             students: admin.firestore.FieldValue.arrayUnion(username),
           })

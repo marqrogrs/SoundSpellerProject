@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useAuth } from '../hooks/useAuth'
+import { useHistory } from 'react-router-dom'
 
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
@@ -10,6 +11,7 @@ import { useStyles } from '../styles/material'
 
 export default function EducatorLogin() {
   const classes = useStyles()
+  const history = useHistory()
   const [isSignUp, setIsSignUp] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -18,7 +20,9 @@ export default function EducatorLogin() {
   const auth = useAuth()
 
   const handleSignIn = () => {
-    auth.signInWithEmailAndPassword(email, password)
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .then(() => history.pushState('/'))
   }
 
   const handleSignUp = () => {
