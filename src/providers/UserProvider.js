@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useAuth } from '../hooks/useAuth'
 import { db } from '../firebase'
+import { useHistory } from 'react-router-dom'
 
 const UserContext = React.createContext({})
 
 export default function UserProvider({ children }) {
-  const { user } = useAuth()
+  const { user, isEducator } = useAuth()
+  const history = useHistory()
   const [userData, setUserData] = useState(null)
 
   useEffect(() => {
@@ -25,6 +27,9 @@ export default function UserProvider({ children }) {
           setUserData(userDoc.data())
           // console.log(userDoc.data())
         })
+    } else {
+      console.log('No user')
+      history.push('/')
     }
 
     return () => {

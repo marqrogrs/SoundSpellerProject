@@ -1,5 +1,10 @@
 import React from 'react'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom'
 import Landing from '../pages/Landing'
 import Error from '../pages/Error'
 import AppBar from '../components/AppBar'
@@ -19,6 +24,18 @@ export default function PublicRoutes({ user }) {
         </Route>
         <Route exact path='/educator'>
           <EducatorLogin />
+        </Route>
+        <Route exact path='/lessons'>
+          <Redirect to='/' />
+        </Route>
+        <Route path='/lessons/:lesson'>
+          <Redirect to='/' />
+        </Route>
+        <Route exact path='/progress'>
+          <Redirect to='/' />
+        </Route>
+        <Route exact path='/my-students'>
+          <Redirect to='/' />
         </Route>
         <Route>
           <Error />
