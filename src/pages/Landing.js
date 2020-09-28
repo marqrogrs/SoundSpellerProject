@@ -1,84 +1,63 @@
 import React, { useState } from 'react'
 import { useAuth } from '../hooks/useAuth'
+import { useHistory } from 'react-router-dom'
 
 //Material UI
-import { useStyles } from '../styles/material'
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
 import { Typography } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 
 const Landing = () => {
-  const classes = useStyles()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const auth = useAuth()
-
-  const handleChange = (e) => {
-    switch (e.target.name) {
-      case 'email':
-        setEmail(e.target.value)
-        break
-      case 'password':
-        setPassword(e.target.value)
-        break
-      default:
-        break
-    }
-  }
-
-  const handleSignIn = () => {
-    auth.signInWithEmailAndPassword(email, password)
-  }
-  const handleSignUp = () => {
-    auth.createUserWithEmailAndPassword(email, password)
-  }
+  const history = useHistory()
 
   return (
-    <form>
+    <>
       <Grid
         container
         direction='column'
         alignItems='center'
-        className={classes.signUpForm}
-        spacing={2}
+        // className={classes.signUpForm}
+        spacing={1}
       >
         <Grid item>
-          <Typography>Welcome to SoundSpeller!</Typography>
+          <Typography variant='h2'>Welcome to SoundSpeller!</Typography>
         </Grid>
-        <Grid item>
-          <TextField
-            name='email'
-            label='Email'
-            variant='outlined'
-            color='secondary'
-            value={email}
-            onChange={handleChange}
-          ></TextField>
-        </Grid>
-        <Grid item>
-          <TextField
-            name='password'
-            label='Password'
-            variant='outlined'
-            color='secondary'
-            type='password'
-            value={password}
-            onChange={handleChange}
-          ></TextField>
-        </Grid>
-        <Grid item>
-          <Button variant='contained' color='secondary' onClick={handleSignIn}>
-            Sign In
-          </Button>
-        </Grid>
-        <Grid item>
-          <Button variant='contained' color='secondary' onClick={handleSignUp}>
-            Sign Up
-          </Button>
+        <Typography>I am a...</Typography>
+        {/* <Grid container item direction='row' spacing={3}>
+          <Grid item xs={6}>
+            <img src={require('../img/kids.png')} height={300}></img>
+          </Grid>
+          <Grid item xs={6}>
+            <img src={require('../img/adults.png')} height={300}></img>
+          </Grid>
+        </Grid> */}
+        <Grid container item direction='row' spacing={3}>
+          <Grid item xs={6}>
+            <Typography
+              variant='h1'
+              style={{
+                fontFamily: 'Indie Flower',
+                textAlign: 'center',
+                cursor: 'pointer',
+              }}
+              onClick={() => history.push('/student')}
+            >
+              KID
+            </Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography
+              variant='h2'
+              style={{ textAlign: 'center', cursor: 'pointer' }}
+              onClick={() => history.push('/educator')}
+            >
+              Adult
+            </Typography>
+          </Grid>
         </Grid>
       </Grid>
-    </form>
+    </>
   )
 }
 

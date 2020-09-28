@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as RealmWeb from 'realm-web'
 import { triggerErrorAlert, prettyPrintErrorCode } from '../util/alerts'
-import { auth } from '../firebase'
+import { auth, authenticateStudent } from '../firebase'
 
 const AuthContext = React.createContext()
 
@@ -44,6 +44,20 @@ const Auth = ({ children }) => {
       })
   }
 
+  // Let registered users log in
+  const signInStudent = (name, password) => {
+    return authenticateStudent(name, password)
+      .then((data) => {
+        const { token, error } = data
+        if (token) {
+          return auth.signInWithCustomToken(token)
+        } else {
+          console.log('Failed to get token')
+        }
+      })
+      .catch((error) => console.log(error))
+  }
+
   // Let logged in users log out
   const signOut = async () => {
     return auth
@@ -60,6 +74,7 @@ const Auth = ({ children }) => {
     user,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
+    signInStudent,
     signOut,
   }
   return <AuthContext.Provider value={context}>{children}</AuthContext.Provider>

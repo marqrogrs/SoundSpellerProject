@@ -27,4 +27,15 @@ export const useStyles = makeStyles((theme) => ({
       borderBottom: 'unset',
     },
   },
+  kidTitle: {
+    fontFamily: 'Indie Flower',
+    textAlign: 'center',
+  },
+  textButton: {
+    ...theme.typography.button,
+    cursor: 'pointer',
+    '&:hover': {
+      color: theme.palette.primary.main,
+    },
+  },
 }))
