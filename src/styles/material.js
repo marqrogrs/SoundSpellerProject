@@ -38,4 +38,7 @@ export const useStyles = makeStyles((theme) => ({
       color: theme.palette.primary.main,
     },
   },
+  alert: {
+    width: '100%',
+  },
 }))

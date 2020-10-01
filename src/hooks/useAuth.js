@@ -48,16 +48,14 @@ const Auth = ({ children }) => {
 
   // Let registered users log in
   const signInStudent = (name, password) => {
-    return authenticateStudent(name, password)
-      .then((data) => {
-        const { token, error } = data
-        if (token) {
-          return auth.signInWithCustomToken(token)
-        } else {
-          console.log('Failed to get token')
-        }
-      })
-      .catch((error) => console.log(error))
+    return authenticateStudent({ username: name, password }).then((result) => {
+      const { token, error } = result.data
+      if (error) {
+        throw new Error(error)
+      } else {
+        return auth.signInWithCustomToken(token)
+      }
+    })
   }
 
   // Let logged in users log out
