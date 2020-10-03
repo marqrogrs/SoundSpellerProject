@@ -11,12 +11,22 @@ import TableRow from '@material-ui/core/TableRow'
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp'
 import VisibilityIcon from '@material-ui/icons/Visibility'
+import Button from '@material-ui/core/Button'
 import { useStyles } from '../styles/material'
+
+import ResetPasswordForm from './ResetPasswordForm'
 
 export default function ClassListItem({ classroom }) {
   const classes = useStyles()
   const history = useHistory()
   const [open, setOpen] = useState(false)
+  const [openResetPasswordForm, setOpenResetPasswordForm] = useState(false)
+  const [studentToUpdate, setStudentToUpdate] = useState(null)
+
+  const handleResetPassword = (student) => {
+    setStudentToUpdate(student)
+    setOpenResetPasswordForm(true)
+  }
 
   return (
     <>
@@ -44,24 +54,35 @@ export default function ClassListItem({ classroom }) {
                   <TableRow>
                     <TableCell>Username</TableCell>
                     <TableCell>View Progress</TableCell>
-                    <TableCell>Reset Password</TableCell>
+                    <TableCell></TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {classroom.students.map((student, i) => {
                     return (
-                      <TableRow key={i}>
-                        <TableCell>{student}</TableCell>
-                        <TableCell>
-                          <IconButton
-                            aria-label='expand row'
-                            size='small'
-                            onClick={() => history.push(`/students/${student}`)}
-                          >
-                            <VisibilityIcon />
-                          </IconButton>
-                        </TableCell>
-                      </TableRow>
+                      <>
+                        <TableRow key={i}>
+                          <TableCell>{student}</TableCell>
+                          <TableCell>
+                            <IconButton
+                              size='small'
+                              onClick={() =>
+                                history.push(`/students/${student}`)
+                              }
+                            >
+                              <VisibilityIcon />
+                            </IconButton>
+                          </TableCell>
+                          <TableCell>
+                            <Button
+                              color='secondary'
+                              onClick={() => handleResetPassword(student)}
+                            >
+                              Reset Password
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      </>
                     )
                   })}
                 </TableBody>
@@ -69,6 +90,11 @@ export default function ClassListItem({ classroom }) {
             </Box>
           </Collapse>
         </TableCell>
+        <ResetPasswordForm
+          open={openResetPasswordForm}
+          setOpen={setOpenResetPasswordForm}
+          student={studentToUpdate}
+        />
       </TableRow>
     </>
   )

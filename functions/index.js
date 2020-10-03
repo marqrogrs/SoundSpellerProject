@@ -75,3 +75,18 @@ exports.createStudentAccount = functions.https.onCall((data, context) => {
       return { error }
     })
 })
+
+exports.resetStudentPassword = functions.https.onCall((data, context) => {
+  const { username, password } = data
+  return bcrypt
+    .hash(password, saltRounds)
+    .then((hash) => {
+      return db.ref('/students/' + username).update({ p: hash })
+    })
+    .then(() => {
+      return 'success'
+    })
+    .catch((error) => {
+      return { error }
+    })
+})
