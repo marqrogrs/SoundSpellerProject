@@ -5,6 +5,10 @@ export const useStyles = makeStyles((theme) => ({
     color: '#002ca0',
     alignSelf: 'center',
   },
+  table: {
+    width: '100%',
+    backgroundColor: theme.palette.background.paper,
+  },
   menuButton: {
     marginRight: theme.spacing(2),
   },

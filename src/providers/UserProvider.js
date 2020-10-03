@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useAuth } from '../hooks/useAuth'
 import { db } from '../firebase'
 import { useHistory } from 'react-router-dom'
+import { createStudentAccount } from '../firebase'
 
 const UserContext = React.createContext({})
 
@@ -25,7 +26,7 @@ export default function UserProvider({ children }) {
               .set({ email: user.email, progress: {} })
           }
           setUserData(userDoc.data())
-          // console.log(userDoc.data())
+          console.log(userDoc.data())
         })
     } else {
       console.log('No user')
@@ -36,8 +37,14 @@ export default function UserProvider({ children }) {
       unsubscribeUser()
     }
   }, [user])
+
+  const addNewStudent = (student) => {
+    return createStudentAccount(student)
+  }
   return (
-    <UserContext.Provider value={{ userData }}>{children}</UserContext.Provider>
+    <UserContext.Provider value={{ userData, addNewStudent }}>
+      {children}
+    </UserContext.Provider>
   )
 }
 

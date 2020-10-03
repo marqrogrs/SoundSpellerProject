@@ -59,9 +59,12 @@ exports.createStudentAccount = functions.https.onCall((data, context) => {
           .doc(educator_uid)
           .collection('classes')
           .doc(classroom)
-          .update({
-            students: admin.firestore.FieldValue.arrayUnion(username),
-          })
+          .set(
+            {
+              students: admin.firestore.FieldValue.arrayUnion(username),
+            },
+            { merge: true }
+          )
       })
       .then(() => {
         return 'success'

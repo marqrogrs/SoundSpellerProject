@@ -22,7 +22,7 @@ export default function EducatorLogin() {
   const handleSignIn = () => {
     auth
       .signInWithEmailAndPassword(email, password)
-      .then(() => history.pushState('/'))
+      .then(() => history.push('/'))
   }
 
   const handleSignUp = () => {
