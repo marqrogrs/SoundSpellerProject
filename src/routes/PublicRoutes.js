@@ -34,7 +34,7 @@ export default function PublicRoutes({ user }) {
         <Route exact path='/progress'>
           <Redirect to='/' />
         </Route>
-        <Route exact path='/my-students'>
+        <Route exact path='/students'>
           <Redirect to='/' />
         </Route>
         <Route>

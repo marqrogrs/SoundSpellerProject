@@ -61,7 +61,7 @@ export default function AppBar({ user }) {
   }
 
   const handleViewStudents = () => {
-    history.push('/my-students')
+    history.push('/students')
   }
 
   return (

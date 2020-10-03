@@ -7,42 +7,52 @@ import { createStudentAccount } from '../firebase'
 const UserContext = React.createContext({})
 
 export default function UserProvider({ children }) {
-  const { user, isEducator } = useAuth()
+  const { user, isEducator, authLoaded, username } = useAuth()
   const history = useHistory()
   const [userData, setUserData] = useState(null)
+  const [classrooms, setClassrooms] = useState(null)
 
   useEffect(() => {
-    var unsubscribeUser
-    if (user) {
-      console.log(`Subscribing to ${user.uid}`)
-      unsubscribeUser = db
-        .collection('users')
-        .doc(user.uid)
-        .onSnapshot((userDoc) => {
-          if (!userDoc.exists) {
-            console.log('first login - creating doc!')
-            db.collection('users')
-              .doc(user.uid)
-              .set({ email: user.email, progress: {} })
-          }
+    if (authLoaded) {
+      const userDoc = isEducator
+        ? db.collection('users').doc(user.uid)
+        : db.collection('users').where('username', '==', username)
+      var unsubscribeUser
+      var unsubscribeClasses
+      if (user) {
+        console.log(`Subscribing to ${user.uid}`)
+        unsubscribeUser = userDoc.onSnapshot((userDoc) => {
           setUserData(userDoc.data())
-          console.log(userDoc.data())
         })
-    } else {
-      console.log('No user')
-      history.push('/')
-    }
+        if (isEducator) {
+          unsubscribeClasses = userDoc
+            .collection('classes')
+            .onSnapshot((querySnap) => {
+              const classroomData = querySnap.docs.map((doc) => ({
+                id: doc.id,
+                students: doc.data().students,
+              }))
 
-    return () => {
-      unsubscribeUser()
+              setClassrooms(classroomData)
+            })
+        }
+      } else {
+        console.log('No user')
+        // history.push('/')
+      }
+
+      return () => {
+        unsubscribeUser()
+        unsubscribeClasses()
+      }
     }
-  }, [user])
+  }, [user, authLoaded])
 
   const addNewStudent = (student) => {
     return createStudentAccount(student)
   }
   return (
-    <UserContext.Provider value={{ userData, addNewStudent }}>
+    <UserContext.Provider value={{ userData, addNewStudent, classrooms }}>
       {children}
     </UserContext.Provider>
   )

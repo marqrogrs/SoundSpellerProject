@@ -10,7 +10,7 @@ import AppBar from '../components/AppBar'
 import { LessonProvider } from '../providers/LessonProvider'
 import UserProvider from '../providers/UserProvider'
 
-export default function PrivateRoutes({ user }) {
+export default function PrivateRoutes({ user, isEducator }) {
   return (
     <Router>
       <UserProvider>
@@ -27,9 +27,15 @@ export default function PrivateRoutes({ user }) {
             <Route exact path='/progress'>
               <Progress />
             </Route>
-            <Route exact path='/my-students'>
-              <Students />
-            </Route>
+            {isEducator && (
+              <>
+                <Route exact path='/students'>
+                  <Students />
+                </Route>
+                <Route path='/students/:student' children={<Progress />} />
+              </>
+            )}
+
             <Route>
               <Error />
             </Route>

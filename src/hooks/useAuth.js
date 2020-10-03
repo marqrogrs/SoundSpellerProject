@@ -1,24 +1,27 @@
 import * as React from 'react'
 import * as RealmWeb from 'realm-web'
 import { triggerErrorAlert, prettyPrintErrorCode } from '../util/alerts'
-import { auth, authenticateStudent } from '../firebase'
+import { auth, authenticateStudent, db } from '../firebase'
 
 const AuthContext = React.createContext()
 
 const Auth = ({ children }) => {
+  const [authLoaded, setIsLoaded] = React.useState(false)
   const [user, setUser] = React.useState(auth.currentUser)
+  const [username, setUsername] = React.useState(null)
   const [isEducator, setIsEducator] = React.useState(false)
 
   React.useEffect(() => {
     auth.onAuthStateChanged((user) => {
       setUser(user)
       if (user) {
-        console.log('User signed in')
+        console.log('User signed in: ')
         setIsEducator(user.email !== null)
         //do things
       } else {
         // do other things
       }
+      setIsLoaded(true)
     })
   }, [])
 
@@ -26,7 +29,12 @@ const Auth = ({ children }) => {
     // TODO: Register a new user with the specified email and password
     return auth
       .createUserWithEmailAndPassword(email, password)
-      .then(() => console.log('Created new user!'))
+      .then(() =>
+        db
+          .collection('users')
+          .doc(user.uid)
+          .set({ email: user.email, progress: {} })
+      )
       .catch((error) => {
         console.log(error)
         // triggerErrorAlert(prettyPrintErrorCode(error.errorCode))
@@ -53,7 +61,9 @@ const Auth = ({ children }) => {
       if (error) {
         throw new Error(error)
       } else {
-        return auth.signInWithCustomToken(token)
+        return auth
+          .signInWithCustomToken(token)
+          .then((u_name) => setUsername(u_name))
       }
     })
   }
@@ -73,6 +83,8 @@ const Auth = ({ children }) => {
   const context = {
     user,
     isEducator,
+    authLoaded,
+    username,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     signInStudent,

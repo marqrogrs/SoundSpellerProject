@@ -1,7 +1,6 @@
 const functions = require('firebase-functions')
 const admin = require('firebase-admin')
 const bcrypt = require('bcrypt')
-const { reject } = require('lodash')
 const saltRounds = 10
 
 admin.initializeApp()
@@ -42,32 +41,37 @@ exports.authenticateStudent = functions.https.onCall(async (data, context) => {
 exports.createStudentAccount = functions.https.onCall((data, context) => {
   const { username, password, classroom } = data
   const educator_uid = context.auth.uid
-  return bcrypt.hash(password, saltRounds, function (error, hash) {
-    // Store hash in your password DB.
-    if (error) {
-      console.log('Could not craeted hash')
+  return bcrypt
+    .hash(password, saltRounds)
+    .then((hash) => {
+      return db
+        .ref('/students/' + username)
+        .set({ p: hash, educator: educator_uid })
+    })
+    .then(() => {
+      console.log('Created realtime db entry - creating student user doc')
+      return firestore
+        .collection('users')
+        .add({ username, educator: educator_uid, classroom, progress: {} })
+    })
+    .then(() => {
+      console.log('Created student db entry - adding to teacher doc')
+      return firestore
+        .collection('users')
+        .doc(educator_uid)
+        .collection('classes')
+        .doc(classroom)
+        .set(
+          {
+            students: admin.firestore.FieldValue.arrayUnion(username),
+          },
+          { merge: true }
+        )
+    })
+    .then(() => {
+      return 'success'
+    })
+    .catch((error) => {
       return { error }
-    }
-    console.log('Created hash - adding to realtime db')
-    return db
-      .ref('/students/' + username)
-      .set({ p: hash, educator: educator_uid })
-      .then(() => {
-        console.log('Created realtime db entry - adding to teacher doc')
-        return firestore
-          .collection('users')
-          .doc(educator_uid)
-          .collection('classes')
-          .doc(classroom)
-          .set(
-            {
-              students: admin.firestore.FieldValue.arrayUnion(username),
-            },
-            { merge: true }
-          )
-      })
-      .then(() => {
-        return 'success'
-      })
-  })
+    })
 })
