@@ -7,22 +7,25 @@ import { createStudentAccount } from '../firebase'
 const UserContext = React.createContext({})
 
 export default function UserProvider({ children }) {
-  const { user, isEducator, authLoaded, username } = useAuth()
+  const { user, isEducator, authLoaded } = useAuth()
   const history = useHistory()
   const [userData, setUserData] = useState(null)
   const [classrooms, setClassrooms] = useState(null)
+  const [userDataLoaded, setUserDataLoaded] = useState(false)
 
   useEffect(() => {
     if (authLoaded) {
+      console.log('isEducator: ', isEducator)
       const userDoc = isEducator
         ? db.collection('users').doc(user.uid)
-        : db.collection('users').where('username', '==', username)
-      var unsubscribeUser
-      var unsubscribeClasses
+        : db.collection('users').where('username', '==', user.uid)
+      var unsubscribeUser = () => {}
+      var unsubscribeClasses = () => {}
       if (user) {
         console.log(`Subscribing to ${user.uid}`)
-        unsubscribeUser = userDoc.onSnapshot((userDoc) => {
-          setUserData(userDoc.data())
+        unsubscribeUser = userDoc.onSnapshot((snap) => {
+          const data = isEducator ? snap.data() : snap.docs[0].data()
+          setUserData(data)
         })
         if (isEducator) {
           unsubscribeClasses = userDoc
@@ -40,7 +43,7 @@ export default function UserProvider({ children }) {
         console.log('No user')
         // history.push('/')
       }
-
+      setUserDataLoaded(true)
       return () => {
         unsubscribeUser()
         unsubscribeClasses()

@@ -57,6 +57,7 @@ const Auth = ({ children }) => {
   // Let registered users log in
   const signInStudent = (name, password) => {
     return authenticateStudent({ username: name, password }).then((result) => {
+      console.log(result)
       const { token, error } = result.data
       if (error) {
         throw new Error(error)

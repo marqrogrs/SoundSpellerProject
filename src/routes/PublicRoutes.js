@@ -25,7 +25,7 @@ export default function PublicRoutes({ user }) {
         <Route exact path='/educator'>
           <EducatorLogin />
         </Route>
-        <Route exact path='/lessons'>
+        {/* <Route exact path='/lessons'>
           <Redirect to='/' />
         </Route>
         <Route path='/lessons/:lesson'>
@@ -36,7 +36,7 @@ export default function PublicRoutes({ user }) {
         </Route>
         <Route exact path='/students'>
           <Redirect to='/' />
-        </Route>
+        </Route> */}
         <Route>
           <Error />
         </Route>
