@@ -1,18 +1,24 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Typography, ButtonGroup, Button } from '@material-ui/core'
 import { LEVELS } from '../util/constants'
 import { LessonContext } from '../providers/LessonProvider'
 
 export default function LevelPicker({ onChange }) {
-  const { setLevel, currentLevel, currentLessonProgress } = useContext(
-    LessonContext
-  )
+  const { currentLesson, setLevel } = useContext(LessonContext)
+  const [lessonLoading, setLessonLoading] = useState(true)
+
   const handleSelectLevel = (e) => {
     if (onChange) {
       onChange()
     }
     setLevel(parseInt(e.target.innerText) - 1)
   }
+
+  useEffect(() => {
+    if (currentLesson) {
+      setLessonLoading(false)
+    }
+  }, [currentLesson])
 
   return (
     <>
@@ -22,12 +28,12 @@ export default function LevelPicker({ onChange }) {
           return (
             <Button
               key={index}
-              disabled={
-                currentLessonProgress
-                  ? index > currentLessonProgress.current_level
-                  : false
+              disabled={!lessonLoading ? index > currentLesson.level : false}
+              variant={
+                !lessonLoading && currentLesson.level === index
+                  ? `contained`
+                  : `outlined`
               }
-              variant={currentLevel === index ? `contained` : `outlined`}
               onClick={handleSelectLevel}
             >
               {index + 1}
