@@ -1,5 +1,5 @@
 import * as React from 'react'
-import * as RealmWeb from 'realm-web'
+import { useHistory } from 'react-router-dom'
 import { triggerErrorAlert, prettyPrintErrorCode } from '../util/alerts'
 import { auth, authenticateStudent, db } from '../firebase'
 
@@ -10,6 +10,8 @@ const Auth = ({ children }) => {
   const [user, setUser] = React.useState(auth.currentUser)
   const [username, setUsername] = React.useState(null)
   const [isEducator, setIsEducator] = React.useState(false)
+
+  const history = useHistory()
 
   React.useEffect(() => {
     auth.onAuthStateChanged((user) => {
@@ -27,18 +29,23 @@ const Auth = ({ children }) => {
 
   const createUserWithEmailAndPassword = (email, password) => {
     // TODO: Register a new user with the specified email and password
-    return auth
-      .createUserWithEmailAndPassword(email, password)
-      .then(() =>
-        db
-          .collection('users')
-          .doc(user.uid)
-          .set({ email: user.email, progress: {} })
-      )
-      .catch((error) => {
-        console.log(error)
-        // triggerErrorAlert(prettyPrintErrorCode(error.errorCode))
-      })
+    if (
+      email.toLowerCase() === 'mark@birdhaven.us' ||
+      email.toLowerCase() === 'aprilpolubiec@gmail.com'
+    ) {
+      return auth
+        .createUserWithEmailAndPassword(email, password)
+        .then(() =>
+          db
+            .collection('users')
+            .doc(user.uid)
+            .set({ email: user.email, progress: {} })
+        )
+        .catch((error) => {
+          console.log(error)
+          // triggerErrorAlert(prettyPrintErrorCode(error.errorCode))
+        })
+    }
   }
 
   // Let registered users log in
@@ -75,6 +82,7 @@ const Auth = ({ children }) => {
       .signOut()
       .then(() => {
         console.log('Signed out')
+        // history.push('/')
       })
       .catch((error) => {
         console.log(error)
