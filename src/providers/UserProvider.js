@@ -14,7 +14,7 @@ export default function UserProvider({ children }) {
   const [userDataLoaded, setUserDataLoaded] = useState(false)
 
   useEffect(() => {
-    if (authLoaded) {
+    if (authLoaded && user) {
       console.log('isEducator: ', isEducator)
       const userDoc = isEducator
         ? db.collection('users').doc(user.uid)
