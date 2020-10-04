@@ -18,9 +18,9 @@ const useStyles = makeStyles({
   },
 })
 
-export default function OutputWord({ wordString, index }) {
+export default function OutputWord({ wordString, index, handleEndOfSyllable }) {
   const classes = useStyles()
-  const { currentLevel } = useContext(LessonContext)
+  const { currentLesson } = useContext(LessonContext)
 
   const renderKeyPress = (key) => {
     return new Promise(async (resolve, reject) => {
@@ -28,6 +28,8 @@ export default function OutputWord({ wordString, index }) {
         await pressKey(Array.from(key)[i])
         await unpressKey(Array.from(key)[i])
       }
+      await pressKey('shift')
+      await unpressKey('shift')
       resolve()
     })
   }
@@ -60,14 +62,26 @@ export default function OutputWord({ wordString, index }) {
       .then((wordDoc) => {
         if (wordDoc.exists) {
           const { word, phonemes, graphemes, syllables } = wordDoc.data()
-          console.log(`graphemes: ${graphemes}\nphonemes: ${phonemes}`)
-          switch (currentLevel) {
+          switch (currentLesson.level) {
             case 0:
               speakWord(word, index === 0).then(async () => {
                 let i = 0
+                let lastSyllableIndex = 0
                 for (const phoneme of phonemes) {
                   await speakPhoneme(phoneme)
+                  const isEndOfSyllable = syllables.includes(
+                    graphemes
+                      .slice(lastSyllableIndex, i + 1)
+                      .join('')
+                      .toLowerCase()
+                  )
                   await renderKeyPress(graphemes[i].toLowerCase())
+                  if (isEndOfSyllable) {
+                    lastSyllableIndex = i + 1
+                    simulateEvent.simulate(document.body, 'keydown', {
+                      key: 'tab',
+                    })
+                  }
                   i++
                 }
                 if (phonemes.length < graphemes.length) {
