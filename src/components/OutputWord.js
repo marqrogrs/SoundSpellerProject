@@ -8,6 +8,7 @@ import {
   speakPhoneme,
   SPEECH_RATE,
 } from '../util/Audio'
+import { COMMON_PHONEMES } from '../util/constants'
 import { db } from '../firebase'
 import simulateEvent from 'simulate-event'
 
@@ -59,11 +60,12 @@ export default function OutputWord({ wordString, index, handleEndOfSyllable }) {
     db.collection('words')
       .doc(wordString)
       .get()
-      .then((wordDoc) => {
+      .then(async (wordDoc) => {
         if (wordDoc.exists) {
           const { word, phonemes, graphemes, syllables } = wordDoc.data()
           switch (currentLesson.level) {
             case 0:
+            case 1:
               speakWord(word, index === 0).then(async () => {
                 let i = 0
                 let lastSyllableIndex = 0
@@ -99,21 +101,6 @@ export default function OutputWord({ wordString, index, handleEndOfSyllable }) {
                 })
               })
               break
-            case 1:
-              speakWord(word, index === 0).then(async () => {
-                let i = 0
-                for (const phoneme of phonemes) {
-                  await speakPhoneme(phoneme)
-                  await pressKey(graphemes[i].toLowerCase())
-                  unpressKey(graphemes[i].toLowerCase())
-                  i++
-                }
-                await playStartBells()
-                simulateEvent.simulate(document.body, 'keydown', {
-                  key: 'esc',
-                })
-              })
-              break
             case 2:
               speakWord(word, index === 0).then(async () => {
                 for (const phoneme of word.phonemes) {
@@ -138,8 +125,42 @@ export default function OutputWord({ wordString, index, handleEndOfSyllable }) {
               return
           }
         } else {
-          console.log('Not a word')
+          // console.log('Not a word')
           // TODO: output graphemes
+          // console.log(wordString)
+          const graphemes = wordString.split('')
+          const phonemes = graphemes.map(
+            (g) => COMMON_PHONEMES[g.toLowerCase()]
+          )
+          switch (currentLesson.level) {
+            case 0:
+            case 1:
+              let i = 0
+              for (const phoneme of phonemes) {
+                await speakPhoneme(phoneme)
+                await renderKeyPress(graphemes[i].toLowerCase())
+              }
+              await playStartBells()
+              simulateEvent.simulate(document.body, 'keydown', {
+                key: 'esc',
+              })
+              break
+            case 2:
+            case 3:
+              //TODO: how do we handle level 4 ?
+              for (const phoneme of phonemes) {
+                await speakPhoneme(phoneme)
+              }
+              setTimeout(async () => {
+                await playStartBells()
+                simulateEvent.simulate(document.body, 'keydown', {
+                  key: 'esc',
+                })
+              }, 1000)
+              break
+            default:
+              return
+          }
         }
       })
   }, [wordString])
