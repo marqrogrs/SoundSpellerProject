@@ -35,11 +35,11 @@ const Auth = ({ children }) => {
     ) {
       return auth
         .createUserWithEmailAndPassword(email, password)
-        .then(() =>
+        .then((userCred) =>
           db
             .collection('users')
-            .doc(user.uid)
-            .set({ email: user.email, progress: {} })
+            .doc(userCred.user.uid)
+            .set({ email: userCred.user.email, progress: {} })
         )
         .catch((error) => {
           console.log(error)
