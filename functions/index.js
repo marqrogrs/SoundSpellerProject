@@ -52,7 +52,8 @@ exports.createStudentAccount = functions.https.onCall((data, context) => {
       console.log('Created realtime db entry - creating student user doc')
       return firestore
         .collection('users')
-        .add({ username, educator: educator_uid, classroom, progress: {} })
+        .doc(username)
+        .set({ username, educator: educator_uid, classroom, progress: {} })
     })
     .then(() => {
       console.log('Created student db entry - adding to teacher doc')
