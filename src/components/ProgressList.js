@@ -35,12 +35,14 @@ export default function ProgressList({ student }) {
           setUserData(snap.docs[0].data())
         })
     } else {
-      setUserData(userContext.userData)
+      if (userContext.userData) {
+        setUserData(userContext.userData)
+      }
     }
     return () => {
       unsubscribeStudent()
     }
-  }, [student])
+  }, [student, userContext])
 
   return (
     <>
