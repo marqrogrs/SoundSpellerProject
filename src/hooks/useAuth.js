@@ -1,34 +1,51 @@
 import * as React from 'react'
-import * as RealmWeb from 'realm-web'
+import { useHistory } from 'react-router-dom'
 import { triggerErrorAlert, prettyPrintErrorCode } from '../util/alerts'
-import { auth, authenticateStudent } from '../firebase'
+import { auth, authenticateStudent, db } from '../firebase'
 
 const AuthContext = React.createContext()
 
 const Auth = ({ children }) => {
+  const [authLoaded, setIsLoaded] = React.useState(false)
   const [user, setUser] = React.useState(auth.currentUser)
+  const [username, setUsername] = React.useState(null)
+  const [isEducator, setIsEducator] = React.useState(false)
+
+  const history = useHistory()
 
   React.useEffect(() => {
     auth.onAuthStateChanged((user) => {
       setUser(user)
       if (user) {
-        console.log('User signed in')
+        console.log('User signed in: ')
+        setIsEducator(user.email !== null)
         //do things
       } else {
         // do other things
       }
+      setIsLoaded(true)
     })
   }, [])
 
   const createUserWithEmailAndPassword = (email, password) => {
     // TODO: Register a new user with the specified email and password
-    return auth
-      .createUserWithEmailAndPassword(email, password)
-      .then(() => console.log('Created new user!'))
-      .catch((error) => {
-        console.log(error)
-        // triggerErrorAlert(prettyPrintErrorCode(error.errorCode))
-      })
+    if (
+      email.toLowerCase() === 'mark@birdhaven.us' ||
+      email.toLowerCase() === 'aprilpolubiec@gmail.com'
+    ) {
+      return auth
+        .createUserWithEmailAndPassword(email, password)
+        .then((userCred) =>
+          db
+            .collection('users')
+            .doc(userCred.user.uid)
+            .set({ email: userCred.user.email, progress: {} })
+        )
+        .catch((error) => {
+          console.log(error)
+          // triggerErrorAlert(prettyPrintErrorCode(error.errorCode))
+        })
+    }
   }
 
   // Let registered users log in
@@ -46,16 +63,17 @@ const Auth = ({ children }) => {
 
   // Let registered users log in
   const signInStudent = (name, password) => {
-    return authenticateStudent(name, password)
-      .then((data) => {
-        const { token, error } = data
-        if (token) {
-          return auth.signInWithCustomToken(token)
-        } else {
-          console.log('Failed to get token')
-        }
-      })
-      .catch((error) => console.log(error))
+    return authenticateStudent({ username: name, password }).then((result) => {
+      console.log(result)
+      const { token, error } = result.data
+      if (error) {
+        throw new Error(error)
+      } else {
+        return auth
+          .signInWithCustomToken(token)
+          .then((u_name) => setUsername(u_name))
+      }
+    })
   }
 
   // Let logged in users log out
@@ -64,6 +82,7 @@ const Auth = ({ children }) => {
       .signOut()
       .then(() => {
         console.log('Signed out')
+        // history.push('/')
       })
       .catch((error) => {
         console.log(error)
@@ -72,6 +91,9 @@ const Auth = ({ children }) => {
 
   const context = {
     user,
+    isEducator,
+    authLoaded,
+    username,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     signInStudent,

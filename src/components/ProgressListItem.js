@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import Box from '@material-ui/core/Box'
 import Collapse from '@material-ui/core/Collapse'
 import IconButton from '@material-ui/core/IconButton'
@@ -10,6 +11,7 @@ import TableRow from '@material-ui/core/TableRow'
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
+import Button from '@material-ui/core/Button'
 
 import { LEVELS } from '../util/constants'
 
@@ -24,6 +26,7 @@ export default function ProgressListItem({ lesson, progress }) {
   const classes = useStyles()
 
   useEffect(() => {
+    console.log('using effect')
     const isInProgress = Object.values(progress).filter(
       (p) => p.completed_words > 0
     )[0]
@@ -32,9 +35,21 @@ export default function ProgressListItem({ lesson, progress }) {
     if (isCompleted) {
       setStatus(<CheckCircleIcon color='primary' />)
     } else if (isInProgress) {
-      setStatus('In Progress')
+      setStatus(
+        <Link to={`lessons/${lesson.lesson_id}`}>
+          <Button color='secondary' variant='contained'>
+            Continue
+          </Button>
+        </Link>
+      )
     } else {
-      setStatus('Not Started')
+      setStatus(
+        <Link to={`lessons/${lesson.lesson_id}`}>
+          <Button color='secondary' variant='outlined'>
+            Start
+          </Button>
+        </Link>
+      )
     }
 
     const total_score = Object.values(progress).reduce(
@@ -50,7 +65,7 @@ export default function ProgressListItem({ lesson, progress }) {
       lesson.words.length * 20
 
     setTotalPossibleScore(total_possible_score)
-  })
+  }, [lesson, progress])
 
   return (
     <>

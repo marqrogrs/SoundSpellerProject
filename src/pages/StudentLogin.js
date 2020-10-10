@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
 import { Typography } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
+import CustomAlert from '../components/CustomAlert'
 
 import { useStyles } from '../styles/material'
 
@@ -12,6 +13,7 @@ export default function StudentLogin() {
   const classes = useStyles()
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
+  const [error, setError] = useState(null)
   const auth = useAuth()
 
   const handleChange = (e) => {
@@ -28,12 +30,16 @@ export default function StudentLogin() {
   }
 
   const handleSignIn = () => {
-    console.log('Signing in')
-    auth.signInStudent(name, password)
+    setError(null)
+    auth.signInStudent(name, password).catch((error) => {
+      console.log(error)
+      setError(error.message)
+    })
   }
 
   return (
     <div>
+      {error && <CustomAlert title='Error' message={error} severity='error' />}
       <form>
         <Grid
           container

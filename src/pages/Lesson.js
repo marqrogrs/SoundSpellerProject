@@ -79,7 +79,6 @@ export default function Lesson() {
       case 'space':
         if (enableInput) {
           handleSubmit()
-          setInputWord('')
         }
         break
       case 'backspace':
@@ -91,6 +90,30 @@ export default function Lesson() {
         if (simulated) {
           setInputWord('')
           setEnableInput(true)
+        }
+        break
+      case 'shift':
+        if (simulated) {
+          setInputWord(inputWord + ' ')
+          setEnableInput(true)
+        }
+        break
+      case 'tab':
+        const expectedWord = words[currentWordIndex]
+        const cleanedWord = Array.from(inputWord).filter((char) => char !== ' ')
+        setInputWord(cleanedWord.join(''))
+        if (
+          Array.from(cleanedWord.join(''))
+            .filter((char) => char !== '-')
+            .join('')
+            .toUpperCase() !== expectedWord
+        ) {
+          setInputWord(cleanedWord.join('') + ' - ')
+        } else {
+          const wordWithoutDashes = Array.from(cleanedWord)
+            .filter((char) => char !== '-')
+            .join('')
+          setTimeout(() => setInputWord(wordWithoutDashes), 1000)
         }
         break
       default:

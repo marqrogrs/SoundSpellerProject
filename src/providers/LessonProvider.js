@@ -42,11 +42,11 @@ const LessonProvider = ({ children }) => {
     }
     const { lesson_section } = selectedLesson
     const lesson_subsection = getLessonSubsection(selectedLesson)
-    const currentLessonProgressObj = userData.progress[lesson_section][
-      lesson_subsection
-    ]
-      ? userData.progress[lesson_section][lesson_subsection]
-      : initProgress
+    const currentLessonProgressObj =
+      userData.progress[lesson_section] &&
+      userData.progress[lesson_section][lesson_subsection]
+        ? userData.progress[lesson_section][lesson_subsection]
+        : initProgress
     // setCurrentLessonProgress(currentLessonProgressObj)
     console.log(
       'Setting current lesson to: ',

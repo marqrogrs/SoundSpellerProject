@@ -5,11 +5,12 @@ import Error from '../pages/Error'
 import Lesson from '../pages/Lesson'
 import Lessons from '../pages/Lessons'
 import Progress from '../pages/Progress'
+import Students from '../pages/Students'
 import AppBar from '../components/AppBar'
 import { LessonProvider } from '../providers/LessonProvider'
 import UserProvider from '../providers/UserProvider'
 
-export default function PrivateRoutes({ user }) {
+export default function PrivateRoutes({ user, isEducator }) {
   return (
     <Router>
       <UserProvider>
@@ -26,6 +27,15 @@ export default function PrivateRoutes({ user }) {
             <Route exact path='/progress'>
               <Progress />
             </Route>
+            {isEducator && (
+              <>
+                <Route exact path='/students'>
+                  <Students />
+                </Route>
+                <Route path='/students/:student' children={<Progress />} />
+              </>
+            )}
+
             <Route>
               <Error />
             </Route>

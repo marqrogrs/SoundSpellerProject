@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -10,26 +10,41 @@ import Paper from '@material-ui/core/Paper'
 import { LessonContext } from '../providers/LessonProvider'
 import ProgressListItem from './ProgressListItem'
 
-import { makeStyles } from '@material-ui/core/styles'
 import { UserContext } from '../providers/UserProvider'
 import { getLessonSubsection } from '../util/functions'
 import { INIT_PROGRESS_OBJ } from '../util/constants'
+import { useStyles } from '../styles/material'
+import { db, auth } from '../firebase'
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: '100%',
-    // maxWidth: 360,
-    backgroundColor: theme.palette.background.paper,
-  },
-}))
-
-export default function ProgressList() {
+export default function ProgressList({ student }) {
   const { lessons } = useContext(LessonContext)
-  const { userData } = useContext(UserContext)
+  const userContext = useContext(UserContext)
+  const [userData, setUserData] = useState(null)
   const classes = useStyles()
+
+  useEffect(() => {
+    console.log('student: ', student)
+    var unsubscribeStudent = () => {}
+    if (student) {
+      unsubscribeStudent = db
+        .collection('users')
+        .where('username', '==', student)
+        .where('educator', '==', auth.currentUser.uid)
+        .onSnapshot((snap) => {
+          console.log('data: ', snap.docs[0].data())
+          setUserData(snap.docs[0].data())
+        })
+    } else {
+      setUserData(userContext.userData)
+    }
+    return () => {
+      unsubscribeStudent()
+    }
+  }, [student])
+
   return (
     <>
-      <TableContainer component={Paper} className={classes.root}>
+      <TableContainer component={Paper} className={classes.table}>
         <Table aria-label='collapsible table'>
           <TableHead>
             <TableRow>
@@ -41,16 +56,22 @@ export default function ProgressList() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {lessons.map((lesson) => {
-              const lesson_section = lesson.lesson_section
-              const lesson_subsection = getLessonSubsection(lesson)
-              const progress = userData.progress[lesson_section]
-                ? userData.progress[lesson_section][lesson_subsection]
-                  ? userData.progress[lesson_section][lesson_subsection]
-                  : INIT_PROGRESS_OBJ
-                : INIT_PROGRESS_OBJ
-              return <ProgressListItem lesson={lesson} progress={progress} />
-            })}
+            {userData && (
+              <>
+                {lessons.map((lesson) => {
+                  const lesson_section = lesson.lesson_section
+                  const lesson_subsection = getLessonSubsection(lesson)
+                  const progress = userData.progress[lesson_section]
+                    ? userData.progress[lesson_section][lesson_subsection]
+                      ? userData.progress[lesson_section][lesson_subsection]
+                      : INIT_PROGRESS_OBJ
+                    : INIT_PROGRESS_OBJ
+                  return (
+                    <ProgressListItem lesson={lesson} progress={progress} />
+                  )
+                })}
+              </>
+            )}
           </TableBody>
         </Table>
       </TableContainer>

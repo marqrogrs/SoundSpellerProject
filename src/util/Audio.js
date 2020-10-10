@@ -53,7 +53,8 @@ export const speakWord = (word, firstWord = false) => {
 //TODO: 400 should vary based on speech speed ( i htink? )
 export const speakPhoneme = (phoneme) => {
   return new Promise((resolve, reject) => {
-    const sound = new Audio(require(`../audio/phonemes/${PHONEMES[phoneme]}`))
+    const audioFile = phoneme.endsWith('.mp3') ? phoneme : PHONEMES[phoneme]
+    const sound = new Audio(require(`../audio/phonemes/${audioFile}`))
     setTimeout(() => {
       sound.play()
       resolve()

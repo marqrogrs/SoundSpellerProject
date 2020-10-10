@@ -60,6 +60,10 @@ export default function AppBar({ user }) {
     history.push('/progress')
   }
 
+  const handleViewStudents = () => {
+    history.push('/students')
+  }
+
   return (
     <div>
       <MaterialAppBar position='static'>
@@ -147,6 +151,9 @@ export default function AppBar({ user }) {
                 onClose={handleClose}
               >
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
+                {auth.isEducator && (
+                  <MenuItem onClick={handleViewStudents}>My Students</MenuItem>
+                )}
                 <MenuItem onClick={handleViewProgress}>View Progress</MenuItem>
                 <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
               </Menu>

@@ -32,3 +32,6 @@ export const authenticateStudent = firebase
 export const createStudentAccount = firebase
   .functions()
   .httpsCallable('createStudentAccount')
+export const resetStudentPassword = firebase
+  .functions()
+  .httpsCallable('resetStudentPassword')

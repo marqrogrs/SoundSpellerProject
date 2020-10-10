@@ -48,7 +48,7 @@ function RequireAuthentication() {
   return (
     <>
       {auth.user ? (
-        <PrivateRoutes user={auth.user} />
+        <PrivateRoutes user={auth.user} isEducator={auth.isEducator} />
       ) : (
         <PublicRoutes user={auth.user} />
       )}
