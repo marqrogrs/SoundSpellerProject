@@ -95,7 +95,6 @@ export default function Lesson() {
       case 'shift':
         if (simulated) {
           setInputWord(inputWord + ' ')
-          setEnableInput(true)
         }
         break
       case 'tab':
