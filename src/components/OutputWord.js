@@ -29,8 +29,19 @@ export default function OutputWord({ wordString, index }) {
         await pressKey(Array.from(key)[i])
         await unpressKey(Array.from(key)[i])
       }
-      await pressKey('shift')
-      await unpressKey('shift')
+      await insertSpaceAfterLetter()
+      resolve()
+    })
+  }
+
+  const insertSpaceAfterLetter = () => {
+    return new Promise((resolve, reject) => {
+      simulateEvent.simulate(document.body, 'keydown', {
+        key: 'shift',
+      })
+      simulateEvent.simulate(document.body, 'keyup', {
+        key: 'shift',
+      })
       resolve()
     })
   }
