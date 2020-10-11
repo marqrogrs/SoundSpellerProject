@@ -19,7 +19,7 @@ const useStyles = makeStyles({
   },
 })
 
-export default function OutputWord({ wordString, index, handleEndOfSyllable }) {
+export default function OutputWord({ wordString, index }) {
   const classes = useStyles()
   const { currentLesson } = useContext(LessonContext)
 
@@ -56,30 +56,33 @@ export default function OutputWord({ wordString, index, handleEndOfSyllable }) {
   }
 
   useEffect(() => {
-    // console.log('OutputWord: ', wordString, index)
     db.collection('words')
       .doc(wordString)
       .get()
       .then(async (wordDoc) => {
         if (wordDoc.exists) {
           const { word, phonemes, graphemes, syllables } = wordDoc.data()
+          console.log(word, phonemes, graphemes, syllables)
           switch (currentLesson.level) {
             case 0:
             case 1:
               speakWord(word, index === 0).then(async () => {
                 let i = 0
                 let lastSyllableIndex = 0
+                let syllableInd = 0
                 for (const phoneme of phonemes) {
                   await speakPhoneme(phoneme)
-                  const isEndOfSyllable = syllables.includes(
+                  const isEndOfSyllable =
+                    syllables[syllableInd] ===
                     graphemes
                       .slice(lastSyllableIndex, i + 1)
                       .join('')
                       .toLowerCase()
-                  )
+
                   await renderKeyPress(graphemes[i].toLowerCase())
                   if (isEndOfSyllable) {
                     lastSyllableIndex = i + 1
+                    syllableInd++
                     simulateEvent.simulate(document.body, 'keydown', {
                       key: 'tab',
                     })
