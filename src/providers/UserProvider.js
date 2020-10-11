@@ -11,6 +11,7 @@ export default function UserProvider({ children }) {
   const history = useHistory()
   const [userData, setUserData] = useState(null)
   const [classrooms, setClassrooms] = useState(null)
+  const [totalScore, setTotalScore] = useState(0)
   const [userDataLoaded, setUserDataLoaded] = useState(false)
 
   useEffect(() => {
@@ -27,6 +28,21 @@ export default function UserProvider({ children }) {
         unsubscribeUser = userDoc.onSnapshot((snap) => {
           const data = isEducator ? snap.data() : snap.docs[0].data()
           setUserData(data)
+
+          //Calculate total score
+          const total_score = Object.values(data.progress).reduce(
+            (acc, section) => {
+              var high_score = 0
+              Object.values(section).forEach((id) => {
+                Object.values(id).forEach((level) => {
+                  high_score += level.high_score
+                })
+              })
+              return (acc += high_score)
+            },
+            0
+          )
+          setTotalScore(total_score)
         })
         if (isEducator) {
           unsubscribeClasses = userDoc
@@ -56,7 +72,9 @@ export default function UserProvider({ children }) {
     return createStudentAccount(student)
   }
   return (
-    <UserContext.Provider value={{ userData, addNewStudent, classrooms }}>
+    <UserContext.Provider
+      value={{ userData, addNewStudent, classrooms, totalScore }}
+    >
       {children}
     </UserContext.Provider>
   )

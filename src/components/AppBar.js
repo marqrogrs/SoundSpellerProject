@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
 
 import { useStyles } from '../styles/material'
@@ -27,6 +27,7 @@ import Settings from '@material-ui/icons/Settings'
 import SpeechSlider from '../components/SpeechSlider'
 
 import { useAuth } from '../hooks/useAuth'
+import { UserContext } from '../providers/UserProvider'
 
 export default function AppBar({ user }) {
   const classes = useStyles()
@@ -39,6 +40,8 @@ export default function AppBar({ user }) {
   const [sizeMenuOpen, setSizeMenuOpen] = useState(false)
   const [volumeMenuOpen, setVolumeMenuOpen] = useState(false)
   const open = Boolean(anchorEl)
+
+  const { totalScore } = useContext(UserContext)
 
   const handleMenu = (e) => {
     setAnchorEl(e.currentTarget)
@@ -81,8 +84,9 @@ export default function AppBar({ user }) {
           </Typography>
           {user && (
             <div>
+              <Typography>Score: {totalScore}</Typography>
               <IconButton
-                aria-label='account of current user'
+                aria-label='settings'
                 aria-controls='menu-appbar'
                 aria-haspopup='true'
                 onClick={() => toggleSettingsDrawer(true)}
