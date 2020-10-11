@@ -89,7 +89,7 @@ export default function ProgressListItem({ lesson, progress, showButtons }) {
         <TableCell align='right'>{lesson.title}</TableCell>
         <TableCell align='right'>{status}</TableCell>
         <TableCell align='right'>
-          {(totalScore / totalPossibleScore) * 100}%
+          {((totalScore / totalPossibleScore) * 100).toFixed(0)}%
         </TableCell>
         <TableCell align='right'>{showButtons && button}</TableCell>
       </TableRow>
@@ -128,7 +128,7 @@ export default function ProgressListItem({ lesson, progress, showButtons }) {
                           {i + 1}
                         </TableCell>
                         <TableCell>
-                          {(progress[i].score / highest_possible_score) * 100}%
+                          {((progress[i].score / highest_possible_score) * 100).toFixed(0)}%
                         </TableCell>
                         <TableCell>{levelStatus}</TableCell>
                       </TableRow>
