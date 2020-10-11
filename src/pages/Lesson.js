@@ -134,7 +134,7 @@ export default function Lesson() {
             await playStartBells()
             setInputWord('')
             setEnableInput(true)
-          }, 2000)
+          }, 500)
         }
         break
       default:

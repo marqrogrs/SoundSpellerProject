@@ -71,7 +71,7 @@ export default function OutputWord({ wordString, index }) {
       .doc(wordString)
       .get()
       .then(async (wordDoc) => {
-        if (wordDoc.exists) {
+        if (wordDoc.exists && currentLesson.lesson.lesson_section > 1) {
           const { word, phonemes, graphemes, syllables } = wordDoc.data()
           console.log(word, phonemes, graphemes, syllables)
           switch (currentLesson.level) {
@@ -109,35 +109,6 @@ export default function OutputWord({ wordString, index }) {
                   }
                   i++
                 }
-
-                // for (const phoneme of phonemes) {
-                //   await speakPhoneme(phoneme)
-                //   const isEndOfSyllable =
-                //     syllables[syllableInd] ===
-                //     graphemes
-                //       .slice(lastSyllableIndex, i + 1)
-                //       .join('')
-                //       .toLowerCase()
-
-                //   await renderKeyPress(graphemes[i].toLowerCase())
-                //   if (isEndOfSyllable) {
-                //     lastSyllableIndex = i + 1
-                //     syllableInd++
-                //     simulateEvent.simulate(document.body, 'keydown', {
-                //       key: 'tab',
-                //     })
-                //   }
-                //   i++
-                // }
-                // if (phonemes.length < graphemes.length) {
-                //   for (
-                //     let i = phonemes.length; // start where we left off
-                //     i < graphemes.length;
-                //     ++i
-                //   ) {
-                //     await renderKeyPress(graphemes[i].toLowerCase())
-                //   }
-                // }
               })
               break
             case 2:
@@ -164,9 +135,6 @@ export default function OutputWord({ wordString, index }) {
               return
           }
         } else {
-          // console.log('Not a word')
-          // TODO: output graphemes
-          // console.log(wordString)
           const graphemes = wordString.split('')
           const phonemes = graphemes.map(
             (g) => COMMON_PHONEMES[g.toLowerCase()]
@@ -178,11 +146,8 @@ export default function OutputWord({ wordString, index }) {
               for (const phoneme of phonemes) {
                 await speakPhoneme(phoneme)
                 await renderKeyPress(graphemes[i].toLowerCase())
+                i++
               }
-              await playStartBells()
-              simulateEvent.simulate(document.body, 'keydown', {
-                key: 'esc',
-              })
               break
             case 2:
             case 3:
