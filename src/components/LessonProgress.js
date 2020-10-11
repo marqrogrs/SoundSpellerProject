@@ -6,7 +6,6 @@ export default function LessonProgress({ currentWordIndex }) {
   const { currentLesson } = useContext(LessonContext)
   const [value, setValue] = useState(0)
   useEffect(() => {
-    console.log(currentWordIndex)
     if (currentLesson) {
       const { level, progress, lesson } = currentLesson
       const { completed_words } = progress[level]

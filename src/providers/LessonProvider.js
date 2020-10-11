@@ -15,7 +15,8 @@ const LessonProvider = ({ children }) => {
   const { user } = useAuth()
 
   const [currentLesson, setCurrentLesson] = useState()
-  // const [currentLevel, setCurrentLevel] = useState(0)
+  const [currentLessonProgress, setCurrentLessonProgress] = useState()
+  const [currentLessonLevel, setCurrentLessonLevel] = useState()
 
   const setLesson = ({ lesson_id }) => {
     const selectedLesson = lessons.filter((lesson) => {
@@ -47,7 +48,6 @@ const LessonProvider = ({ children }) => {
       userData.progress[lesson_section][lesson_subsection]
         ? userData.progress[lesson_section][lesson_subsection]
         : initProgress
-    // setCurrentLessonProgress(currentLessonProgressObj)
     console.log(
       'Setting current lesson to: ',
       selectedLesson,
@@ -58,16 +58,20 @@ const LessonProvider = ({ children }) => {
       level: 0,
       progress: currentLessonProgressObj,
     })
+    setCurrentLessonProgress(currentLessonProgressObj)
+    setCurrentLessonLevel(0)
   }
 
   const updateCurrentLesson = ({ level, progress }) => {
     var updatedLesson = currentLesson
-    if (level) {
+    if (level !== null) {
       updatedLesson.level = level
+      setCurrentLessonLevel(level)
     }
 
     if (progress) {
       updatedLesson.progress = progress
+      setCurrentLessonProgress(progress)
     }
 
     setCurrentLesson(updatedLesson)
@@ -120,6 +124,8 @@ const LessonProvider = ({ children }) => {
       value={{
         lessonsLoading,
         currentLesson, //Lesson that user is currently viewing
+        currentLessonProgress,
+        currentLessonLevel,
         lessons, //All lessons
         setLesson,
         setLevel,

@@ -35,6 +35,8 @@ export default function Lesson() {
     lessonsLoading,
     setProgress,
     updateScore,
+    currentLessonLevel,
+    currentLessonProgress,
   } = useContext(LessonContext)
   const [words, setWords] = useState(null)
   const [currentWordIndex, setCurrentWordIndex] = useState(0)
@@ -149,12 +151,11 @@ export default function Lesson() {
   useEffect(() => {
     window.onbeforeunload = () => true
     if (!lessonsLoading && currentLesson) {
-      console.log('Setting words and stuff')
-      const level = currentLesson.level
+      const level = currentLessonLevel
       setWords(currentLesson.lesson.words)
       setCurrentWordIndex(currentLesson.progress[level].completed_words)
     }
-  }, [currentLesson, lessonsLoading, currentWordIndex])
+  }, [currentLesson, currentLessonLevel, lessonsLoading, currentWordIndex])
 
   return (
     <>
@@ -165,7 +166,7 @@ export default function Lesson() {
       <Container maxWidth='sm'>
         <Grid container spacing={2} direction='column'>
           <Grid item>
-            <LevelPicker onChange={() => setLessonStarted(false)} />
+            <LevelPicker />
           </Grid>
           <Grid item>
             <Button
