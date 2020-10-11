@@ -11,6 +11,7 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import { useParams } from 'react-router-dom'
 import { LessonContext } from '../providers/LessonProvider'
+import { playStartBells } from '../util/Audio'
 
 const useStyles = makeStyles({
   textbox: {
@@ -109,10 +110,16 @@ export default function Lesson() {
         ) {
           setInputWord(cleanedWord.join('') + ' - ')
         } else {
+          console.log('End of word')
           const wordWithoutDashes = Array.from(cleanedWord)
             .filter((char) => char !== '-')
             .join('')
           setTimeout(() => setInputWord(wordWithoutDashes), 1000)
+          setTimeout(async () => {
+            await playStartBells()
+            setInputWord('')
+            setEnableInput(true)
+          }, 2000)
         }
         break
       default:

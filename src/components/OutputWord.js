@@ -109,10 +109,6 @@ export default function OutputWord({ wordString, index }) {
                     await renderKeyPress(graphemes[i].toLowerCase())
                   }
                 }
-                await playStartBells()
-                simulateEvent.simulate(document.body, 'keydown', {
-                  key: 'esc',
-                })
               })
               break
             case 2:
