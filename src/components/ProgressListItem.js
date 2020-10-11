@@ -23,7 +23,7 @@ export default function ProgressListItem({ lesson, progress, showButtons }) {
   const [button, setButton] = useState('')
 
   const [totalScore, setTotalScore] = useState(0)
-  const [totalPossibleScore, setTotalPossibleScore] = useState(0)
+  const [totalPossibleScore, setTotalPossibleScore] = useState(1)
 
   const classes = useStyles()
 
@@ -89,7 +89,7 @@ export default function ProgressListItem({ lesson, progress, showButtons }) {
         <TableCell align='right'>{lesson.title}</TableCell>
         <TableCell align='right'>{status}</TableCell>
         <TableCell align='right'>
-          {totalScore}/{totalPossibleScore}
+          {(totalScore / totalPossibleScore) * 100}%
         </TableCell>
         <TableCell align='right'>{showButtons && button}</TableCell>
       </TableRow>
@@ -128,7 +128,7 @@ export default function ProgressListItem({ lesson, progress, showButtons }) {
                           {i + 1}
                         </TableCell>
                         <TableCell>
-                          {progress[i].score}/{highest_possible_score}
+                          {(progress[i].score / highest_possible_score) * 100}%
                         </TableCell>
                         <TableCell>{levelStatus}</TableCell>
                       </TableRow>
