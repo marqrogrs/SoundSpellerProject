@@ -6,7 +6,7 @@ export const useStyles = makeStyles((theme) => ({
     alignSelf: 'center',
   },
   table: {
-    width: '100%',
+    margin: 'auto',
     backgroundColor: theme.palette.background.paper,
   },
   menuButton: {
@@ -62,6 +62,7 @@ export const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2, 4, 3),
     display: 'flex',
     flexDirection: 'column',
+    width: 440,
     '& > *': {
       margin: theme.spacing(1),
     },

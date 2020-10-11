@@ -47,7 +47,7 @@ export default function ProgressList({ student }) {
   return (
     <>
       <TableContainer component={Paper} className={classes.table}>
-        <Table aria-label='collapsible table'>
+        <Table>
           <TableHead>
             <TableRow>
               <TableCell />
@@ -55,6 +55,7 @@ export default function ProgressList({ student }) {
               <TableCell align='right'>Title</TableCell>
               <TableCell align='right'>Status</TableCell>
               <TableCell align='right'>Score</TableCell>
+              <TableCell align='right'></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -69,7 +70,11 @@ export default function ProgressList({ student }) {
                       : INIT_PROGRESS_OBJ
                     : INIT_PROGRESS_OBJ
                   return (
-                    <ProgressListItem lesson={lesson} progress={progress} />
+                    <ProgressListItem
+                      lesson={lesson}
+                      progress={progress}
+                      showButtons={student ? false : true}
+                    />
                   )
                 })}
               </>

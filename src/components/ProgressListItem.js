@@ -17,11 +17,13 @@ import { LEVELS } from '../util/constants'
 
 import { useStyles } from '../styles/material'
 
-export default function ProgressListItem({ lesson, progress }) {
+export default function ProgressListItem({ lesson, progress, showButtons }) {
   const [open, setOpen] = useState(false)
   const [status, setStatus] = useState('')
+  const [button, setButton] = useState('')
+
   const [totalScore, setTotalScore] = useState(0)
-  const [totalPossibleScore, setTotalPossibleScore] = useState(0)
+  const [totalPossibleScore, setTotalPossibleScore] = useState(1)
 
   const classes = useStyles()
 
@@ -35,7 +37,8 @@ export default function ProgressListItem({ lesson, progress }) {
     if (isCompleted) {
       setStatus(<CheckCircleIcon color='primary' />)
     } else if (isInProgress) {
-      setStatus(
+      setStatus('In progress')
+      setButton(
         <Link to={`lessons/${lesson.lesson_id}`}>
           <Button color='secondary' variant='contained'>
             Continue
@@ -43,7 +46,8 @@ export default function ProgressListItem({ lesson, progress }) {
         </Link>
       )
     } else {
-      setStatus(
+      setStatus('Not started')
+      setButton(
         <Link to={`lessons/${lesson.lesson_id}`}>
           <Button color='secondary' variant='outlined'>
             Start
@@ -51,9 +55,8 @@ export default function ProgressListItem({ lesson, progress }) {
         </Link>
       )
     }
-
     const total_score = Object.values(progress).reduce(
-      (acc, current) => acc + current.score,
+      (acc, current) => acc + current.high_score,
       0
     )
     setTotalScore(total_score)
@@ -85,8 +88,9 @@ export default function ProgressListItem({ lesson, progress }) {
         <TableCell align='right'>{lesson.title}</TableCell>
         <TableCell align='right'>{status}</TableCell>
         <TableCell align='right'>
-          {totalScore}/{totalPossibleScore}
+          {((totalScore / totalPossibleScore) * 100).toFixed(0)}%
         </TableCell>
+        <TableCell align='right'>{showButtons && button}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -123,7 +127,11 @@ export default function ProgressListItem({ lesson, progress }) {
                           {i + 1}
                         </TableCell>
                         <TableCell>
-                          {progress[i].score}/{highest_possible_score}
+                          {(
+                            (progress[i].high_score / highest_possible_score) *
+                            100
+                          ).toFixed(0)}
+                          %
                         </TableCell>
                         <TableCell>{levelStatus}</TableCell>
                       </TableRow>

@@ -3,20 +3,23 @@ import { Typography, ButtonGroup, Button } from '@material-ui/core'
 import { LEVELS } from '../util/constants'
 import { LessonContext } from '../providers/LessonProvider'
 
-export default function LevelPicker({ onChange }) {
-  const { currentLesson, setLevel } = useContext(LessonContext)
-  const [lessonLoading, setLessonLoading] = useState(true)
+export default function LevelPicker() {
+  const {
+    currentLesson,
+    currentLessonProgress,
+    currentLessonLevel,
+    setLevel,
+  } = useContext(LessonContext)
+  const [totalWords, setTotalWords] = useState(0)
 
   const handleSelectLevel = (e) => {
-    if (onChange) {
-      onChange()
-    }
     setLevel(parseInt(e.target.innerText) - 1)
   }
 
   useEffect(() => {
     if (currentLesson) {
-      setLessonLoading(false)
+      const num_words = currentLesson.lesson.words.length
+      setTotalWords(num_words)
     }
   }, [currentLesson])
 
@@ -25,15 +28,21 @@ export default function LevelPicker({ onChange }) {
       <Typography>Pick a level:</Typography>
       <ButtonGroup color='primary' aria-label='outlined primary button group'>
         {LEVELS.map((l, index) => {
+          var levelUnlocked = false
+
+          if (currentLessonProgress) {
+            if (index === 0) {
+              levelUnlocked = true
+            } else {
+              levelUnlocked = currentLessonProgress[index - 1].completed
+            }
+          }
+
           return (
             <Button
               key={index}
-              disabled={!lessonLoading ? index > currentLesson.level : false}
-              variant={
-                !lessonLoading && currentLesson.level === index
-                  ? `contained`
-                  : `outlined`
-              }
+              disabled={!levelUnlocked}
+              variant={currentLessonLevel === index ? `contained` : `outlined`}
               onClick={handleSelectLevel}
             >
               {index + 1}

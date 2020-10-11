@@ -19,7 +19,7 @@ const useStyles = makeStyles({
   },
 })
 
-export default function OutputWord({ wordString, index, handleEndOfSyllable }) {
+export default function OutputWord({ wordString, index }) {
   const classes = useStyles()
   const { currentLesson } = useContext(LessonContext)
 
@@ -29,8 +29,19 @@ export default function OutputWord({ wordString, index, handleEndOfSyllable }) {
         await pressKey(Array.from(key)[i])
         await unpressKey(Array.from(key)[i])
       }
-      await pressKey('shift')
-      await unpressKey('shift')
+      await insertSpaceAfterLetter()
+      resolve()
+    })
+  }
+
+  const insertSpaceAfterLetter = () => {
+    return new Promise((resolve, reject) => {
+      simulateEvent.simulate(document.body, 'keydown', {
+        key: 'shift',
+      })
+      simulateEvent.simulate(document.body, 'keyup', {
+        key: 'shift',
+      })
       resolve()
     })
   }
@@ -56,49 +67,48 @@ export default function OutputWord({ wordString, index, handleEndOfSyllable }) {
   }
 
   useEffect(() => {
-    // console.log('OutputWord: ', wordString, index)
     db.collection('words')
       .doc(wordString)
       .get()
       .then(async (wordDoc) => {
-        if (wordDoc.exists) {
+        if (wordDoc.exists && currentLesson.lesson.lesson_section > 1) {
           const { word, phonemes, graphemes, syllables } = wordDoc.data()
+          console.log(word, phonemes, graphemes, syllables)
           switch (currentLesson.level) {
             case 0:
             case 1:
               speakWord(word, index === 0).then(async () => {
                 let i = 0
                 let lastSyllableIndex = 0
-                for (const phoneme of phonemes) {
-                  await speakPhoneme(phoneme)
-                  const isEndOfSyllable = syllables.includes(
+                let syllableInd = 0
+                for (const grapheme of graphemes) {
+                  if (phonemes[i]) {
+                    if (
+                      grapheme === 'E' &&
+                      !['EH', 'IY', 'IH'].includes(phonemes[i])
+                    ) {
+                      //Don't speak phoneme
+                    } else {
+                      await speakPhoneme(phonemes[i])
+                    }
+                  }
+                  const isEndOfSyllable =
+                    syllables[syllableInd] ===
                     graphemes
                       .slice(lastSyllableIndex, i + 1)
                       .join('')
                       .toLowerCase()
-                  )
-                  await renderKeyPress(graphemes[i].toLowerCase())
+                  await renderKeyPress(grapheme.toLowerCase())
+
                   if (isEndOfSyllable) {
                     lastSyllableIndex = i + 1
+                    syllableInd++
                     simulateEvent.simulate(document.body, 'keydown', {
                       key: 'tab',
                     })
                   }
                   i++
                 }
-                if (phonemes.length < graphemes.length) {
-                  for (
-                    let i = phonemes.length; // start where we left off
-                    i < graphemes.length;
-                    ++i
-                  ) {
-                    await renderKeyPress(graphemes[i].toLowerCase())
-                  }
-                }
-                await playStartBells()
-                simulateEvent.simulate(document.body, 'keydown', {
-                  key: 'esc',
-                })
               })
               break
             case 2:
@@ -125,9 +135,6 @@ export default function OutputWord({ wordString, index, handleEndOfSyllable }) {
               return
           }
         } else {
-          // console.log('Not a word')
-          // TODO: output graphemes
-          // console.log(wordString)
           const graphemes = wordString.split('')
           const phonemes = graphemes.map(
             (g) => COMMON_PHONEMES[g.toLowerCase()]
@@ -139,11 +146,8 @@ export default function OutputWord({ wordString, index, handleEndOfSyllable }) {
               for (const phoneme of phonemes) {
                 await speakPhoneme(phoneme)
                 await renderKeyPress(graphemes[i].toLowerCase())
+                i++
               }
-              await playStartBells()
-              simulateEvent.simulate(document.body, 'keydown', {
-                key: 'esc',
-              })
               break
             case 2:
             case 3:
