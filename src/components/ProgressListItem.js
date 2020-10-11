@@ -17,9 +17,11 @@ import { LEVELS } from '../util/constants'
 
 import { useStyles } from '../styles/material'
 
-export default function ProgressListItem({ lesson, progress }) {
+export default function ProgressListItem({ lesson, progress, showButtons }) {
   const [open, setOpen] = useState(false)
   const [status, setStatus] = useState('')
+  const [button, setButton] = useState('')
+
   const [totalScore, setTotalScore] = useState(0)
   const [totalPossibleScore, setTotalPossibleScore] = useState(0)
 
@@ -35,7 +37,8 @@ export default function ProgressListItem({ lesson, progress }) {
     if (isCompleted) {
       setStatus(<CheckCircleIcon color='primary' />)
     } else if (isInProgress) {
-      setStatus(
+      setStatus('In progress')
+      setButton(
         <Link to={`lessons/${lesson.lesson_id}`}>
           <Button color='secondary' variant='contained'>
             Continue
@@ -43,7 +46,8 @@ export default function ProgressListItem({ lesson, progress }) {
         </Link>
       )
     } else {
-      setStatus(
+      setStatus('Not started')
+      setButton(
         <Link to={`lessons/${lesson.lesson_id}`}>
           <Button color='secondary' variant='outlined'>
             Start
@@ -87,6 +91,7 @@ export default function ProgressListItem({ lesson, progress }) {
         <TableCell align='right'>
           {totalScore}/{totalPossibleScore}
         </TableCell>
+        <TableCell align='right'>{showButtons && button}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
