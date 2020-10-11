@@ -27,18 +27,26 @@ const LessonProvider = ({ children }) => {
       0: {
         score: 0,
         completed_words: 0,
+        high_score: 0,
+        completed: false,
       },
       1: {
         score: 0,
         completed_words: 0,
+        high_score: 0,
+        completed: false,
       },
       2: {
         score: 0,
         completed_words: 0,
+        high_score: 0,
+        completed: false,
       },
       3: {
         score: 0,
         completed_words: 0,
+        high_score: 0,
+        completed: false,
       },
     }
     const { lesson_section } = selectedLesson
@@ -64,7 +72,7 @@ const LessonProvider = ({ children }) => {
 
   const updateCurrentLesson = ({ level, progress }) => {
     var updatedLesson = currentLesson
-    if (level !== null) {
+    if (level !== undefined) {
       updatedLesson.level = level
       setCurrentLessonLevel(level)
     }
@@ -85,6 +93,14 @@ const LessonProvider = ({ children }) => {
   const setProgress = (completed_words) => {
     var { progress, level } = currentLesson
     progress[level].completed_words = completed_words
+    progress[level].completed =
+      completed_words === currentLesson.lesson.words.length
+    if (
+      progress[level].completed &&
+      progress[level].score > progress[level].high_score
+    ) {
+      progress[level].high_score = progress[level].score
+    }
     updateCurrentLesson({ progress })
   }
 

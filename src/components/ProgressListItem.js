@@ -55,9 +55,8 @@ export default function ProgressListItem({ lesson, progress, showButtons }) {
         </Link>
       )
     }
-
     const total_score = Object.values(progress).reduce(
-      (acc, current) => acc + current.score,
+      (acc, current) => acc + current.high_score,
       0
     )
     setTotalScore(total_score)
@@ -128,7 +127,11 @@ export default function ProgressListItem({ lesson, progress, showButtons }) {
                           {i + 1}
                         </TableCell>
                         <TableCell>
-                          {((progress[i].score / highest_possible_score) * 100).toFixed(0)}%
+                          {(
+                            (progress[i].high_score / highest_possible_score) *
+                            100
+                          ).toFixed(0)}
+                          %
                         </TableCell>
                         <TableCell>{levelStatus}</TableCell>
                       </TableRow>

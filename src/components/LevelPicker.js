@@ -34,8 +34,7 @@ export default function LevelPicker() {
             if (index === 0) {
               levelUnlocked = true
             } else {
-              levelUnlocked =
-                currentLessonProgress[index - 1].completed_words === totalWords
+              levelUnlocked = currentLessonProgress[index - 1].completed
             }
           }
 

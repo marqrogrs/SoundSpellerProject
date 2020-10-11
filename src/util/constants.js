@@ -91,18 +91,26 @@ export const INIT_PROGRESS_OBJ = {
   0: {
     score: 0,
     completed_words: 0,
+    high_score: 0,
+    completed: false,
   },
   1: {
     score: 0,
     completed_words: 0,
+    high_score: 0,
+    completed: false,
   },
   2: {
     score: 0,
     completed_words: 0,
+    high_score: 0,
+    completed: false,
   },
   3: {
     score: 0,
     completed_words: 0,
+    high_score: 0,
+    completed: false,
   },
 }
 
