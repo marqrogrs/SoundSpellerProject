@@ -81,16 +81,25 @@ export default function OutputWord({ wordString, index }) {
                 let i = 0
                 let lastSyllableIndex = 0
                 let syllableInd = 0
-                for (const phoneme of phonemes) {
-                  await speakPhoneme(phoneme)
+                for (const grapheme of graphemes) {
+                  if (phonemes[i]) {
+                    if (
+                      grapheme === 'E' &&
+                      !['EH', 'IY', 'IH'].includes(phonemes[i])
+                    ) {
+                      //Don't speak phoneme
+                    } else {
+                      await speakPhoneme(phonemes[i])
+                    }
+                  }
                   const isEndOfSyllable =
                     syllables[syllableInd] ===
                     graphemes
                       .slice(lastSyllableIndex, i + 1)
                       .join('')
                       .toLowerCase()
+                  await renderKeyPress(grapheme.toLowerCase())
 
-                  await renderKeyPress(graphemes[i].toLowerCase())
                   if (isEndOfSyllable) {
                     lastSyllableIndex = i + 1
                     syllableInd++
@@ -100,15 +109,35 @@ export default function OutputWord({ wordString, index }) {
                   }
                   i++
                 }
-                if (phonemes.length < graphemes.length) {
-                  for (
-                    let i = phonemes.length; // start where we left off
-                    i < graphemes.length;
-                    ++i
-                  ) {
-                    await renderKeyPress(graphemes[i].toLowerCase())
-                  }
-                }
+
+                // for (const phoneme of phonemes) {
+                //   await speakPhoneme(phoneme)
+                //   const isEndOfSyllable =
+                //     syllables[syllableInd] ===
+                //     graphemes
+                //       .slice(lastSyllableIndex, i + 1)
+                //       .join('')
+                //       .toLowerCase()
+
+                //   await renderKeyPress(graphemes[i].toLowerCase())
+                //   if (isEndOfSyllable) {
+                //     lastSyllableIndex = i + 1
+                //     syllableInd++
+                //     simulateEvent.simulate(document.body, 'keydown', {
+                //       key: 'tab',
+                //     })
+                //   }
+                //   i++
+                // }
+                // if (phonemes.length < graphemes.length) {
+                //   for (
+                //     let i = phonemes.length; // start where we left off
+                //     i < graphemes.length;
+                //     ++i
+                //   ) {
+                //     await renderKeyPress(graphemes[i].toLowerCase())
+                //   }
+                // }
               })
               break
             case 2:
