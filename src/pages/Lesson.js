@@ -171,7 +171,11 @@ export default function Lesson() {
             </Button>
           </Grid>
           <Grid item>
-            <LessonProgress variant='determinate' />
+            <LessonProgress
+              variant='determinate'
+              //TODO: this is a hacky way of making sure this progress bar updates
+              currentWordIndex={currentWordIndex}
+            />
           </Grid>
         </Grid>
         <Paper className={classes.textbox}>
