@@ -6,7 +6,6 @@ export const useStyles = makeStyles((theme) => ({
     alignSelf: 'center',
   },
   table: {
-    width: 800,
     margin: 'auto',
     backgroundColor: theme.palette.background.paper,
   },

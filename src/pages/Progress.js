@@ -8,7 +8,7 @@ export default function Progress() {
 
   return (
     <>
-      <Container>
+      <Container maxWidth='md'>
         <ProgressList student={student} />
       </Container>
     </>
