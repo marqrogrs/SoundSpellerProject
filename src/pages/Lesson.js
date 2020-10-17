@@ -8,6 +8,7 @@ import LessonProgress from '../components/LessonProgress'
 import LevelPicker from '../components/LevelPicker'
 import { Container, Button, Grid, Paper } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import ButtonGroup from '@material-ui/core/ButtonGroup'
 
 import { useParams, useHistory } from 'react-router-dom'
 import { LessonContext } from '../providers/LessonProvider'
@@ -232,39 +233,42 @@ export default function Lesson() {
           <InputWord word={inputWord} />
         </Paper>
         <Keyboard onChange={handleKeyPressed} />
-        <Grid item>
-          <Button
-            variant='contained'
+        <Grid item align='center'>
+          <ButtonGroup
+            orientation='vertical'
             color='primary'
-            onClick={handleRepeatWord}
-            disabled={!lessonStarted || !enableInput}
-          >
-            Repeat
-          </Button>
-        </Grid>
-        <Grid item>
-          <Button
             variant='contained'
-            color='primary'
-            onClick={handleSkipWord}
-            disabled={!lessonStarted || !enableInput}
           >
-            Skip
-          </Button>
+            <Button
+              variant='contained'
+              color='primary'
+              onClick={handleRepeatWord}
+              disabled={!lessonStarted || !enableInput}
+            >
+              Repeat
+            </Button>
+            <Button
+              variant='contained'
+              color='primary'
+              onClick={handleSkipWord}
+              disabled={!lessonStarted || !enableInput}
+            >
+              Skip
+            </Button>
+            <Button
+              variant='contained'
+              color='primary'
+              onClick={save}
+              disabled={isSaved}
+            >
+              Save Progress
+            </Button>
+          </ButtonGroup>
         </Grid>
-        <Grid item>
-          <Button
-            variant='contained'
-            color='primary'
-            onClick={save}
-            disabled={isSaved}
-          >
-            Save & Exit
-          </Button>
-        </Grid>
+        <Grid item></Grid>
         {currentLessonProgress && (
           <Grid item>
-            Score: {currentLessonProgress[currentLessonLevel].score}
+            Lesson Score: {currentLessonProgress[currentLessonLevel].score}
           </Grid>
         )}
       </Container>
