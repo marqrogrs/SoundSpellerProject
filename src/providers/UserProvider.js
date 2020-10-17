@@ -30,12 +30,17 @@ export default function UserProvider({ children }) {
           setUserData(data)
 
           //Calculate total score
+          console.log(data.progress)
           const total_score = Object.values(data.progress).reduce(
             (acc, section) => {
               var high_score = 0
               Object.values(section).forEach((id) => {
                 Object.values(id).forEach((level) => {
-                  high_score += level.high_score
+                  if (level.high_score > level.score) {
+                    high_score += level.high_score
+                  } else {
+                    high_score += level.score
+                  }
                 })
               })
               return (acc += high_score)
