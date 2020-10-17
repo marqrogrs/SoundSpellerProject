@@ -31,9 +31,12 @@ export const speakWord = (word, firstWord = false) => {
 
     getVoices().then((voices) => {
       var voice = voices.filter(function (voice) {
-        return voice.lang === 'en-US' && voice.localService === true
-      })[2]
-
+        return (
+          voice.lang === 'en-US' &&
+          voice.localService === true &&
+          voice.name === 'Samantha'
+        )
+      })[0]
       var text = `${firstWord ? 'Your first' : 'Next'} word is ${word}.`
       var speech = new SpeechSynthesisUtterance(word)
       speech.voice = voice
