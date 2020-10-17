@@ -46,6 +46,7 @@ export default function Lesson() {
   const [inputWord, setInputWord] = useState('')
   const [enableInput, setEnableInput] = useState(false)
   const [isSaved, setIsSaved] = useState(true)
+  const [outputWordKey, setOutputWordKey] = useState(Math.random())
 
   const params = useParams()
   const history = useHistory()
@@ -54,10 +55,7 @@ export default function Lesson() {
     setLessonStarted(true)
   }
 
-  const handleSubmit = () => {
-    //Check if correct
-    const expectedWord = words[currentWordIndex]
-    const isCorrect = inputWord.toLowerCase() === expectedWord.toLowerCase()
+  const handleSubmit = (checkScore = true) => {
     setProgress(currentWordIndex + 1)
     if (currentWordIndex < words.length - 1) {
       setCurrentWordIndex(currentWordIndex + 1)
@@ -75,7 +73,12 @@ export default function Lesson() {
       })
     }
 
-    updateScore(expectedWord, isCorrect)
+    if (checkScore) {
+      //Check if correct
+      const expectedWord = words[currentWordIndex]
+      const isCorrect = inputWord.toLowerCase() === expectedWord.toLowerCase()
+      updateScore(expectedWord, isCorrect)
+    }
 
     setInputWord('')
     setEnableInput(false)
@@ -154,6 +157,20 @@ export default function Lesson() {
     })
   }
 
+  const handleRepeatWord = () => {
+    //Check if correct
+    setCurrentWordIndex(currentWordIndex)
+    //TODO: hacky way of forcing the OutputWord to re-render
+    setOutputWordKey(outputWordKey + 1)
+    setInputWord('')
+    setEnableInput(false)
+    setIsSaved(false)
+  }
+
+  const handleSkipWord = () => {
+    handleSubmit(false)
+  }
+
   useEffect(() => {
     console.log('Setting lesson to params')
     if (!lessonsLoading) {
@@ -191,6 +208,7 @@ export default function Lesson() {
               variant='contained'
               color='primary'
               onClick={handleStartLesson}
+              disabled={lessonStarted}
             >
               Start
             </Button>
@@ -208,11 +226,32 @@ export default function Lesson() {
             <OutputWord
               wordString={words[currentWordIndex]}
               index={currentWordIndex}
+              key={outputWordKey}
             />
           )}
           <InputWord word={inputWord} />
         </Paper>
         <Keyboard onChange={handleKeyPressed} />
+        <Grid item>
+          <Button
+            variant='contained'
+            color='primary'
+            onClick={handleRepeatWord}
+            disabled={!lessonStarted || !enableInput}
+          >
+            Repeat
+          </Button>
+        </Grid>
+        <Grid item>
+          <Button
+            variant='contained'
+            color='primary'
+            onClick={handleSkipWord}
+            disabled={!lessonStarted || !enableInput}
+          >
+            Skip
+          </Button>
+        </Grid>
         <Grid item>
           <Button
             variant='contained'
