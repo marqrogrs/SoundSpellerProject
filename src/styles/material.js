@@ -77,4 +77,14 @@ export const useStyles = makeStyles((theme) => ({
   selectConstant: {
     fontWeight: 100,
   },
+  textbox: {
+    border: 0,
+    borderRadius: 3,
+    color: 'white',
+    height: 200,
+    padding: '0 30px',
+    display: 'flex',
+    alignContent: 'center',
+    justifyContent: 'center',
+  },
 }))

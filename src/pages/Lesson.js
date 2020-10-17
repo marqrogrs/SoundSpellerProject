@@ -14,19 +14,7 @@ import { useParams, useHistory } from 'react-router-dom'
 import { LessonContext } from '../providers/LessonProvider'
 import { playStartBells } from '../util/Audio'
 import { LEVELS } from '../util/constants'
-
-const useStyles = makeStyles({
-  textbox: {
-    border: 0,
-    borderRadius: 3,
-    color: 'white',
-    height: 200,
-    padding: '0 30px',
-    display: 'flex',
-    alignContent: 'center',
-    justifyContent: 'center',
-  },
-})
+import { useStyles } from '../styles/material'
 
 export default function Lesson() {
   const classes = useStyles()
@@ -199,7 +187,7 @@ export default function Lesson() {
         message='You have unsaved changes, are you sure you want to leave?'
         when={!isSaved}
       />
-      <Container maxWidth='sm'>
+      <Container maxWidth='md'>
         <Grid container spacing={2} direction='column'>
           <Grid item>
             <LevelPicker />
