@@ -2,6 +2,7 @@ import './App.css'
 import React from 'react'
 import Auth, { useAuth } from './hooks/useAuth'
 import CssBaseline from '@material-ui/core/CssBaseline'
+import { BrowserRouter as Router } from 'react-router-dom'
 
 import PublicRoutes from './routes/PublicRoutes'
 import PrivateRoutes from './routes/PrivateRoutes'
@@ -29,9 +30,11 @@ const App = (props) => {
     <>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Auth>
-          <RequireAuthentication />
-        </Auth>
+        <Router>
+          <Auth>
+            <RequireAuthentication />
+          </Auth>
+        </Router>
       </ThemeProvider>
     </>
   )
