@@ -1,12 +1,14 @@
 import { Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import React, { useEffect, useContext } from 'react'
+import React, { useEffect, useContext, useState, useRef } from 'react'
 import { LessonContext } from '../providers/LessonProvider'
 import {
   speakWord,
   playStartBells,
   speakPhoneme,
   SPEECH_RATE,
+  terminateAudio,
+  setPlayAudio,
 } from '../util/Audio'
 import { COMMON_PHONEMES } from '../util/constants'
 import { db } from '../firebase'
@@ -199,6 +201,11 @@ export default function OutputWord({ wordString, index }) {
         }
       })
   }, [wordString])
+
+  useEffect(() => {
+    setPlayAudio(true)
+    return terminateAudio
+  }, [])
 
   return (
     <>
