@@ -13,7 +13,7 @@ import EducatorLogin from '../pages/EducatorLogin'
 
 export default function PublicRoutes({ user }) {
   return (
-    <Router>
+    <>
       <AppBar user={user} />
       <Switch>
         <Route exact path='/'>
@@ -41,6 +41,6 @@ export default function PublicRoutes({ user }) {
           <Error />
         </Route>
       </Switch>
-    </Router>
+    </>
   )
 }
