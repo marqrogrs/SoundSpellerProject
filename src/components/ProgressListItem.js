@@ -35,7 +35,7 @@ export default function ProgressListItem({ lesson, progress, showButtons }) {
 
     // isCompleted is level 4 is complete
     const isCompleted = progress[LEVELS.length - 1].completed
-    
+
     if (isCompleted) {
       setStatus(<CheckCircleIcon color='primary' />)
     } else if (isInProgress) {
@@ -64,10 +64,14 @@ export default function ProgressListItem({ lesson, progress, showButtons }) {
     setTotalScore(total_score)
 
     const total_possible_score =
-      lesson.words.length * 5 +
-      lesson.words.length * 10 +
-      lesson.words.length * 15 +
-      lesson.words.length * 20
+      lesson.lesson_section === '1' // Only 3 levels
+        ? lesson.words.length * 5 +
+          lesson.words.length * 10 +
+          lesson.words.length * 15
+        : lesson.words.length * 5 +
+          lesson.words.length * 10 +
+          lesson.words.length * 15 +
+          lesson.words.length * 20
 
     setTotalPossibleScore(total_possible_score)
   }, [lesson, progress])
@@ -108,6 +112,7 @@ export default function ProgressListItem({ lesson, progress, showButtons }) {
                 </TableHead>
                 <TableBody>
                   {LEVELS.map((level, i) => {
+                    if (lesson.lesson_section === '1' && i === 3) return
                     const isCompleted = progress[i].completed
                     const isInProgress =
                       progress[i].completed_words > 0 && !isCompleted
