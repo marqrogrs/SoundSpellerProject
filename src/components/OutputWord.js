@@ -72,7 +72,7 @@ export default function OutputWord({ wordString, index }) {
       .get()
       .then(async (wordDoc) => {
         if (wordDoc.exists && currentLesson.lesson.lesson_section > 1) {
-          const { word, phonemes, graphemes, syllables } = wordDoc.data()
+          var { word, phonemes, graphemes, syllables } = wordDoc.data()
           console.log(word, phonemes, graphemes, syllables)
           switch (currentLesson.level) {
             case 0:
@@ -82,14 +82,32 @@ export default function OutputWord({ wordString, index }) {
                 let lastSyllableIndex = 0
                 let syllableInd = 0
                 for (const grapheme of graphemes) {
+                  console.log(grapheme)
                   if (phonemes[i]) {
-                    if (
-                      grapheme === 'E' &&
-                      !['EH', 'IY', 'IH'].includes(phonemes[i])
-                    ) {
-                      //Don't speak phoneme
-                    } else {
-                      await speakPhoneme(phonemes[i])
+                    // Handle special cases
+                    switch (grapheme) {
+                      case 'E':
+                        // Only speak phoneme if its NOT a silent E
+                        if (
+                          ['EH', 'IY', 'IH', 'ER', 'AH'].includes(phonemes[i])
+                        ) {
+                          await speakPhoneme(phonemes[i])
+                        }
+                        break
+                      case 'U':
+                        if (phonemes[i] === 'Y' && phonemes[i + 1] === 'UW') {
+                          await speakPhoneme(phonemes[i])
+                          await speakPhoneme(phonemes[i + 1])
+                          phonemes[i] = 'YUW'
+                          phonemes = phonemes
+                            .slice(0, i + 1)
+                            .concat(phonemes.slice(i + 2))
+                        } else {
+                          await speakPhoneme(phonemes[i])
+                        }
+                        break
+                      default:
+                        await speakPhoneme(phonemes[i])
                     }
                   }
                   const isEndOfSyllable =
@@ -98,9 +116,16 @@ export default function OutputWord({ wordString, index }) {
                       .slice(lastSyllableIndex, i + 1)
                       .join('')
                       .toLowerCase()
+                  console.log(
+                    isEndOfSyllable,
+                    graphemes
+                      .slice(lastSyllableIndex, i + 1)
+                      .join('')
+                      .toLowerCase()
+                  )
                   await renderKeyPress(grapheme.toLowerCase())
 
-                  if (isEndOfSyllable) {
+                  if ((currentLesson.level === 0) & isEndOfSyllable) {
                     lastSyllableIndex = i + 1
                     syllableInd++
                     simulateEvent.simulate(document.body, 'keydown', {
@@ -109,6 +134,12 @@ export default function OutputWord({ wordString, index }) {
                   }
                   i++
                 }
+                setTimeout(async () => {
+                  await playStartBells()
+                  simulateEvent.simulate(document.body, 'keydown', {
+                    key: 'esc',
+                  })
+                }, 500)
               })
               break
             case 2:

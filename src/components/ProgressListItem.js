@@ -28,12 +28,14 @@ export default function ProgressListItem({ lesson, progress, showButtons }) {
   const classes = useStyles()
 
   useEffect(() => {
-    console.log('using effect')
+    // isInProgress if at at least one level is completed or had >0 completed words
     const isInProgress = Object.values(progress).filter(
-      (p) => p.completed_words > 0
+      (p) => p.completed_words > 0 || p.completed
     )[0]
-    const isCompleted =
-      progress[LEVELS.length - 1].completed_words === lesson.words.length
+
+    // isCompleted is level 4 is complete
+    const isCompleted = progress[LEVELS.length - 1].completed
+    
     if (isCompleted) {
       setStatus(<CheckCircleIcon color='primary' />)
     } else if (isInProgress) {
@@ -106,8 +108,7 @@ export default function ProgressListItem({ lesson, progress, showButtons }) {
                 </TableHead>
                 <TableBody>
                   {LEVELS.map((level, i) => {
-                    const isCompleted =
-                      progress[i].completed_words === lesson.words.length
+                    const isCompleted = progress[i].completed
                     const isInProgress =
                       progress[i].completed_words > 0 && !isCompleted
 

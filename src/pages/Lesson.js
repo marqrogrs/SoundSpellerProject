@@ -14,19 +14,7 @@ import { useParams, useHistory } from 'react-router-dom'
 import { LessonContext } from '../providers/LessonProvider'
 import { playStartBells } from '../util/Audio'
 import { LEVELS } from '../util/constants'
-
-const useStyles = makeStyles({
-  textbox: {
-    border: 0,
-    borderRadius: 3,
-    color: 'white',
-    height: 200,
-    padding: '0 30px',
-    display: 'flex',
-    alignContent: 'center',
-    justifyContent: 'center',
-  },
-})
+import { useStyles } from '../styles/material'
 
 export default function Lesson() {
   const classes = useStyles()
@@ -52,12 +40,21 @@ export default function Lesson() {
   const params = useParams()
   const history = useHistory()
 
+  const previousLevelRef = useRef()
+
   const handleStartLesson = () => {
     setLessonStarted(true)
   }
 
   const handleSubmit = (checkScore = true) => {
+    if (checkScore) {
+      //Check if correct
+      const expectedWord = words[currentWordIndex]
+      const isCorrect = inputWord.toLowerCase() === expectedWord.toLowerCase()
+      updateScore(expectedWord, isCorrect)
+    }
     setProgress(currentWordIndex + 1)
+
     if (currentWordIndex < words.length - 1) {
       setCurrentWordIndex(currentWordIndex + 1)
     } else {
@@ -72,13 +69,6 @@ export default function Lesson() {
           history.push('/progress')
         }
       })
-    }
-
-    if (checkScore) {
-      //Check if correct
-      const expectedWord = words[currentWordIndex]
-      const isCorrect = inputWord.toLowerCase() === expectedWord.toLowerCase()
-      updateScore(expectedWord, isCorrect)
     }
 
     setInputWord('')
@@ -118,6 +108,7 @@ export default function Lesson() {
         }
         break
       case 'tab':
+        // Insert dashes for syllables
         const expectedWord = words[currentWordIndex]
         const cleanedWord = Array.from(inputWord).filter((char) => char !== ' ')
         setInputWord(cleanedWord.join(''))
@@ -179,10 +170,15 @@ export default function Lesson() {
     }
   }, [params, lessonsLoading])
 
+  const previousLevel = previousLevelRef.current
+
   useEffect(() => {
+    previousLevelRef.current = currentLessonLevel
+    const newLevel = previousLevel !== currentLessonLevel
     window.onbeforeunload = () => true
     if (!lessonsLoading && currentLesson) {
       const level = currentLessonLevel
+      newLevel && setLessonStarted(false)
       setWords(currentLesson.lesson.words)
       const start_word =
         currentLesson.progress[level].completed_words ===
@@ -199,7 +195,7 @@ export default function Lesson() {
         message='You have unsaved changes, are you sure you want to leave?'
         when={!isSaved}
       />
-      <Container maxWidth='sm'>
+      <Container maxWidth='md'>
         <Grid container spacing={2} direction='column'>
           <Grid item>
             <LevelPicker />
