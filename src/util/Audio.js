@@ -10,6 +10,7 @@ if ('speechSynthesis' in window) {
 
 //GLOBALS
 var SPEECH_RATE = 1.0
+var PLAY_AUDIO = true
 
 const getVoices = () => {
   return new Promise((resolve, reject) => {
@@ -26,6 +27,9 @@ const getVoices = () => {
 
 //TODO: pass in speechOn t/f
 export const speakWord = (word, firstWord = false) => {
+  if (!PLAY_AUDIO) {
+    return
+  }
   return new Promise((resolve, reject) => {
     synthesis.cancel()
 
@@ -55,6 +59,9 @@ export const speakWord = (word, firstWord = false) => {
 
 //TODO: 400 should vary based on speech speed ( i htink? )
 export const speakPhoneme = (phoneme) => {
+  if (!PLAY_AUDIO) {
+    return
+  }
   return new Promise((resolve, reject) => {
     const audioFile = phoneme.endsWith('.mp3') ? phoneme : PHONEMES[phoneme]
     const sound = new Audio(require(`../audio/phonemes/${audioFile}`))
@@ -112,6 +119,9 @@ export const changeSpeechSpeed = (speed) => {
 }
 
 export const playStartBells = () => {
+  if (!PLAY_AUDIO) {
+    return
+  }
   return new Promise((resolve, reject) => {
     const TINK = new Audio(tink)
     var numTinks = 0
@@ -127,6 +137,15 @@ export const playStartBells = () => {
       }, 400)
     })
   })
+}
+
+export const setPlayAudio = (should_play) => {
+  PLAY_AUDIO = should_play
+}
+
+export const terminateAudio = () => {
+  PLAY_AUDIO = false
+  synthesis.cancel()
 }
 
 export { SPEECH_RATE }
