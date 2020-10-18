@@ -54,6 +54,7 @@ const Auth = ({ children }) => {
       .signInWithEmailAndPassword(email, password)
       .then(() => {
         console.log('Signed in')
+        history.push('/')
       })
       .catch((error) => {
         console.log(error)
@@ -69,9 +70,10 @@ const Auth = ({ children }) => {
       if (error) {
         throw new Error(error)
       } else {
-        return auth
-          .signInWithCustomToken(token)
-          .then((u_name) => setUsername(u_name))
+        return auth.signInWithCustomToken(token).then((u_name) => {
+          setUsername(u_name)
+          history.push('/')
+        })
       }
     })
   }
@@ -82,7 +84,7 @@ const Auth = ({ children }) => {
       .signOut()
       .then(() => {
         console.log('Signed out')
-        // history.push('/')
+        history.push('/')
       })
       .catch((error) => {
         console.log(error)

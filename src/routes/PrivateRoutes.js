@@ -12,36 +12,34 @@ import UserProvider from '../providers/UserProvider'
 
 export default function PrivateRoutes({ user, isEducator }) {
   return (
-    <Router>
-      <UserProvider>
-        <LessonProvider>
-          <AppBar user={user} />
-          <Switch>
-            <Route exact path='/'>
-              <Home />
-            </Route>
-            <Route exact path='/lessons'>
-              <Lessons />
-            </Route>
-            <Route path='/lessons/:lesson' children={<Lesson />} />
-            <Route exact path='/progress'>
-              <Progress />
-            </Route>
-            {isEducator && (
-              <>
-                <Route exact path='/students'>
-                  <Students />
-                </Route>
-                <Route path='/students/:student' children={<Progress />} />
-              </>
-            )}
+    <UserProvider>
+      <LessonProvider>
+        <AppBar user={user} />
+        <Switch>
+          <Route exact path='/'>
+            <Home />
+          </Route>
+          <Route exact path='/lessons'>
+            <Lessons />
+          </Route>
+          <Route path='/lessons/:lesson' children={<Lesson />} />
+          <Route exact path='/progress'>
+            <Progress />
+          </Route>
+          {isEducator && (
+            <>
+              <Route exact path='/students'>
+                <Students />
+              </Route>
+              <Route path='/students/:student' children={<Progress />} />
+            </>
+          )}
 
-            <Route>
-              <Error />
-            </Route>
-          </Switch>
-        </LessonProvider>
-      </UserProvider>
-    </Router>
+          <Route>
+            <Error />
+          </Route>
+        </Switch>
+      </LessonProvider>
+    </UserProvider>
   )
 }
