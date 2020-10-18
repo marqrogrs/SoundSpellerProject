@@ -92,15 +92,26 @@ const LessonProvider = ({ children }) => {
 
   const setProgress = (completed_words) => {
     var { progress, level } = currentLesson
-    progress[level].completed_words = completed_words
-    progress[level].completed =
-      completed_words === currentLesson.lesson.words.length
-    if (
-      progress[level].completed &&
-      progress[level].score > progress[level].high_score
-    ) {
-      progress[level].high_score = progress[level].score
+    const total_words = currentLesson.lesson.words.length
+    const justFinishedLevel = completed_words === total_words
+    // Set completed flag
+    progress[level].completed = progress[level].completed
+      ? true
+      : justFinishedLevel
+    // Update completed words
+    // If level has been completed, we switch back to 0
+    progress[level].completed_words = justFinishedLevel ? 0 : completed_words
+
+    if (justFinishedLevel) {
+      // Update high score
+      progress[level].high_score =
+        progress[level].score > progress[level].high_score
+          ? progress[level].score
+          : progress[level].high_score
+
+      progress[level].score = 0
     }
+
     updateCurrentLesson({ progress })
   }
 

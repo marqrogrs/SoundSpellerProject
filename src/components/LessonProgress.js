@@ -7,10 +7,14 @@ export default function LessonProgress({ currentWordIndex }) {
   const [value, setValue] = useState(0)
   useEffect(() => {
     if (currentLesson) {
-      const { level, progress, lesson } = currentLesson
-      const { completed_words } = progress[level]
-      const total_words = lesson.words.length
-      setValue(Math.round((parseInt(completed_words) / total_words) * 100))
+      if (currentWordIndex === 0) {
+        setValue(0)
+      } else {
+        const { level, progress, lesson } = currentLesson
+        const { completed_words } = progress[level]
+        const total_words = lesson.words.length
+        setValue(Math.round((parseInt(completed_words) / total_words) * 100))
+      }
     }
   }, [currentLesson, currentWordIndex])
   return (

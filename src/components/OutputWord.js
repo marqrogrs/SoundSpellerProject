@@ -88,7 +88,9 @@ export default function OutputWord({ wordString, index }) {
                     switch (grapheme) {
                       case 'E':
                         // Only speak phoneme if its NOT a silent E
-                        if (['EH', 'IY', 'IH', 'ER', 'AH'].includes(phonemes[i])) {
+                        if (
+                          ['EH', 'IY', 'IH', 'ER', 'AH'].includes(phonemes[i])
+                        ) {
                           await speakPhoneme(phonemes[i])
                         }
                         break
@@ -123,7 +125,7 @@ export default function OutputWord({ wordString, index }) {
                   )
                   await renderKeyPress(grapheme.toLowerCase())
 
-                  if (isEndOfSyllable) {
+                  if ((currentLesson.level === 0) & isEndOfSyllable) {
                     lastSyllableIndex = i + 1
                     syllableInd++
                     simulateEvent.simulate(document.body, 'keydown', {
@@ -132,6 +134,12 @@ export default function OutputWord({ wordString, index }) {
                   }
                   i++
                 }
+                setTimeout(async () => {
+                  await playStartBells()
+                  simulateEvent.simulate(document.body, 'keydown', {
+                    key: 'esc',
+                  })
+                }, 500)
               })
               break
             case 2:
