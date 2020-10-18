@@ -27,28 +27,33 @@ export default function LevelPicker() {
     <>
       <Typography>Pick a level:</Typography>
       <ButtonGroup color='primary' aria-label='outlined primary button group'>
-        {LEVELS.map((l, index) => {
-          var levelUnlocked = false
+        {currentLesson &&
+          LEVELS.map((l, index) => {
+            if (currentLesson.lesson.lesson_section === '1' && index === 3)
+              return
+            var levelUnlocked = false
 
-          if (currentLessonProgress) {
-            if (index === 0) {
-              levelUnlocked = true
-            } else {
-              levelUnlocked = currentLessonProgress[index - 1].completed
+            if (currentLessonProgress) {
+              if (index === 0) {
+                levelUnlocked = true
+              } else {
+                levelUnlocked = currentLessonProgress[index - 1].completed
+              }
             }
-          }
 
-          return (
-            <Button
-              key={index}
-              disabled={!levelUnlocked}
-              variant={currentLessonLevel === index ? `contained` : `outlined`}
-              onClick={handleSelectLevel}
-            >
-              {index + 1}
-            </Button>
-          )
-        })}
+            return (
+              <Button
+                key={index}
+                disabled={!levelUnlocked}
+                variant={
+                  currentLessonLevel === index ? `contained` : `outlined`
+                }
+                onClick={handleSelectLevel}
+              >
+                {index + 1}
+              </Button>
+            )
+          })}
       </ButtonGroup>
     </>
   )

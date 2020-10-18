@@ -22,34 +22,56 @@ const LessonProvider = ({ children }) => {
     const selectedLesson = lessons.filter((lesson) => {
       return lesson.lesson_id === lesson_id
     })[0]
-
-    const initProgress = {
-      0: {
-        score: 0,
-        completed_words: 0,
-        high_score: 0,
-        completed: false,
-      },
-      1: {
-        score: 0,
-        completed_words: 0,
-        high_score: 0,
-        completed: false,
-      },
-      2: {
-        score: 0,
-        completed_words: 0,
-        high_score: 0,
-        completed: false,
-      },
-      3: {
-        score: 0,
-        completed_words: 0,
-        high_score: 0,
-        completed: false,
-      },
-    }
     const { lesson_section } = selectedLesson
+
+    const initProgress =
+      lesson_section === '1' // Only three levels
+        ? {
+            0: {
+              score: 0,
+              completed_words: 0,
+              high_score: 0,
+              completed: false,
+            },
+            1: {
+              score: 0,
+              completed_words: 0,
+              high_score: 0,
+              completed: false,
+            },
+            2: {
+              score: 0,
+              completed_words: 0,
+              high_score: 0,
+              completed: false,
+            },
+          }
+        : {
+            0: {
+              score: 0,
+              completed_words: 0,
+              high_score: 0,
+              completed: false,
+            },
+            1: {
+              score: 0,
+              completed_words: 0,
+              high_score: 0,
+              completed: false,
+            },
+            2: {
+              score: 0,
+              completed_words: 0,
+              high_score: 0,
+              completed: false,
+            },
+            3: {
+              score: 0,
+              completed_words: 0,
+              high_score: 0,
+              completed: false,
+            },
+          }
     const lesson_subsection = getLessonSubsection(selectedLesson)
     const currentLessonProgressObj =
       userData.progress[lesson_section] &&
