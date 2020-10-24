@@ -68,6 +68,60 @@ export default function OutputWord({ wordString, index }) {
     })
   }
 
+  // const phonemePause = () => {
+  //   return new Promise((resolve, reject) => {
+  //     setTimeout(() => {
+  //       resolve()
+  //     }, 600 / SPEECH_RATE)
+  //   })
+  // }
+
+  const getGraphemesInSyllable = (
+    syllable,
+    graphemes,
+    lastKnownSyllableIndex
+  ) => {
+    let i = lastKnownSyllableIndex
+    var graphemesInSyllable = []
+    while (graphemesInSyllable.join('').toLowerCase() !== syllable) {
+      graphemesInSyllable.push(graphemes[i])
+      i++
+    }
+    return { graphemesInSyllable, index: i }
+  }
+
+  const getWordDataBySyllable = ({ syllables, graphemes, phonemes }) => {
+    //Break up the data by syllable
+    var wordDataBySyllable = []
+    let lastSyllableIndexGrapheme = 0
+    let lastSyllableIndexPhoneme = 0
+
+    for (let i = 0; i < syllables.length; ++i) {
+      //Get graphemes in syllable
+      var { graphemesInSyllable, index } = getGraphemesInSyllable(
+        syllables[i],
+        graphemes,
+        lastSyllableIndexGrapheme
+      )
+      lastSyllableIndexGrapheme = index
+
+      //Get phonemes in syllable
+      var syllableStart = lastSyllableIndexPhoneme
+      var syllableEnd =
+        i === syllables.length - 1
+          ? phonemes.length
+          : phonemes.indexOf('-', lastSyllableIndexPhoneme)
+      var phonemesInSyllable = phonemes.slice(syllableStart, syllableEnd)
+
+      lastSyllableIndexPhoneme = syllableEnd + 1
+      wordDataBySyllable.push({
+        phonemesInSyllable,
+        graphemesInSyllable,
+      })
+    }
+    return wordDataBySyllable
+  }
+
   useEffect(() => {
     db.collection('words')
       .doc(wordString)
@@ -75,67 +129,57 @@ export default function OutputWord({ wordString, index }) {
       .then(async (wordDoc) => {
         if (wordDoc.exists && currentLesson.lesson.lesson_section > 1) {
           var { word, phonemes, graphemes, syllables } = wordDoc.data()
+          // xample:  ["D", "EY", "-", "T", "AH"]
+          // ["D", "A", "T", "A"]
+          // ["da", "ta"]
           console.log(word, phonemes, graphemes, syllables)
           switch (currentLesson.level) {
             case 0:
             case 1:
               speakWord(word, index === 0).then(async () => {
-                let i = 0
-                let lastSyllableIndex = 0
-                let syllableInd = 0
-                for (const grapheme of graphemes) {
-                  console.log(grapheme)
-                  if (phonemes[i]) {
-                    // Handle special cases
-                    switch (grapheme) {
-                      case 'E':
-                        // Only speak phoneme if its NOT a silent E
-                        if (
-                          ['EH', 'IY', 'IH', 'ER', 'AH'].includes(phonemes[i])
-                        ) {
-                          await speakPhoneme(phonemes[i])
-                        }
-                        break
-                      case 'U':
-                        if (phonemes[i] === 'Y' && phonemes[i + 1] === 'UW') {
-                          await speakPhoneme(phonemes[i])
-                          await speakPhoneme(phonemes[i + 1])
-                          phonemes[i] = 'YUW'
-                          phonemes = phonemes
-                            .slice(0, i + 1)
-                            .concat(phonemes.slice(i + 2))
-                        } else {
-                          await speakPhoneme(phonemes[i])
-                        }
-                        break
-                      default:
-                        await speakPhoneme(phonemes[i])
-                    }
-                  }
-                  const isEndOfSyllable =
-                    syllables[syllableInd] ===
-                    graphemes
-                      .slice(lastSyllableIndex, i + 1)
-                      .join('')
-                      .toLowerCase()
-                  console.log(
-                    isEndOfSyllable,
-                    graphemes
-                      .slice(lastSyllableIndex, i + 1)
-                      .join('')
-                      .toLowerCase()
-                  )
-                  await renderKeyPress(grapheme.toLowerCase())
+                var wordDataBySyllable = getWordDataBySyllable({
+                  phonemes,
+                  graphemes,
+                  syllables,
+                })
 
-                  if ((currentLesson.level === 0) & isEndOfSyllable) {
-                    lastSyllableIndex = i + 1
-                    syllableInd++
+                for (const syllable of wordDataBySyllable) {
+                  let i = 0
+                  for (const grapheme of syllable.graphemesInSyllable) {
+                    if (syllable.phonemesInSyllable[i]) {
+                      // Handle special cases
+                      switch (grapheme) {
+                        case 'U':
+                          if (
+                            syllable.phonemesInSyllable[i] === 'Y' &&
+                            syllable.phonemesInSyllable[i + 1] === 'UW'
+                          ) {
+                            await speakPhoneme(syllable.phonemesInSyllable[i])
+                            await speakPhoneme(
+                              syllable.phonemesInSyllable[i + 1]
+                            )
+                            syllable.phonemesInSyllable[i] = 'YUW'
+                            syllable.phonemesInSyllable = syllable.phonemesInSyllable
+                              .slice(0, i + 1)
+                              .concat(syllable.phonemesInSyllable.slice(i + 2))
+                          } else {
+                            await speakPhoneme(syllable.phonemesInSyllable[i])
+                          }
+                          break
+                        default:
+                          await speakPhoneme(syllable.phonemesInSyllable[i])
+                      }
+                    }
+                    await renderKeyPress(grapheme.toLowerCase())
+                    i++
+                  }
+                  if (currentLesson.level === 0) {
                     simulateEvent.simulate(document.body, 'keydown', {
                       key: 'tab',
                     })
                   }
-                  i++
                 }
+
                 setTimeout(async () => {
                   await playStartBells()
                   simulateEvent.simulate(document.body, 'keydown', {
