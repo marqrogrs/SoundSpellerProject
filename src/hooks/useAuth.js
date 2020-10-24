@@ -41,6 +41,7 @@ const Auth = ({ children }) => {
             .doc(userCred.user.uid)
             .set({ email: userCred.user.email, progress: {} })
         )
+        .then(() => history.push('/'))
         .catch((error) => {
           console.log(error)
           // triggerErrorAlert(prettyPrintErrorCode(error.errorCode))
