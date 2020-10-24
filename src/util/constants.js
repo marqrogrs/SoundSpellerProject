@@ -142,3 +142,30 @@ export const COMMON_PHONEMES = {
   y: 'y.mp3',
   z: 'z.mp3',
 }
+
+export const SUCCESS_MESSAGES = [
+  'Yippee!',
+  'Woohoo!',
+  'Nice!',
+  'Way to go!',
+  'Good job!',
+  'Hip hip hooray!',
+  'Awesome work!',
+  'Nice one!',
+  'Sweet!',
+  'Keep it up!',
+  'Wow!',
+  "You're doing great!",
+]
+
+export const FAILURE_MESSAGES = [
+  'Uh oh!',
+  'Not quite...',
+  'Almost',
+  'Oops!',
+  'Maybe next time.',
+  'Hmm... not quite.',
+  'Maybe next time...',
+  'Almost got it.',
+  'Oh no!',
+]

@@ -13,10 +13,14 @@ import ButtonGroup from '@material-ui/core/ButtonGroup'
 import { useParams, useHistory } from 'react-router-dom'
 import { LessonContext } from '../providers/LessonProvider'
 import { playStartBells } from '../util/Audio'
-import { LEVELS } from '../util/constants'
+import { LEVELS, SUCCESS_MESSAGES, FAILURE_MESSAGES } from '../util/constants'
 import { useStyles } from '../styles/material'
 
+import { useSnackbar } from 'notistack'
+var _ = require('lodash')
+
 export default function Lesson() {
+  const { enqueueSnackbar } = useSnackbar()
   const classes = useStyles()
   const {
     saveProgress,
@@ -46,11 +50,20 @@ export default function Lesson() {
     setLessonStarted(true)
   }
 
+  const renderScoreSnackbar = (success) => {
+    const message = success
+      ? `${_.sample(SUCCESS_MESSAGES)} +${currentLessonLevel + 1 * 5} points`
+      : _.sample(FAILURE_MESSAGES)
+    const variant = success ? 'success' : 'error'
+    enqueueSnackbar(message, { variant })
+  }
+
   const handleSubmit = (checkScore = true) => {
     if (checkScore) {
       //Check if correct
       const expectedWord = words[currentWordIndex]
       const isCorrect = inputWord.toLowerCase() === expectedWord.toLowerCase()
+      renderScoreSnackbar(isCorrect)
       updateScore(expectedWord, isCorrect)
     }
     setProgress(currentWordIndex + 1)
