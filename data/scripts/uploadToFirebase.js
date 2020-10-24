@@ -66,21 +66,17 @@ const createPhonemeDocs = () => {
 }
 
 const createWordDocs = () => {
-  var startingIndex = null
+  var startingIndex = 48836
   words.forEach((wordItem, i) => {
-    if (wordItem.word === 'GNOMIC') {
-      console.log('Starting from here')
-      startingIndex = i
-    }
     if (startingIndex && i > startingIndex) {
       console.log(`Uploading ${i}: ${wordItem.word}`)
       const word = wordItem.word
-      const graphemes = wordItem['grap'] ? wordItem['grap'].split(',') : ''
-      const syllables = wordItem['syll'] ? wordItem['syll'].split('.') : ''
-      var phonemes = wordItem['phon'] ? wordItem['phon'].split(/\s|-/) : ''
-      // console.log(word)
+      // const graphemes = wordItem['grap'] ? wordItem['grap'].split(',') : ''
+      // const syllables = wordItem['syll'] ? wordItem['syll'].split('.') : ''
+      var phonemes = wordItem['phon'].replace(/-/gi, ' - ')
+      phonemes = phonemes.split(' ')
       if (word) {
-        wordCollection.doc(word).set({ word, phonemes, graphemes, syllables })
+        wordCollection.doc(word).set({ phonemes }, { merge: true })
       }
     }
   })
@@ -112,8 +108,9 @@ const createLessonDocs = () => {
 }
 
 // createPhonemeDocs()
+console.log('Starting')
 createWordDocs()
-createLessonDocs()
+// createLessonDocs()
 // console.log(batch)
 
 // batch.commit()

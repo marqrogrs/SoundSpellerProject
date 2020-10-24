@@ -8,6 +8,7 @@ import PublicRoutes from './routes/PublicRoutes'
 import PrivateRoutes from './routes/PrivateRoutes'
 
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
+import { SnackbarProvider } from 'notistack'
 
 const theme = createMuiTheme({
   palette: {
@@ -29,12 +30,14 @@ const App = (props) => {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Router>
-          <Auth>
-            <RequireAuthentication />
-          </Auth>
-        </Router>
+        <SnackbarProvider maxSnack={3}>
+          <CssBaseline />
+          <Router>
+            <Auth>
+              <RequireAuthentication />
+            </Auth>
+          </Router>
+        </SnackbarProvider>
       </ThemeProvider>
     </>
   )
