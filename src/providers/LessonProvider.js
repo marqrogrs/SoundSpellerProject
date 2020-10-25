@@ -5,6 +5,7 @@ import { db } from '../firebase'
 import { UserContext } from './UserProvider'
 import { getLessonSubsection } from '../util/functions'
 import { LEVELS } from '../util/constants'
+var _ = require('lodash')
 
 const LessonContext = React.createContext({})
 
@@ -161,7 +162,13 @@ const LessonProvider = ({ children }) => {
       db.collection('lessons')
         .get()
         .then((lessonDocs) => {
-          const lessonData = lessonDocs.docs.map((doc) => doc.data())
+          var lessonData = lessonDocs.docs.map((doc) => doc.data())
+          lessonData = _.sortBy(lessonData, [
+            function (doc) {
+              return parseInt(doc.lesson_id)
+            },
+          ])
+
           setLessons(lessonData)
           setLessonsLoading(false)
         })

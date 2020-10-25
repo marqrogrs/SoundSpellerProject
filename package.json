@@ -19,6 +19,7 @@
     "apollo-link-context": "^1.0.20",
     "dotenv": "^8.2.0",
     "firebase": "^7.21.0",
+    "formik": "^2.2.1",
     "graphql": "^15.3.0",
     "lodash": "^4.17.20",
     "mongodb": "^3.5.9",

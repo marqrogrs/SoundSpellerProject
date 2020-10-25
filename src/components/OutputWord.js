@@ -227,21 +227,20 @@ export default function OutputWord({ wordString, index }) {
               }
               break
             case 2:
-            case 3:
               //TODO: how do we handle level 4 ?
               for (const phoneme of phonemes) {
                 await speakPhoneme(phoneme)
               }
-              setTimeout(async () => {
-                await playStartBells()
-                simulateEvent.simulate(document.body, 'keydown', {
-                  key: 'esc',
-                })
-              }, 1000)
               break
             default:
               return
           }
+          setTimeout(async () => {
+            await playStartBells()
+            simulateEvent.simulate(document.body, 'keydown', {
+              key: 'esc',
+            })
+          }, 1000)
         }
       })
   }, [wordString])
