@@ -5,6 +5,7 @@ import {
   prettyPrintErrorCode,
   triggerEmailVerificationAlert,
   triggerEmailVerificationAlert2,
+  triggerResetPasswordAlert
 } from '../util/alerts'
 import { auth, authenticateStudent, db } from '../firebase'
 
@@ -29,7 +30,7 @@ const Auth = ({ children }) => {
           user.metadata.creationTime === user.metadata.lastSignInTime
         if (user.email !== null && !user.emailVerified) {
           if (firstSignIn) {
-            console.log("First sign in!")
+            console.log('First sign in!')
             auth.currentUser
               .sendEmailVerification()
               .then(() => triggerEmailVerificationAlert(user.email))
@@ -112,11 +113,16 @@ const Auth = ({ children }) => {
       })
   }
 
+  const resetPassword = () => {
+    triggerResetPasswordAlert()
+  }
+
   const context = {
     user,
     isEducator,
     authLoaded,
     username,
+    resetPassword,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     signInStudent,

@@ -45,3 +45,24 @@ export const triggerEmailVerificationAlert2 = (email) => {
     return
   })
 }
+
+export const triggerResetPasswordAlert = () => {
+  return swal('Please enter email: ', { content: 'input' }).then((email) => {
+    auth
+      .sendPasswordResetEmail(email)
+      .then(() => {
+        swal(
+          `Email sent!`,
+          `Follow the link sent to ${email} to reset password`,
+          'success'
+        )
+      })
+      .catch((err) => {
+        swal(
+          'Oops!',
+          'Unable to locate a user with this email address. If you continue seeing this error, please contact help@scandy.co',
+          'error'
+        )
+      })
+  })
+}

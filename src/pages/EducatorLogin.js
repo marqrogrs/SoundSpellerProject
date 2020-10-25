@@ -139,6 +139,15 @@ export default function EducatorLogin() {
               Sign Up
             </Button>
           </Grid>
+          {!isSignUp && (
+            <Button
+              color='primary'
+              onClick={auth.resetPassword}
+            >
+              Reset Password
+            </Button>
+          )}
+
           {isSignUp && (
             <div
               className={classes.textButton}
