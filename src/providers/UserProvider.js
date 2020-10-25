@@ -48,6 +48,8 @@ export default function UserProvider({ children }) {
             0
           )
           setTotalScore(total_score)
+          setUserDataLoaded(true)
+
         })
         if (isEducator) {
           unsubscribeClasses = userDoc
@@ -65,7 +67,6 @@ export default function UserProvider({ children }) {
         console.log('No user')
         // history.push('/')
       }
-      setUserDataLoaded(true)
       return () => {
         unsubscribeUser()
         unsubscribeClasses()
@@ -78,7 +79,13 @@ export default function UserProvider({ children }) {
   }
   return (
     <UserContext.Provider
-      value={{ userData, addNewStudent, classrooms, totalScore }}
+      value={{
+        userData,
+        userDataLoaded,
+        addNewStudent,
+        classrooms,
+        totalScore,
+      }}
     >
       {children}
     </UserContext.Provider>
