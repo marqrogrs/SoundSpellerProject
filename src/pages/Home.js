@@ -1,13 +1,13 @@
 import * as React from 'react'
 import Container from '@material-ui/core/Container'
 
-import LessonList from '../components/LessonList'
+import Progress from '../pages/Progress'
 
 const Home = () => {
   console.log("Hello from Home")
   return (
-    <Container maxWidth='sm'>
-      <LessonList />
+    <Container maxWidth='md'>
+      <Progress />
     </Container>
   )
 }
