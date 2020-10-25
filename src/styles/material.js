@@ -39,7 +39,7 @@ export const useStyles = makeStyles((theme) => ({
     ...theme.typography.button,
     cursor: 'pointer',
     '&:hover': {
-      color: theme.palette.secondary.main,
+      color: theme.palette.primary.light,
     },
   },
   alert: {

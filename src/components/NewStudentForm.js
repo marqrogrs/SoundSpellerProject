@@ -122,7 +122,7 @@ export default function NewStudentForm() {
                 name='newClass'
                 label='New Classroom'
                 variant='outlined'
-                color='secondary'
+                color='primary'
                 error={formik.errors.newClass}
                 helperText={formik.errors.newClass}
                 value={formik.values.newClass}
@@ -133,7 +133,7 @@ export default function NewStudentForm() {
               name='username'
               label='Username'
               variant='outlined'
-              color='secondary'
+              color='primary'
               error={formik.errors.username}
               helperText={formik.errors.username}
               value={formik.values.username}
@@ -143,7 +143,7 @@ export default function NewStudentForm() {
               name='password'
               label='Password'
               variant='outlined'
-              color='secondary'
+              color='primary'
               type='password'
               error={formik.errors.password}
               helperText={formik.errors.password}
@@ -154,7 +154,7 @@ export default function NewStudentForm() {
               name='confirmPassword'
               label='Confirm Password'
               variant='outlined'
-              color='secondary'
+              color='primary'
               type='password'
               error={formik.errors.confirmPassword}
               helperText={formik.errors.confirmPassword}

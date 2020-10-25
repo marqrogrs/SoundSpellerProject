@@ -8,6 +8,7 @@ import { Typography } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 
 import { useStyles } from '../styles/material'
+import { useFormik } from 'formik'
 
 export default function EducatorLogin() {
   const classes = useStyles()
@@ -50,6 +51,48 @@ export default function EducatorLogin() {
     }
   }
 
+  const validate = (values) => {
+    const errors = {}
+    const { email, password, confirmPassword } = values
+
+    if (!email) {
+      errors.email = 'Required'
+    }
+    if (!password) {
+      errors.password = 'Required'
+    } else if (password.length < 6) {
+      errors.password = 'Password must be 6+ characters'
+    }
+    if (isSignUp) {
+      if (!confirmPassword) {
+        errors.confirmPassword = 'Required'
+      } else if (password !== confirmPassword) {
+        errors.confirmPassword = 'Confirmation does not match'
+      }
+    }
+
+    console.log(errors)
+    return errors
+  }
+
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+      confirmPassword: '',
+    },
+    validate,
+    onSubmit: (values) => {
+      const { email, password } = values
+      if (!isSignUp) {
+        setIsSignUp(true)
+      } else {
+        console.log("Creating user")
+        auth.createUserWithEmailAndPassword(email, password)
+      }
+    },
+  })
+
   return (
     <div>
       <form>
@@ -68,9 +111,11 @@ export default function EducatorLogin() {
               name='email'
               label='Email'
               variant='outlined'
-              color='secondary'
-              value={email}
-              onChange={handleChange}
+              color='primary'
+              value={formik.values.email}
+              error={formik.errors.email}
+              helperText={formik.errors.email}
+              onChange={formik.handleChange}
             ></TextField>
           </Grid>
           <Grid item>
@@ -78,10 +123,12 @@ export default function EducatorLogin() {
               name='password'
               label='Password'
               variant='outlined'
-              color='secondary'
+              color='primary'
               type='password'
-              value={password}
-              onChange={handleChange}
+              value={formik.values.password}
+              error={formik.errors.password}
+              helperText={formik.errors.password}
+              onChange={formik.handleChange}
             ></TextField>
           </Grid>
           {isSignUp && (
@@ -90,10 +137,12 @@ export default function EducatorLogin() {
                 name='confirmPassword'
                 label='Confirm Password'
                 variant='outlined'
-                color='secondary'
+                color='primary'
                 type='password'
-                value={confirmPassword}
-                onChange={handleChange}
+                value={formik.values.confirmPassword}
+                error={formik.errors.confirmPassword}
+                helperText={formik.errors.confirmPassword}
+                onChange={formik.handleChange}
               ></TextField>
             </Grid>
           )}
@@ -101,8 +150,8 @@ export default function EducatorLogin() {
             <Grid item>
               <Button
                 variant='contained'
-                color='secondary'
-                onClick={handleSignIn}
+                color='primary'
+                onClick={formik.handleSubmit}
               >
                 Sign In
               </Button>
@@ -112,8 +161,8 @@ export default function EducatorLogin() {
           <Grid item>
             <Button
               variant='contained'
-              color='secondary'
-              onClick={handleSignUp}
+              color='primary'
+              onClick={formik.handleSubmit}
             >
               Sign Up
             </Button>

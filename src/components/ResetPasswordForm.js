@@ -59,7 +59,7 @@ export default function ResetPasswordForm({ student, open, setOpen }) {
               name='password'
               label='Password'
               variant='outlined'
-              color='secondary'
+              color='primary'
               type='password'
               value={password}
               onChange={handleChange}
@@ -68,7 +68,7 @@ export default function ResetPasswordForm({ student, open, setOpen }) {
               name='confirmPassword'
               label='Confirm Password'
               variant='outlined'
-              color='secondary'
+              color='primary'
               type='password'
               value={confirmPassword}
               onChange={handleChange}

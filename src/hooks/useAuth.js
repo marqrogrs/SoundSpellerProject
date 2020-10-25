@@ -44,7 +44,7 @@ const Auth = ({ children }) => {
         .then(() => history.push('/'))
         .catch((error) => {
           console.log(error)
-          // triggerErrorAlert(prettyPrintErrorCode(error.errorCode))
+          triggerErrorAlert(error.message || error)
         })
     }
   }
