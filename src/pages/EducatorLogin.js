@@ -60,7 +60,7 @@ export default function EducatorLogin() {
     }
     if (!password) {
       errors.password = 'Required'
-    } else if (password.length < 6) {
+    } else if (isSignUp && password.length < 6) {
       errors.password = 'Password must be 6+ characters'
     }
     if (isSignUp) {
