@@ -42,7 +42,7 @@ export default function ProgressListItem({ lesson, progress, showButtons }) {
       setStatus('In progress')
       setButton(
         <Link to={`lessons/${lesson.lesson_id}`}>
-          <Button color='secondary' variant='contained'>
+          <Button color='primary' variant='contained'>
             Continue
           </Button>
         </Link>
@@ -51,7 +51,7 @@ export default function ProgressListItem({ lesson, progress, showButtons }) {
       setStatus('Not started')
       setButton(
         <Link to={`lessons/${lesson.lesson_id}`}>
-          <Button color='secondary' variant='outlined'>
+          <Button color='primary' variant='outlined'>
             Start
           </Button>
         </Link>

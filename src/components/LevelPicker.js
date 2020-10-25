@@ -26,7 +26,7 @@ export default function LevelPicker() {
   return (
     <>
       <Typography>Pick a level:</Typography>
-      <ButtonGroup color='primary' aria-label='outlined primary button group'>
+      <ButtonGroup color='primary'>
         {currentLesson &&
           LEVELS.map((l, index) => {
             if (currentLesson.lesson.lesson_section === '1' && index === 3)

@@ -39,7 +39,7 @@ export const useStyles = makeStyles((theme) => ({
     ...theme.typography.button,
     cursor: 'pointer',
     '&:hover': {
-      color: theme.palette.primary.main,
+      color: theme.palette.secondary.main,
     },
   },
   alert: {
@@ -86,5 +86,13 @@ export const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignContent: 'center',
     justifyContent: 'center',
+  },
+  welcomeBanner: {
+    padding: theme.spacing(3),
+    margin: theme.spacing(3),
+    background: `linear-gradient(15deg, ${theme.palette.primary.main} 30%, ${theme.palette.primary.dark} 90%)`,
+    '& > *': {
+      color: theme.palette.secondary.light,
+    },
   },
 }))
