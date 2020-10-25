@@ -75,7 +75,7 @@ export default function ClassListItem({ classroom }) {
                           </TableCell>
                           <TableCell>
                             <Button
-                              color='secondary'
+                              color='primary'
                               onClick={() => handleResetPassword(student)}
                             >
                               Reset Password

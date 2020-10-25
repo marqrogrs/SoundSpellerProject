@@ -14,54 +14,68 @@ import Add from '@material-ui/icons/Add'
 import TextField from '@material-ui/core/TextField'
 
 import { useStyles } from '../styles/material'
+import { useFormik } from 'formik'
 
 export default function NewStudentForm() {
   const classes = useStyles()
   const [open, setOpen] = useState(false)
-  const [classroom, setClassroom] = useState('')
-  const [newClass, setNewClass] = useState('')
-  const [createNewClassroom, setCreateNewClassroom] = useState(false)
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-
+  const [addStudentLoading, setAddStudentLoading] = useState(false)
   const { addNewStudent, classrooms } = useContext(UserContext)
 
-  const handleChange = (e) => {
-    const { name, value } = e.target
-    switch (name) {
-      case 'classroom':
-        if (value === 'newClass') {
-          setCreateNewClassroom(true)
-        } else {
-          setCreateNewClassroom(false)
-        }
-        setClassroom(value)
-        break
-      case 'newClass':
-        setNewClass(value)
-        break
-      case 'username':
-        setUsername(value)
-        break
-      case 'password':
-        setPassword(value)
-        break
-      case 'confirmPassword':
-        setConfirmPassword(value)
-        break
-      default:
-        break
+  const validate = (values) => {
+    const errors = {}
+    const { username, password, classroom, newClass, confirmPassword } = values
+    if (!username) {
+      errors.username = 'Required'
+    } else if (!/^[a-z0-9]+$/gi.test(username)) {
+      errors.username = 'Username can only contain letters and numbers'
     }
+
+    if (!classroom && !newClass) {
+      errors.newClass = 'Required'
+    } else if (newClass && !/^[a-z0-9]+$/gi.test(newClass)) {
+      errors.newClass = 'Class name can only contain letters and numbers'
+    } else if (newClass === 'newClass') {
+      errors.newClass = 'Invalid class name'
+    }
+
+    if (!password) {
+      errors.password = 'Required'
+    }
+    if (!confirmPassword) {
+      errors.confirmPassword = 'Required'
+    } else if (password !== confirmPassword) {
+      errors.confirmPassword = 'Confirmation does not match'
+    }
+    console.log(errors)
+    return errors
   }
 
-  const handleNewStudentClicked = () => {
-    //TODO: validate
-    const studentClassroom = createNewClassroom ? newClass : classroom
-    addNewStudent({ username, password, classroom: studentClassroom })
-      .then((res) => console.log(res))
-      .catch((e) => console.log(e))
-  }
+  const formik = useFormik({
+    initialValues: {
+      username: '',
+      classroom: '',
+      newClass: '',
+      password: '',
+      confirmPassword: '',
+    },
+    validate,
+    onSubmit: (values) => {
+      setAddStudentLoading(true)
+      const { classroom, newClass, username, password } = values
+      const studentClassroom = classroom === 'newClass' ? newClass : classroom
+      addNewStudent({
+        username,
+        password,
+        classroom: studentClassroom,
+      })
+        .then((res) => {
+          setAddStudentLoading(false)
+          setOpen(false)
+        })
+        .catch((e) => console.log(e))
+    },
+  })
 
   return (
     <>
@@ -91,8 +105,8 @@ export default function NewStudentForm() {
               <Select
                 name='classroom'
                 label='Class'
-                value={classroom}
-                onChange={handleChange}
+                value={formik.values.classroom}
+                onChange={formik.handleChange}
               >
                 <MenuItem value='newClass' className={classes.selectConstant}>
                   + New Class
@@ -103,14 +117,16 @@ export default function NewStudentForm() {
                   ))}
               </Select>
             </FormControl>
-            {createNewClassroom && (
+            {formik.values.classroom === 'newClass' && (
               <TextField
                 name='newClass'
                 label='New Classroom'
                 variant='outlined'
                 color='secondary'
-                value={newClass}
-                onChange={handleChange}
+                error={formik.errors.newClass}
+                helperText={formik.errors.newClass}
+                value={formik.values.newClass}
+                onChange={formik.handleChange}
               ></TextField>
             )}
             <TextField
@@ -118,8 +134,10 @@ export default function NewStudentForm() {
               label='Username'
               variant='outlined'
               color='secondary'
-              value={username}
-              onChange={handleChange}
+              error={formik.errors.username}
+              helperText={formik.errors.username}
+              value={formik.values.username}
+              onChange={formik.handleChange}
             ></TextField>
             <TextField
               name='password'
@@ -127,8 +145,10 @@ export default function NewStudentForm() {
               variant='outlined'
               color='secondary'
               type='password'
-              value={password}
-              onChange={handleChange}
+              error={formik.errors.password}
+              helperText={formik.errors.password}
+              value={formik.values.password}
+              onChange={formik.handleChange}
             ></TextField>
             <TextField
               name='confirmPassword'
@@ -136,13 +156,18 @@ export default function NewStudentForm() {
               variant='outlined'
               color='secondary'
               type='password'
-              value={confirmPassword}
-              onChange={handleChange}
+              error={formik.errors.confirmPassword}
+              helperText={formik.errors.confirmPassword}
+              value={formik.values.confirmPassword}
+              onChange={formik.handleChange}
             ></TextField>
             <Button
               variant='contained'
               color='secondary'
-              onClick={handleNewStudentClicked}
+              onClick={formik.handleSubmit}
+              disabled={
+                Object.keys(formik.errors).length > 0 || addStudentLoading
+              }
               startIcon={<Add />}
             >
               Add Student
