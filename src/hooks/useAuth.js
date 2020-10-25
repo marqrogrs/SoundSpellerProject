@@ -59,7 +59,7 @@ const Auth = ({ children }) => {
       })
       .catch((error) => {
         console.log(error)
-        // triggerErrorAlert(prettyPrintErrorCode(error.errorCode))
+        triggerErrorAlert(error.message || error)
       })
   }
 

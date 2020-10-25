@@ -14,41 +14,13 @@ export default function EducatorLogin() {
   const classes = useStyles()
   const history = useHistory()
   const [isSignUp, setIsSignUp] = useState(false)
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
 
   const auth = useAuth()
 
   const handleSignIn = () => {
     auth
-      .signInWithEmailAndPassword(email, password)
+      .signInWithEmailAndPassword(formik.values.email, formik.values.password)
       .then(() => history.push('/'))
-  }
-
-  const handleSignUp = () => {
-    if (!isSignUp) {
-      setIsSignUp(true)
-    } else {
-      //Validate
-      auth.createUserWithEmailAndPassword(email, password)
-    }
-  }
-
-  const handleChange = (e) => {
-    switch (e.target.name) {
-      case 'email':
-        setEmail(e.target.value)
-        break
-      case 'password':
-        setPassword(e.target.value)
-        break
-      case 'confirmPassword':
-        setConfirmPassword(e.target.value)
-        break
-      default:
-        break
-    }
   }
 
   const validate = (values) => {
@@ -87,7 +59,7 @@ export default function EducatorLogin() {
       if (!isSignUp) {
         setIsSignUp(true)
       } else {
-        console.log("Creating user")
+        console.log('Creating user')
         auth.createUserWithEmailAndPassword(email, password)
       }
     },
@@ -151,7 +123,7 @@ export default function EducatorLogin() {
               <Button
                 variant='contained'
                 color='primary'
-                onClick={formik.handleSubmit}
+                onClick={handleSignIn}
               >
                 Sign In
               </Button>
