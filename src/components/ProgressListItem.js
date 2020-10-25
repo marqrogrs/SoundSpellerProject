@@ -34,7 +34,11 @@ export default function ProgressListItem({ lesson, progress, showButtons }) {
     )[0]
 
     // isCompleted is level 4 is complete
-    const isCompleted = progress[LEVELS.length - 1].completed
+    const finalLevel =
+      lesson.lesson_section === 1
+        ? progress[`${LEVELS.length - 2}`]
+        : progress[`${LEVELS.length - 2}`]
+    const isCompleted = finalLevel.completed
 
     if (isCompleted) {
       setStatus(<CheckCircleIcon color='primary' />)

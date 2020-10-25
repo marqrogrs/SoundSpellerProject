@@ -56,7 +56,7 @@ export default function StudentLogin() {
               name='name'
               label='Name'
               variant='outlined'
-              color='secondary'
+              color='primary'
               value={name}
               onChange={handleChange}
             ></TextField>
@@ -66,7 +66,7 @@ export default function StudentLogin() {
               name='password'
               label='Password'
               variant='outlined'
-              color='secondary'
+              color='primary'
               type='password'
               value={password}
               onChange={handleChange}
@@ -75,7 +75,7 @@ export default function StudentLogin() {
           <Grid item>
             <Button
               variant='contained'
-              color='secondary'
+              color='primary'
               onClick={handleSignIn}
             >
               Sign In

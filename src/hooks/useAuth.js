@@ -1,6 +1,12 @@
 import * as React from 'react'
 import { useHistory } from 'react-router-dom'
-import { triggerErrorAlert, prettyPrintErrorCode } from '../util/alerts'
+import {
+  triggerErrorAlert,
+  prettyPrintErrorCode,
+  triggerEmailVerificationAlert,
+  triggerEmailVerificationAlert2,
+  triggerResetPasswordAlert
+} from '../util/alerts'
 import { auth, authenticateStudent, db } from '../firebase'
 
 const AuthContext = React.createContext()
@@ -10,19 +16,35 @@ const Auth = ({ children }) => {
   const [user, setUser] = React.useState(auth.currentUser)
   const [username, setUsername] = React.useState(null)
   const [isEducator, setIsEducator] = React.useState(false)
+  const [firstSignIn, setFirstSignIn] = React.useState(false)
 
   const history = useHistory()
 
   React.useEffect(() => {
     auth.onAuthStateChanged((user) => {
-      setUser(user)
       if (user) {
-        console.log('User signed in: ')
+        console.log('User signed in: ', user.metadata)
         setIsEducator(user.email !== null)
         //do things
+        const firstSignIn =
+          user.metadata.creationTime === user.metadata.lastSignInTime
+        if (user.email !== null && !user.emailVerified) {
+          if (firstSignIn) {
+            console.log('First sign in!')
+            auth.currentUser
+              .sendEmailVerification()
+              .then(() => triggerEmailVerificationAlert(user.email))
+              .then(signOut)
+          } else {
+            console.log('nope!')
+            triggerEmailVerificationAlert2(user.email).then(signOut)
+          }
+          return
+        }
       } else {
         // do other things
       }
+      setUser(user)
       setIsLoaded(true)
     })
   }, [])
@@ -41,10 +63,9 @@ const Auth = ({ children }) => {
             .doc(userCred.user.uid)
             .set({ email: userCred.user.email, progress: {} })
         )
-        .then(() => history.push('/'))
         .catch((error) => {
           console.log(error)
-          // triggerErrorAlert(prettyPrintErrorCode(error.errorCode))
+          triggerErrorAlert(error.message || error)
         })
     }
   }
@@ -59,7 +80,7 @@ const Auth = ({ children }) => {
       })
       .catch((error) => {
         console.log(error)
-        // triggerErrorAlert(prettyPrintErrorCode(error.errorCode))
+        triggerErrorAlert(error.message || error)
       })
   }
 
@@ -92,11 +113,16 @@ const Auth = ({ children }) => {
       })
   }
 
+  const resetPassword = () => {
+    triggerResetPasswordAlert()
+  }
+
   const context = {
     user,
     isEducator,
     authLoaded,
     username,
+    resetPassword,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     signInStudent,

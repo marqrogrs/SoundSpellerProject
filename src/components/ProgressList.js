@@ -18,8 +18,8 @@ import { db, auth } from '../firebase'
 
 export default function ProgressList({ student }) {
   const { lessons } = useContext(LessonContext)
-  const userContext = useContext(UserContext)
-  const [userData, setUserData] = useState(null)
+  const { userData } = useContext(UserContext)
+  const [userLessonData, setUserLessonData] = useState(null)
   const classes = useStyles()
 
   useEffect(() => {
@@ -32,17 +32,17 @@ export default function ProgressList({ student }) {
         .where('educator', '==', auth.currentUser.uid)
         .onSnapshot((snap) => {
           console.log('data: ', snap.docs[0].data())
-          setUserData(snap.docs[0].data())
+          setUserLessonData(snap.docs[0].data())
         })
     } else {
-      if (userContext.userData) {
-        setUserData(userContext.userData)
+      if (userData && userData.progress) {
+        setUserLessonData(userData)
       }
     }
     return () => {
       unsubscribeStudent()
     }
-  }, [student, userContext])
+  }, [student, userData])
 
   return (
     <>
@@ -59,14 +59,17 @@ export default function ProgressList({ student }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {userData && (
+            {userLessonData && (
               <>
                 {lessons.map((lesson) => {
                   const lesson_section = lesson.lesson_section
                   const lesson_subsection = getLessonSubsection(lesson)
-                  const progress = userData.progress[lesson_section]
-                    ? userData.progress[lesson_section][lesson_subsection]
-                      ? userData.progress[lesson_section][lesson_subsection]
+
+                  const progress = userLessonData.progress[lesson_section]
+                    ? userLessonData.progress[lesson_section][lesson_subsection]
+                      ? userLessonData.progress[lesson_section][
+                          lesson_subsection
+                        ]
                       : INIT_PROGRESS_OBJ
                     : INIT_PROGRESS_OBJ
                   return (
