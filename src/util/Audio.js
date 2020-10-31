@@ -47,7 +47,6 @@ export const speakWord = (word, firstWord = false) => {
       speech.text = text
       speech.rate = SPEECH_RATE
       speech.lang = 'en-US'
-      speech.volume = 0.1
       synthesis.speak(speech)
       speech.onend = () => {
         // synthesis.cancel()
@@ -65,11 +64,32 @@ export const speakPhoneme = (phoneme) => {
   return new Promise((resolve, reject) => {
     const audioFile = phoneme.endsWith('.mp3') ? phoneme : PHONEMES[phoneme]
     const sound = new Audio(require(`../audio/phonemes/${audioFile}`))
+    amplifySound(sound, 6)
+
     setTimeout(() => {
       sound.play()
       resolve()
     }, 600 / SPEECH_RATE)
   })
+}
+
+const amplifySound = (sound, multiplier) => {
+  var context = new (window.AudioContext || window.webkitAudioContext)(),
+    result = {
+      context: context,
+      source: context.createMediaElementSource(sound),
+      gain: context.createGain(),
+      media: sound,
+      amplify: function (multiplier) {
+        result.gain.gain.value = multiplier
+      },
+      getAmpLevel: function () {
+        return result.gain.gain.value
+      },
+    }
+  result.source.connect(result.gain)
+  result.gain.connect(context.destination)
+  result.amplify(multiplier)
 }
 
 export const changeSpeechSpeed = (speed) => {
