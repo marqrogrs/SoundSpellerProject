@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useContext, useRef } from 'react'
 import { Prompt } from 'react-router-dom'
 
+import SpeechRateFab from '../components/SpeechRateFab'
 import Keyboard from '../components/Keyboard'
 import OutputWord from '../components/OutputWord'
 import InputWord from '../components/InputWord'
 import LessonProgress from '../components/LessonProgress'
 import LevelPicker from '../components/LevelPicker'
 import { Container, Button, Grid, Paper } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
 import ButtonGroup from '@material-ui/core/ButtonGroup'
 
 import { useParams, useHistory } from 'react-router-dom'
@@ -40,6 +40,7 @@ export default function Lesson() {
   const [enableInput, setEnableInput] = useState(false)
   const [isSaved, setIsSaved] = useState(true)
   const [outputWordKey, setOutputWordKey] = useState(Math.random())
+  const [displaySpeedSlider, setDisplaySpeedSlider] = useState(false)
 
   const params = useParams()
   const history = useHistory()
@@ -274,12 +275,13 @@ export default function Lesson() {
             </Button>
           </ButtonGroup>
         </Grid>
-        <Grid item></Grid>
+
         {currentLessonProgress && (
           <Grid item>
             Lesson Score: {currentLessonProgress[currentLessonLevel].score}
           </Grid>
         )}
+        <SpeechRateFab />
       </Container>
     </>
   )

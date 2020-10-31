@@ -96,4 +96,7 @@ export const useStyles = makeStyles((theme) => ({
       color: theme.palette.secondary.light,
     },
   },
+  speechSlider: {
+    width: 500
+  },
 }))
