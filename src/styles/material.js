@@ -97,6 +97,6 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
   speechSlider: {
-    width: 500
+    width: 500,
   },
 }))
