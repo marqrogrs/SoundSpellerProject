@@ -14,7 +14,7 @@ import EducatorLogin from '../pages/EducatorLogin'
 export default function PublicRoutes({ user }) {
   return (
     <>
-      <AppBar user={user} />
+      {/* <AppBar user={user} /> */}
       <Switch>
         <Route exact path='/'>
           <Landing />

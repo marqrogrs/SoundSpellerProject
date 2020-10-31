@@ -13,6 +13,7 @@ export const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   menuTitle: {
+    cursor: 'pointer',
     flexGrow: 1,
   },
   settingsMenu: {
@@ -94,5 +95,8 @@ export const useStyles = makeStyles((theme) => ({
     '& > *': {
       color: theme.palette.secondary.light,
     },
+  },
+  speechSlider: {
+    width: 500,
   },
 }))

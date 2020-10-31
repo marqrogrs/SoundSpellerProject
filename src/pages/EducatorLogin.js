@@ -10,6 +10,8 @@ import Button from '@material-ui/core/Button'
 import { useStyles } from '../styles/material'
 import { useFormik } from 'formik'
 
+var Snake = require('../img/Welcome.png')
+
 export default function EducatorLogin() {
   const classes = useStyles()
   const history = useHistory()
@@ -66,98 +68,101 @@ export default function EducatorLogin() {
   })
 
   return (
-    <div>
-      <form>
-        <Grid
-          container
-          direction='column'
-          alignItems='center'
-          className={classes.signUpForm}
-          spacing={2}
-        >
-          <Grid item>
-            <Typography>Welcome to SoundSpeller!</Typography>
-          </Grid>
-          <Grid item>
-            <TextField
-              name='email'
-              label='Email'
-              variant='outlined'
-              color='primary'
-              value={formik.values.email}
-              error={formik.errors.email}
-              helperText={formik.errors.email}
-              onChange={formik.handleChange}
-            ></TextField>
-          </Grid>
-          <Grid item>
-            <TextField
-              name='password'
-              label='Password'
-              variant='outlined'
-              color='primary'
-              type='password'
-              value={formik.values.password}
-              error={formik.errors.password}
-              helperText={formik.errors.password}
-              onChange={formik.handleChange}
-            ></TextField>
-          </Grid>
-          {isSignUp && (
+    <div id='landing-container'>
+      <img src={Snake} />
+      <div className='right-panel'>
+        <form>
+          <Grid
+            container
+            direction='column'
+            alignItems='center'
+            className={classes.signUpForm}
+            spacing={2}
+          >
+            <Grid item>
+              <Typography>Welcome to SoundSpeller!</Typography>
+            </Grid>
             <Grid item>
               <TextField
-                name='confirmPassword'
-                label='Confirm Password'
+                name='email'
+                label='Email'
                 variant='outlined'
                 color='primary'
-                type='password'
-                value={formik.values.confirmPassword}
-                error={formik.errors.confirmPassword}
-                helperText={formik.errors.confirmPassword}
+                value={formik.values.email}
+                error={formik.errors.email}
+                helperText={formik.errors.email}
                 onChange={formik.handleChange}
               ></TextField>
             </Grid>
-          )}
-          {!isSignUp && (
+            <Grid item>
+              <TextField
+                name='password'
+                label='Password'
+                variant='outlined'
+                color='primary'
+                type='password'
+                value={formik.values.password}
+                error={formik.errors.password}
+                helperText={formik.errors.password}
+                onChange={formik.handleChange}
+              ></TextField>
+            </Grid>
+            {isSignUp && (
+              <Grid item>
+                <TextField
+                  name='confirmPassword'
+                  label='Confirm Password'
+                  variant='outlined'
+                  color='primary'
+                  type='password'
+                  value={formik.values.confirmPassword}
+                  error={formik.errors.confirmPassword}
+                  helperText={formik.errors.confirmPassword}
+                  onChange={formik.handleChange}
+                ></TextField>
+              </Grid>
+            )}
+            {!isSignUp && (
+              <Grid item>
+                <Button
+                  variant='contained'
+                  color='primary'
+                  onClick={handleSignIn}
+                >
+                  Sign In
+                </Button>
+              </Grid>
+            )}
+
             <Grid item>
               <Button
                 variant='contained'
                 color='primary'
-                onClick={handleSignIn}
+                onClick={formik.handleSubmit}
               >
-                Sign In
+                Sign Up
               </Button>
             </Grid>
-          )}
+            {!isSignUp && (
+              <Button color='primary' onClick={auth.resetPassword}>
+                Reset Password
+              </Button>
+            )}
 
-          <Grid item>
-            <Button
-              variant='contained'
-              color='primary'
-              onClick={formik.handleSubmit}
-            >
-              Sign Up
+            {isSignUp && (
+              <div
+                className={classes.textButton}
+                onClick={() => setIsSignUp(false)}
+              >
+                Return to Sign In
+              </div>
+            )}
+            <Button color='primary' onClick={() => history.push('/')}>
+              Go Back
             </Button>
           </Grid>
-          {!isSignUp && (
-            <Button
-              color='primary'
-              onClick={auth.resetPassword}
-            >
-              Reset Password
-            </Button>
-          )}
-
-          {isSignUp && (
-            <div
-              className={classes.textButton}
-              onClick={() => setIsSignUp(false)}
-            >
-              Return to Sign In
-            </div>
-          )}
-        </Grid>
-      </form>
+        </form>
+      </div>
     </div>
   )
 }

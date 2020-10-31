@@ -59,12 +59,16 @@ export default function AppBar({ user }) {
     auth.signOut()
   }
 
-  const handleViewProgress = () => {
-    history.push('/progress')
+  const handleViewLessons = () => {
+    history.push('/lessons')
   }
 
   const handleViewStudents = () => {
     history.push('/students')
+  }
+
+  const handleRedirectToHome = () => {
+    history.push('/')
   }
 
   return (
@@ -76,69 +80,20 @@ export default function AppBar({ user }) {
             className={classes.menuButton}
             color='inherit'
             aria-label='menu'
+            onClick={handleMenu}
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant='h6' className={classes.menuTitle}>
+          <Typography
+            variant='h6'
+            className={classes.menuTitle}
+            onClick={handleRedirectToHome}
+          >
             Sound Speller
           </Typography>
           {user && (
             <div>
               <Typography>Score: {totalScore}</Typography>
-              <IconButton
-                aria-label='settings'
-                aria-controls='menu-appbar'
-                aria-haspopup='true'
-                onClick={() => toggleSettingsDrawer(true)}
-                color='inherit'
-              >
-                <Settings />
-              </IconButton>
-              <Drawer
-                anchor={'right'}
-                open={drawerOpen}
-                onClose={() => toggleSettingsDrawer(false)}
-              >
-                <div className={classes.settingsMenu} role='presentation'>
-                  <List>
-                    <ListItem
-                      button
-                      onClick={() => setSpeedMenuOpen(!speedMenuOpen)}
-                    >
-                      <ListItemText>Speech Speed</ListItemText>
-                      {speedMenuOpen ? <ExpandLess /> : <ExpandMore />}
-                    </ListItem>
-                    <Collapse in={speedMenuOpen} timeout='auto' unmountOnExit>
-                      <div className={classes.nestedMenuItem}>
-                        <SpeechSlider />
-                      </div>
-                    </Collapse>
-                    <ListItem
-                      button
-                      onClick={() => setSizeMenuOpen(!sizeMenuOpen)}
-                    >
-                      <ListItemText>Font Size</ListItemText>
-                      {sizeMenuOpen ? <ExpandLess /> : <ExpandMore />}
-                    </ListItem>
-                    <ListItem
-                      button
-                      onClick={() => setVolumeMenuOpen(!volumeMenuOpen)}
-                    >
-                      <ListItemText>Volume</ListItemText>
-                      {volumeMenuOpen ? <ExpandLess /> : <ExpandMore />}
-                    </ListItem>
-                  </List>
-                </div>
-              </Drawer>
-              <IconButton
-                aria-label='account of current user'
-                aria-controls='menu-appbar'
-                aria-haspopup='true'
-                onClick={handleMenu}
-                color='inherit'
-              >
-                <AccountCircle />
-              </IconButton>
               <Menu
                 id='menu-appbar'
                 anchorEl={anchorEl}
@@ -154,11 +109,11 @@ export default function AppBar({ user }) {
                 open={open}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
+                {/* <MenuItem onClick={handleClose}>Profile</MenuItem> */}
                 {auth.isEducator && (
                   <MenuItem onClick={handleViewStudents}>My Students</MenuItem>
                 )}
-                <MenuItem onClick={handleViewProgress}>View Progress</MenuItem>
+                <MenuItem onClick={handleViewLessons}>View Lessons</MenuItem>
                 <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
               </Menu>
             </div>

@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import Slider from '@material-ui/core/Slider'
-import { changeSpeechSpeed } from '../util/Audio'
+import { changeSpeechSpeed, SPEECH_RATE } from '../util/Audio'
 import Grid from '@material-ui/core/Grid'
+
+import { useStyles } from '../styles/material'
 
 const MARKS = [
   {
@@ -29,7 +31,7 @@ const MARKS = [
 
 export default function SpeechSlider() {
   const [speed, setSpeed] = useState(50)
-
+  const classes = useStyles()
   const handleChangeSpeed = (e, newSpeed) => {
     setSpeed(newSpeed)
   }
@@ -38,13 +40,43 @@ export default function SpeechSlider() {
     changeSpeechSpeed(newSpeed)
   }
 
+  useEffect(() => {
+    var transformedSpeed
+    switch (SPEECH_RATE) {
+      case 0.5:
+        transformedSpeed = 0
+        break
+      case 0.6:
+        transformedSpeed = 25
+        break
+      case 1.0:
+        transformedSpeed = 50
+        break
+      case 1.5:
+        transformedSpeed = 75
+        break
+      case 2.0:
+        transformedSpeed = 100
+        break
+      default:
+        return
+    }
+    setSpeed(transformedSpeed)
+  }, [])
+
   return (
-    <Grid>
+    <Grid
+      container
+      style={{ width: 600 }}
+      direction='column'
+      alignItems='center'
+    >
+      Speed:
       <Slider
+        className={classes.speechSlider}
         value={speed}
         onChange={handleChangeSpeed}
         onChangeCommitted={handleChangeSpeedCommitted}
-        aria-labelledby='continuous-slider'
         valueLabelDisplay='off'
         marks={MARKS}
         step={25}
