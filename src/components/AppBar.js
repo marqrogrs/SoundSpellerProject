@@ -67,6 +67,10 @@ export default function AppBar({ user }) {
     history.push('/students')
   }
 
+  const handleRedirectToHome = () => {
+    history.push('/')
+  }
+
   return (
     <div>
       <MaterialAppBar position='static'>
@@ -79,13 +83,13 @@ export default function AppBar({ user }) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant='h6' className={classes.menuTitle}>
+          <Typography variant='h6' className={classes.menuTitle} onClick={handleRedirectToHome}>
             Sound Speller
           </Typography>
           {user && (
             <div>
               <Typography>Score: {totalScore}</Typography>
-              <IconButton
+              {/* <IconButton
                 aria-label='settings'
                 aria-controls='menu-appbar'
                 aria-haspopup='true'
@@ -93,7 +97,7 @@ export default function AppBar({ user }) {
                 color='inherit'
               >
                 <Settings />
-              </IconButton>
+              </IconButton> */}
               <Drawer
                 anchor={'right'}
                 open={drawerOpen}

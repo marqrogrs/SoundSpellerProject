@@ -13,6 +13,7 @@ export const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   menuTitle: {
+    cursor: 'pointer',
     flexGrow: 1,
   },
   settingsMenu: {
