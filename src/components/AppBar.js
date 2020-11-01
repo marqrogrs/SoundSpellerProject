@@ -29,30 +29,38 @@ import SpeechSlider from '../components/SpeechSlider'
 import { useAuth } from '../hooks/useAuth'
 import { UserContext } from '../providers/UserProvider'
 
+import { PAYPAL_URL, SOUNDSPELLER_URL } from '../util/constants'
+
 export default function AppBar({ user }) {
   const classes = useStyles()
   const auth = useAuth()
   const { pathname } = useLocation()
   const history = useHistory()
-  const [anchorEl, setAnchorEl] = useState(null)
-  const [drawerOpen, setDrawerOpen] = useState(false)
-  const [speedMenuOpen, setSpeedMenuOpen] = useState(false)
-  const [sizeMenuOpen, setSizeMenuOpen] = useState(false)
-  const [volumeMenuOpen, setVolumeMenuOpen] = useState(false)
-  const open = Boolean(anchorEl)
+  const [leftAnchorEl, setLeftAnchorEl] = useState(null)
+  const [rightAnchorEl, setRightAnchorEl] = useState(null)
+
+  const rightMenuOpen = Boolean(rightAnchorEl)
+  const leftMenuOpen = Boolean(leftAnchorEl)
 
   const { totalScore } = useContext(UserContext)
 
-  const handleMenu = (e) => {
-    setAnchorEl(e.currentTarget)
+  const handleLeftMenu = (e) => {
+    setLeftAnchorEl(e.currentTarget)
   }
 
-  const handleClose = () => {
-    setAnchorEl(null)
+  const handleRightMenu = (e) => {
+    setRightAnchorEl(e.currentTarget)
   }
 
-  const toggleSettingsDrawer = (open) => {
-    setDrawerOpen(open)
+  const handleClose = (menu) => {
+    switch (menu) {
+      case 'left':
+        setLeftAnchorEl(null)
+      case 'right':
+        setRightAnchorEl(null)
+      default:
+        return
+    }
   }
 
   const handleSignOut = () => {
@@ -80,10 +88,32 @@ export default function AppBar({ user }) {
             className={classes.menuButton}
             color='inherit'
             aria-label='menu'
-            onClick={handleMenu}
+            onClick={handleLeftMenu}
           >
             <MenuIcon />
           </IconButton>
+          <Menu
+            id='menu-appbar'
+            anchorEl={leftAnchorEl}
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            open={leftMenuOpen}
+            onClose={() => handleClose('left')}
+          >
+            <MenuItem onClick={() => window.open(SOUNDSPELLER_URL, '_blank')}>
+              About
+            </MenuItem>
+            <MenuItem onClick={() => window.open(PAYPAL_URL, '_blank')}>
+              Donate
+            </MenuItem>
+          </Menu>
           <Typography
             variant='h6'
             className={classes.menuTitle}
@@ -92,11 +122,19 @@ export default function AppBar({ user }) {
             Sound Speller
           </Typography>
           {user && (
-            <div>
-              <Typography>Score: {totalScore}</Typography>
+            <>
+              <IconButton
+                aria-label='account of current user'
+                aria-controls='menu-appbar'
+                aria-haspopup='true'
+                onClick={handleRightMenu}
+                color='inherit'
+              >
+                <AccountCircle />
+              </IconButton>
               <Menu
                 id='menu-appbar'
-                anchorEl={anchorEl}
+                anchorEl={rightAnchorEl}
                 anchorOrigin={{
                   vertical: 'top',
                   horizontal: 'right',
@@ -106,17 +144,17 @@ export default function AppBar({ user }) {
                   vertical: 'top',
                   horizontal: 'right',
                 }}
-                open={open}
-                onClose={handleClose}
+                open={rightMenuOpen}
+                onClose={() => handleClose('right')}
               >
-                {/* <MenuItem onClick={handleClose}>Profile</MenuItem> */}
                 {auth.isEducator && (
                   <MenuItem onClick={handleViewStudents}>My Students</MenuItem>
                 )}
                 <MenuItem onClick={handleViewLessons}>View Lessons</MenuItem>
                 <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
               </Menu>
-            </div>
+              <Typography>Score: {totalScore}</Typography>
+            </>
           )}
         </Toolbar>
       </MaterialAppBar>
