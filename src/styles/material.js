@@ -23,10 +23,10 @@ export const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(4),
     paddingRight: theme.spacing(4),
   },
-  signUpForm: {
-    position: 'absolute',
-    top: '25%',
-  },
+  // signUpForm: {
+  //   position: 'absolute',
+  //   top: '25%',
+  // },
   progressList: {
     '& > *': {
       borderBottom: 'unset',

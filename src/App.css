@@ -31,8 +31,7 @@ a {
 }
 
 .right-panel form {
-  width: 60vw;
-  height: 100vh;
+  margin-left: 12rem;
 }
 
 #landing-container .upper-text {
