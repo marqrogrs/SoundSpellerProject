@@ -46,11 +46,6 @@ export const useStyles = makeStyles((theme) => ({
   alert: {
     width: '100%',
   },
-  fab: {
-    position: 'absolute',
-    right: 10,
-    bottom: 10,
-  },
   modal: {
     display: 'flex',
     alignItems: 'center',

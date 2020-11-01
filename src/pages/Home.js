@@ -19,7 +19,8 @@ const Home = () => {
       <Paper className={classes.welcomeBanner}>
         <Typography variant='h3' className={classes.welcomeBannerText}>
           Welcome back,{' '}
-          {username || user.email.slice(0, user.email.indexOf('@'))}!
+          {user.email ? user.email.slice(0, user.email.indexOf('@')) : user.uid}
+          !
         </Typography>
         <Typography variant='h6'>
           Fun Fact of The Day: {FUN_FACTS[new Date().getDate() - 1]}
