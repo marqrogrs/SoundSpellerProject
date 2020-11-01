@@ -27,7 +27,14 @@ export default function SpeechRateFab() {
       <Fab
         color='primary'
         aria-label='add'
-        className={classes.fab}
+        style={{
+          margin: 0,
+          top: 'auto',
+          right: 20,
+          bottom: 20,
+          left: 'auto',
+          position: 'fixed',
+        }}
         size='small'
         onClick={handleMenu}
       >
