@@ -5,7 +5,7 @@ import {
   prettyPrintErrorCode,
   triggerEmailVerificationAlert,
   triggerEmailVerificationAlert2,
-  triggerResetPasswordAlert
+  triggerResetPasswordAlert,
 } from '../util/alerts'
 import { auth, authenticateStudent, db } from '../firebase'
 
@@ -14,7 +14,6 @@ const AuthContext = React.createContext()
 const Auth = ({ children }) => {
   const [authLoaded, setIsLoaded] = React.useState(false)
   const [user, setUser] = React.useState(auth.currentUser)
-  const [username, setUsername] = React.useState(null)
   const [isEducator, setIsEducator] = React.useState(false)
   const [firstSignIn, setFirstSignIn] = React.useState(false)
 
@@ -93,7 +92,6 @@ const Auth = ({ children }) => {
         throw new Error(error)
       } else {
         return auth.signInWithCustomToken(token).then((u_name) => {
-          setUsername(u_name)
           history.push('/')
         })
       }
@@ -121,7 +119,6 @@ const Auth = ({ children }) => {
     user,
     isEducator,
     authLoaded,
-    username,
     resetPassword,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,

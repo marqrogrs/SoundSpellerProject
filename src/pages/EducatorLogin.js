@@ -10,6 +10,10 @@ import Button from '@material-ui/core/Button'
 import { useStyles } from '../styles/material'
 import { useFormik } from 'formik'
 
+import { PAYPAL_URL } from '../util/constants'
+
+import swal from 'sweetalert'
+
 var Snake = require('../img/Welcome.png')
 
 export default function EducatorLogin() {
@@ -20,9 +24,18 @@ export default function EducatorLogin() {
   const auth = useAuth()
 
   const handleSignIn = () => {
-    auth
-      .signInWithEmailAndPassword(formik.values.email, formik.values.password)
-      .then(() => history.push('/'))
+    swal({
+      title: 'Donate',
+      text: 'Would you like to donate before continuing?',
+      buttons: ['Not today', true],
+    }).then((redirectToPaypal) => {
+      if (redirectToPaypal) {
+        window.open(PAYPAL_URL, '_blank')
+      }
+      auth
+        .signInWithEmailAndPassword(formik.values.email, formik.values.password)
+        .then(() => history.push('/'))
+    })
   }
 
   const validate = (values) => {

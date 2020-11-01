@@ -82,7 +82,14 @@ export default function NewStudentForm() {
       <Fab
         color='primary'
         aria-label='add'
-        className={classes.fab}
+        style={{
+          margin: 0,
+          top: 'auto',
+          right: 20,
+          bottom: 20,
+          left: 'auto',
+          position: 'fixed',
+        }}
         onClick={() => setOpen(true)}
       >
         <AddIcon />
@@ -123,6 +130,7 @@ export default function NewStudentForm() {
                 label='New Classroom'
                 variant='outlined'
                 color='primary'
+                margin='normal'
                 error={formik.errors.newClass}
                 helperText={formik.errors.newClass}
                 value={formik.values.newClass}
@@ -134,6 +142,7 @@ export default function NewStudentForm() {
               label='Username'
               variant='outlined'
               color='primary'
+              margin='normal'
               error={formik.errors.username}
               helperText={formik.errors.username}
               value={formik.values.username}
@@ -145,6 +154,7 @@ export default function NewStudentForm() {
               variant='outlined'
               color='primary'
               type='password'
+              margin='normal'
               error={formik.errors.password}
               helperText={formik.errors.password}
               value={formik.values.password}
@@ -156,6 +166,7 @@ export default function NewStudentForm() {
               variant='outlined'
               color='primary'
               type='password'
+              margin='normal'
               error={formik.errors.confirmPassword}
               helperText={formik.errors.confirmPassword}
               value={formik.values.confirmPassword}

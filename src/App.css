@@ -12,18 +12,16 @@ a {
   width: 100vw;
   height: 100vh;
   background-color: #fff;
+  display: flex;
+  align-items: center;
 }
 
 #landing-container img {
   height: 100vh;
-  position: absolute;
-  left: 0;
 }
 
 #landing-container .right-panel {
-  position: absolute;
-  left: 400px;
-  top: 10vh;
+ margin-left: 5rem;
 }
 
 .right-panel .welcome-text {
@@ -33,8 +31,7 @@ a {
 }
 
 .right-panel form {
-  width: 60vw;
-  height: 100vh;
+  margin-left: 12rem;
 }
 
 #landing-container .upper-text {

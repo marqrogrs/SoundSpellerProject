@@ -23,10 +23,10 @@ export const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(4),
     paddingRight: theme.spacing(4),
   },
-  signUpForm: {
-    position: 'absolute',
-    top: '25%',
-  },
+  // signUpForm: {
+  //   position: 'absolute',
+  //   top: '25%',
+  // },
   progressList: {
     '& > *': {
       borderBottom: 'unset',
@@ -45,11 +45,6 @@ export const useStyles = makeStyles((theme) => ({
   },
   alert: {
     width: '100%',
-  },
-  fab: {
-    position: 'absolute',
-    right: 10,
-    bottom: 10,
   },
   modal: {
     display: 'flex',
