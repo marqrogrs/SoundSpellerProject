@@ -41,7 +41,7 @@ export const speakWord = (word, firstWord = false) => {
           voice.name === 'Samantha'
         )
       })[0]
-      var text = `${firstWord ? 'Your first' : 'Next'} word is ${word}.`
+      var text = `${firstWord ? 'Your first' : 'Next'} word is: ${word}.`
       var speech = new SpeechSynthesisUtterance(word)
       speech.voice = voice
       speech.text = text
