@@ -1,68 +1,44 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# SoundSpeller
 
-## Available Scripts
+## Overview
 
-In the project directory, you can run:
+This app is written in React and uses firebase to handle authenticaion, database storage & cloud functions.
 
-### `yarn start`
+### Directory Structuring
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- `data/`
+  - `SoundSpellerDatabase.sql` - the original, uncleaned SS database
+  - `SoundSpellerDatabase.json` - json version of SS database, which has been cleaned up in various ways
+  - `scripts/` - various scripts which have been used to clean data or sync up to firebase. These are kept just for reference and tracking - do NOT use them as is without thoroughly reading them and altering them based on your needs
+- `functions/`
+  This directory contains the [Firebase cloud functions](https://firebase.google.com/docs/functions) that are synced up to Firebase. `index.js` contains all the function definitions. There is also a local `package.json` and `node_modules`.
+- `src/`
+  This is where all source code for this project is - this is where most of your time should be spent.
+  - `audio/` - contains all audio files, including phonemes
+  - `components` - contains all [React components](https://reactjs.org/docs/react-component.html)
+  - `hooks/` - contains all [hooks](https://reactjs.org/docs/hooks-intro.html)
+  - `img/` - contains any image files
+  - `pages/` - contains all pages within the app
+  - `providers/` - contains lesson and user [providers](https://reactjs.org/docs/context.html)
+  - `routes/` - contains route definition files - PrivateRoutes.js and PublicRoutes.js
+  - `styles/` - contains all stylesheets
+  - `util/` - contains all utility files
+  - `index.js/App.js` - initial entrypoints
+  - `App.css` - global css
+  - `firebase.js` - initialization & definition of firebase functions
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## Pre-requisites
 
-### `yarn test`
+- [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git/)
+- [homebrew & node](https://changelog.com/posts/install-node-js-with-homebrew-on-os-x)
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Building and Running
 
-### `yarn build`
+```
+git clone git@github.com:marqrogrs/SoundSpellerProject.git
+cd SoundSpellerProject/
+npm install
+yarn start
+```
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+After running these commands, a browser window should open up at `localhost:3000` containing a local version of the app.
