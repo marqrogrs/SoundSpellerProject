@@ -7,7 +7,7 @@ echo "This script will generate all files necessary in order to create a new pag
 while [[ ! $confirmed == "Y" ]]; do
 
   echo "1. What would you like the route of this page to be? www.soundspeller.com/_________"
-
+  route=""
   allowed_chars=^[A-Za-z0-9]+
   while ! [[ "$route" =~ ${allowed_chars} ]]; do
     read route
@@ -15,13 +15,13 @@ while [[ ! $confirmed == "Y" ]]; do
 
 
   # validate
-
+  title=""
   echo "2. What would you like the title of this page to be? This is what will be seen on the drop-down menu."
 
   read title
 
   #validate
-
+  visibility=""
   echo "3. Enter 'private' if this page should only be seen by signed in users. Enter 'public' if this page can be seen by anybody."
   while [[ $visibility != "public" && $visibility != "private" ]]; do
     read visibility
@@ -38,7 +38,8 @@ while [[ ! $confirmed == "Y" ]]; do
   read confirmed
 done
 
-file_name="$(tr '[:lower:]' '[:upper:]' <<<${route:0:1})${route:1}"
+file_name="$(tr '[:lower:]' '[:upper:]' <<<${title:0:1})${title:1}"
+file_name="${file_name// /}"
 route="${route// /-}"
 
 # Create page file
