@@ -22,6 +22,7 @@ while [[ ! $confirmed == "Y" ]]; do
   while [[ $visibility != "public" && $visibility != "private" ]]; do
     read visibility
   done
+  route="${route// /-}"
 
   #validate
 
@@ -34,6 +35,7 @@ while [[ ! $confirmed == "Y" ]]; do
 done
 
 file_name="$(tr '[:lower:]' '[:upper:]' <<<${route:0:1})${route:1}"
+route="${route// /-}"
 
 # Create page file
 page_file="$SS_DIR/src/pages/${file_name}.js"
