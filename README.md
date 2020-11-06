@@ -31,6 +31,8 @@ This app is written in React and uses firebase to handle authenticaion, database
 
 - [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git/)
 - [homebrew & node](https://changelog.com/posts/install-node-js-with-homebrew-on-os-x)
+- firebase CLI
+  - run `npm install -g firebase-tools`
 
 ## Building and Running
 
@@ -42,3 +44,38 @@ npm run start
 ```
 
 After running these commands, a browser window should open up at `localhost:3000` containing a local version of the app.
+
+Before making any changes, make sure to change branches:
+
+```
+git checkout -B new-branch-name
+```
+
+## Creating a new page
+Run
+
+```
+./scripts/createNewPage 
+```
+
+and follow the prompts to create a new page. When completed, a file will be created at `SoundSpellerProject/src/pages/{PAGE_TITLE}.js`. Open this file, and add your html where it says `{/* ENTER HTML HERE */}`.
+
+If you haven't already, run `yarn start`. You should see the page title added to the menu bar dropdown, and when you click it, you should be renavigated to the page.
+
+## Deploying
+When you are happy with your changes, push them to github:
+
+```
+git commit -am "quick note about the changes you made"
+git push
+```
+
+Then, run 
+
+```
+npm run build
+firebase login
+firebase deploy --only hosting
+```
+
+If firebase deploy does not work, you need to contact April or Mark for access to the SoundSpeller project.
