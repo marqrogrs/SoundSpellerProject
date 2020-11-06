@@ -8,7 +8,11 @@ while [[ ! $confirmed == "Y" ]]; do
 
   echo "1. What would you like the route of this page to be? www.soundspeller.com/_________"
 
-  read route
+  allowed_chars=^[A-Za-z0-9]+
+  while ! [[ "$route" =~ ${allowed_chars} ]]; do
+    read route
+  done
+
 
   # validate
 
