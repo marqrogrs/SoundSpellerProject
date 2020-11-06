@@ -1,4 +1,4 @@
-var tink = require('../audio/phonemes/tink.mp3')
+var tink = require('../audio/tink.mp3')
 var { PHONEMES } = require('./constants')
 
 var synthesis
