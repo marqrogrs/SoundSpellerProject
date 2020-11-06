@@ -2,7 +2,7 @@
 
 ## Overview
 
-This app is written in React and uses firebase to handle authenticaion, database storage & cloud functions.
+This app is written in React and uses firebase to handle authenticaion, database storage & cloud functions. Styling is done using Material UI.
 
 ### Directory Structuring
 
@@ -38,7 +38,7 @@ This app is written in React and uses firebase to handle authenticaion, database
 git clone git@github.com:marqrogrs/SoundSpellerProject.git
 cd SoundSpellerProject/
 npm install
-yarn start
+npm run start
 ```
 
 After running these commands, a browser window should open up at `localhost:3000` containing a local version of the app.
