@@ -21,12 +21,13 @@ while [[ ! $confirmed == "Y" ]]; do
   read title
 
   #validate
-  visibility=""
-  echo "3. Enter 'private' if this page should only be seen by signed in users. Enter 'public' if this page can be seen by anybody."
-  while [[ $visibility != "public" && $visibility != "private" ]]; do
-    read visibility
-  done
-  route="${route// /-}"
+  # visibility=""
+  # echo "3. Enter 'private' if this page should only be seen by signed in users. Enter 'public' if this page can be seen by anybody."
+  # while [[ $visibility != "public" && $visibility != "private" ]]; do
+  #   read visibility
+  # done
+  # route="${route// /-}"
+  visibility="Public"
 
   #validate
 
