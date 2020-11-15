@@ -113,9 +113,9 @@ export default function AppBar({ user }) {
             {/* <MenuItem onClick={() => window.open(PAYPAL_URL, '_blank')}>
               Donate
             </MenuItem> */}
-            {/* <MenuItem onClick={() => history.push('/contact-us')}>
+            <MenuItem onClick={() => window.location.assign('mailto:mark@birdhaven.us')}>
               Contact Us
-            </MenuItem> */}
+            </MenuItem>
           </Menu>
           <Typography
             variant='h6'
@@ -155,9 +155,9 @@ export default function AppBar({ user }) {
                 )}
                 <MenuItem onClick={handleViewLessons}>View Lessons</MenuItem>
                 <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
-                <MenuItem onClick={() => history.push('/contact-us')}>
+                {/* <MenuItem onClick={() => history.push('/contact-us')}>
                   Contact Us
-                </MenuItem>
+                </MenuItem> */}
               </Menu>
               <Typography>Score: {totalScore}</Typography>
             </>
