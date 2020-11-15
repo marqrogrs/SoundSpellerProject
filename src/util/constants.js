@@ -205,6 +205,6 @@ export const FUN_FACTS = [
 ]
 
 export const PAYPAL_URL =
-  'https://www.paypal.com/donate/?cmd=_donations&business=marqrogrs%40gmail.com&currency_code=USD'
+  'https://www.paypal.com/donate/?cmd=_donations&business=donate%40soundspeller.com&currency_code=USD'
 
 export const SOUNDSPELLER_URL = 'https://www.soundspeller.com/about'
