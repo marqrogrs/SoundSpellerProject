@@ -113,9 +113,9 @@ export default function AppBar({ user }) {
             {/* <MenuItem onClick={() => window.open(PAYPAL_URL, '_blank')}>
               Donate
             </MenuItem> */}
-            <MenuItem onClick={() => history.push('/contact-us')}>
+            {/* <MenuItem onClick={() => history.push('/contact-us')}>
               Contact Us
-            </MenuItem>
+            </MenuItem> */}
           </Menu>
           <Typography
             variant='h6'

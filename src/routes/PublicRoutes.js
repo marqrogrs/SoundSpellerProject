@@ -18,9 +18,9 @@ export default function PublicRoutes({ user }) {
     <>
       <AppBar user={user} />
       <Switch>
-        <Route exact path='/contact-us'>
+        {/* <Route exact path='/contact-us'>
           <ContactUs />
-        </Route>
+        </Route> */}
         <Route exact path='/'>
           <Landing />
         </Route>

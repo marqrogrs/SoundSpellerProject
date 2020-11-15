@@ -35,9 +35,9 @@ export default function PrivateRoutes({ user, isEducator }) {
           {isEducator && (
             <Route exact path='/students/:student' children={<Progress />} />
           )}
-          <Route exact path='/contact-us'>
+          {/* <Route exact path='/contact-us'>
             <ContactUs />
-          </Route>
+          </Route> */}
           <Route children={<Error />} />
         </Switch>
       </LessonProvider>
