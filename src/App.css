@@ -5,7 +5,8 @@ body {
 
 a {
   color: inherit; /* blue colors for links too */
-  text-decoration: inherit; /* no underline */
+  text-decoration: none; /* no underline */
+  cursor: pointer;
 }
 
 #landing-container {
@@ -20,8 +21,9 @@ a {
   height: 100vh;
 }
 
-#landing-container .right-panel {
- margin-left: 5rem;
+#landing-container .right-panel,
+#error-container .right-panel {
+  margin-left: 5rem;
 }
 
 .right-panel .welcome-text {
@@ -66,4 +68,25 @@ a {
 
 #landing-container .user-type:hover {
   transform: scale(1.1);
+}
+
+#error-container img {
+  position: absolute;
+  top: 0;
+  z-index: -1;
+  opacity: 20%;
+}
+
+#error-container .right-panel {
+  margin-right: 5rem;
+}
+#error-container .upper-text {
+  margin: 0 auto;
+  width: 300px;
+  /* font-family: 'Short Stack'; */
+  font-size: 90px;
+}
+#error-container .lower-text {
+  font-size: 40px;
+  text-align: center;
 }
