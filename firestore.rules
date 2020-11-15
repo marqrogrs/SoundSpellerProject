@@ -11,7 +11,10 @@ service cloud.firestore {
       allow read: if request.auth.uid != null;
     }
     match /users/{user} {
-      allow read, write: if request.auth.uid == user;
+      allow read, write: if request.auth.uid == user || request.auth.uid == resource.data.username;
+    	match /classes/{class} {
+      	allow read, write: if request.auth.uid == user;
+      }
     }
   }
 }
