@@ -50,23 +50,23 @@ const Auth = ({ children }) => {
 
   const createUserWithEmailAndPassword = (email, password) => {
     // TODO: Register a new user with the specified email and password
-    if (
-      email.toLowerCase() === 'mark@birdhaven.us' ||
-      email.toLowerCase() === 'aprilpolubiec@gmail.com'
-    ) {
-      return auth
-        .createUserWithEmailAndPassword(email, password)
-        .then((userCred) =>
-          db
-            .collection('users')
-            .doc(userCred.user.uid)
-            .set({ email: userCred.user.email, progress: {} })
-        )
-        .catch((error) => {
-          console.log(error)
-          triggerErrorAlert(error.message || error)
-        })
-    }
+    // if (
+    //   email.toLowerCase() === 'mark@birdhaven.us' ||
+    //   email.toLowerCase() === 'aprilpolubiec@gmail.com'
+    // ) {
+    return auth
+      .createUserWithEmailAndPassword(email, password)
+      .then((userCred) =>
+        db
+          .collection('users')
+          .doc(userCred.user.uid)
+          .set({ email: userCred.user.email, progress: {} })
+      )
+      .catch((error) => {
+        console.log(error)
+        triggerErrorAlert(error.message || error)
+      })
+    // }
   }
 
   // Let registered users log in
