@@ -46,7 +46,7 @@ export default App
 
 function RequireAuthentication() {
   const auth = useAuth()
-  console.log(auth.user)
+  // console.log(auth.user)
   if (!auth) {
     return <div>Loading</div>
   }
