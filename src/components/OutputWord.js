@@ -132,7 +132,7 @@ export default function OutputWord({ wordString, index }) {
           // xample:  ["D", "EY", "-", "T", "AH"]
           // ["D", "A", "T", "A"]
           // ["da", "ta"]
-          console.log(word, phonemes, graphemes, syllables)
+          // console.log(word, phonemes, graphemes, syllables)
           switch (currentLesson.level) {
             case 0:
             case 1:

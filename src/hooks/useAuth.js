@@ -22,7 +22,7 @@ const Auth = ({ children }) => {
   React.useEffect(() => {
     auth.onAuthStateChanged((user) => {
       if (user) {
-        console.log('User signed in: ', user.metadata)
+        // console.log('User signed in: ', user.metadata)
         setIsEducator(user.email !== null)
         //do things
         const firstSignIn =

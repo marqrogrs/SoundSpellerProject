@@ -23,7 +23,7 @@ export default function ProgressList({ student }) {
   const classes = useStyles()
 
   useEffect(() => {
-    console.log('student: ', student)
+    // console.log('student: ', student)
     var unsubscribeStudent = () => {}
     if (student) {
       unsubscribeStudent = db
@@ -31,7 +31,7 @@ export default function ProgressList({ student }) {
         .where('username', '==', student)
         .where('educator', '==', auth.currentUser.uid)
         .onSnapshot((snap) => {
-          console.log('data: ', snap.docs[0].data())
+          // console.log('data: ', snap.docs[0].data())
           setUserLessonData(snap.docs[0].data())
         })
     } else {

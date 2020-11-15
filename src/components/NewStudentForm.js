@@ -47,7 +47,7 @@ export default function NewStudentForm() {
     } else if (password !== confirmPassword) {
       errors.confirmPassword = 'Confirmation does not match'
     }
-    console.log(errors)
+    // console.log(errors)
     return errors
   }
 
