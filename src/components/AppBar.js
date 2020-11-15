@@ -110,9 +110,9 @@ export default function AppBar({ user }) {
             <MenuItem onClick={() => window.open(SOUNDSPELLER_URL, '_blank')}>
               About
             </MenuItem>
-            <MenuItem onClick={() => window.open(PAYPAL_URL, '_blank')}>
+            {/* <MenuItem onClick={() => window.open(PAYPAL_URL, '_blank')}>
               Donate
-            </MenuItem>
+            </MenuItem> */}
           </Menu>
           <Typography
             variant='h6'
