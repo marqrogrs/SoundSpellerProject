@@ -11,11 +11,16 @@ import AppBar from '../components/AppBar'
 import StudentLogin from '../pages/StudentLogin'
 import EducatorLogin from '../pages/EducatorLogin'
 
+import ContactUs from '../pages/ContactUs.js'
+
 export default function PublicRoutes({ user }) {
   return (
     <>
-      {/* <AppBar user={user} /> */}
+      <AppBar user={user} />
       <Switch>
+        {/* <Route exact path='/contact-us'>
+          <ContactUs />
+        </Route> */}
         <Route exact path='/'>
           <Landing />
         </Route>
