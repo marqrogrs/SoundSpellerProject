@@ -22,22 +22,19 @@ export default function PrivateRoutes({ user, isEducator }) {
           <Route exact path='/lessons'>
             <Lessons />
           </Route>
-          <Route path='/lessons/:lesson' children={<Lesson />} />
+          <Route exact path='/lessons/:lesson' children={<Lesson />} />
           <Route exact path='/progress'>
             <Progress />
           </Route>
           {isEducator && (
-            <>
-              <Route exact path='/students'>
-                <Students />
-              </Route>
-              <Route path='/students/:student' children={<Progress />} />
-            </>
+            <Route exact path='/students'>
+              <Students />
+            </Route>
           )}
-
-          <Route>
-            <Error />
-          </Route>
+          {isEducator && (
+            <Route exact path='/students/:student' children={<Progress />} />
+          )}
+          <Route children={<Error />} />
         </Switch>
       </LessonProvider>
     </UserProvider>
