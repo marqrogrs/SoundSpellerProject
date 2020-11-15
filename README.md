@@ -79,3 +79,14 @@ firebase deploy --only hosting
 ```
 
 If firebase deploy does not work, you need to contact April or Mark for access to the SoundSpeller project.
+
+## Reference Videos
+Mark Rogers, [Jul 17, 2020 at 4:16:28 PM]:
+Here is a video clicking through the lesson menues: https://www.screencast.com/t/Gy5dDSYO
+
+Mark Rogers, [Jul 17, 2020 at 4:43:26 PM]:
+Video with audio of logging in, selecting and doing a lesson at each level. https://www.screencast.com/t/sCi70beNMW
+
+video of checking progress https://www.screencast.com/t/LECjCi0n
+
+video of doing automatically generated study words (the list studywords menu was not working) The reason the user did not get credit for doing the study words (ie. them being deleted form the list after writing them successfully) was because he did only at Level One. https://www.screencast.com/t/KknrWub8sY8Y
