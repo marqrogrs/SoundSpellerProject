@@ -1,14 +1,9 @@
-import React, { useState } from 'react'
-import { useAuth } from '../hooks/useAuth'
+import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { useStyles } from '../styles/material'
 
 //Material UI
-import Grid from '@material-ui/core/Grid'
-import TextField from '@material-ui/core/TextField'
 import { Typography } from '@material-ui/core'
-import Button from '@material-ui/core/Button'
-import Paper from '@material-ui/core/Paper'
 
 var Snake = require('../img/Welcome.png')
 // var Landing = require('../img/Landing.png')
