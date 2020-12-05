@@ -25,6 +25,9 @@ export default function CreateLesson() {
       .map((w) => w.toUpperCase())
     createLesson({ title: lessonTitle, words, description })
       .then((res) => swal('Yippee!', `Lesson has been created.`, 'success'))
+      .then(() => {
+        history.push('/')
+      })
       .catch((err) => {
         if (err.rejectedWords) {
           swal(
@@ -33,9 +36,7 @@ export default function CreateLesson() {
               ', '
             )}`,
             'error'
-          ).then(() => {
-            history.push('/')
-          })
+          )
         }
       })
   }

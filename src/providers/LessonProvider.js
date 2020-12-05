@@ -13,7 +13,7 @@ const LessonProvider = ({ children }) => {
   const [lessonsLoading, setLessonsLoading] = useState(true)
   const [lessons, setLessons] = useState([])
   const { userData } = useContext(UserContext)
-  const { user } = useAuth()
+  const { user, isEducator } = useAuth()
 
   const [currentLesson, setCurrentLesson] = useState()
   const [currentLessonProgress, setCurrentLessonProgress] = useState()
@@ -174,10 +174,12 @@ const LessonProvider = ({ children }) => {
       if (rejectedWords.length > 1) {
         return Promise.reject({ rejectedWords })
       } else {
+        const createdBy = user.uid
+        const educator = isEducator ? user.uid : userData.educator
         return db
           .collection('customLessons')
           .doc()
-          .set({ title, description, words })
+          .set({ title, description, words, createdBy, educator })
       }
     })
   }
