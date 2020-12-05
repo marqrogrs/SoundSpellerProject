@@ -6,8 +6,8 @@ import 'firebase/analytics'
 
 // Add the Firebase products that you want to use
 import 'firebase/auth'
-import 'firebase/firestore'
-import 'firebase/functions'
+import 'firebase/firestore' //database
+import 'firebase/functions' 
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBC9FNI_d_Lse9Kw1u_1jbWUvqcHShHXZQ',

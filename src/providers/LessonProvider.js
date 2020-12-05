@@ -156,6 +156,32 @@ const LessonProvider = ({ children }) => {
     updateCurrentLesson({ progress })
   }
 
+  const createLesson = ({ title, words, description }) => {
+    // Check if word exists
+    var rejectedWords = []
+    var wordCheckPromises = []
+
+    words.forEach((word) => {
+      wordCheckPromises.push(db.collection('words').doc(word).get())
+    })
+
+    return Promise.all(wordCheckPromises).then((docRefs) => {
+      docRefs.forEach((docRef) => {
+        if (!docRef.exists) {
+          rejectedWords.push(docRef.id)
+        }
+      })
+      if (rejectedWords.length > 1) {
+        return Promise.reject({ rejectedWords })
+      } else {
+        return db
+          .collection('customLessons')
+          .doc()
+          .set({ title, description, words })
+      }
+    })
+  }
+
   useEffect(() => {
     if (userData) {
       // console.log('Getting lessons')
@@ -188,6 +214,7 @@ const LessonProvider = ({ children }) => {
         setProgress,
         saveProgress,
         updateScore,
+        createLesson,
       }}
     >
       {children}
