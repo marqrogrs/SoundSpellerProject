@@ -200,6 +200,9 @@ const LessonProvider = ({ children }) => {
           setLessons(lessonData)
           setLessonsLoading(false)
         })
+      // db.collection('customLessons').onSnapshot(queryRef => {
+      //   console.log(queryRef)
+      // })
     }
   }, [userData])
 

@@ -157,7 +157,7 @@ export default function AppBar({ user }) {
                 {auth.isEducator && (
                   <MenuItem onClick={handleViewStudents}>My Students</MenuItem>
                 )}
-                <MenuItem onClick={handleCreateLesson}>Create Lesson</MenuItem>
+                {/* <MenuItem onClick={handleCreateLesson} >Create Lesson</MenuItem> */}
                 <MenuItem onClick={handleViewLessons}>View Lessons</MenuItem>
                 <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
                 {/* <MenuItem onClick={() => history.push('/contact-us')}>
