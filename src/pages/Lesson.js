@@ -117,41 +117,49 @@ export default function Lesson() {
         }
         break
       case 'shift':
+      case 'Shift':
         if (simulated) {
           setInputWord(inputWord + ' ')
         }
         break
       case 'tab':
-        // Insert dashes for syllables
-        const expectedWord = words[currentWordIndex]
-        const cleanedWord = Array.from(inputWord).filter((char) => char !== ' ')
-        setInputWord(cleanedWord.join(''))
-        if (
-          Array.from(cleanedWord.join(''))
-            .filter((char) => char !== '-')
-            .join('')
-            .toUpperCase() !== expectedWord
-        ) {
-          setInputWord(cleanedWord.join('') + ' - ')
-        } else {
-          console.log('End of word')
-          const wordWithoutDashes = Array.from(cleanedWord)
-            .filter((char) => char !== '-')
-            .join('')
-          setTimeout(() => setInputWord(wordWithoutDashes), 1000)
-          setTimeout(async () => {
-            await playStartBells()
-            setInputWord('')
-            setEnableInput(true)
-          }, 500)
+        if (simulated) {
+          // Insert dashes for syllables
+          const expectedWord = words[currentWordIndex]
+          const cleanedWord = Array.from(inputWord).filter(
+            (char) => char !== ' '
+          )
+          setInputWord(cleanedWord.join(''))
+          if (
+            Array.from(cleanedWord.join(''))
+              .filter((char) => char !== '-')
+              .join('')
+              .toUpperCase() !== expectedWord
+          ) {
+            setInputWord(cleanedWord.join('') + ' - ')
+          } else {
+            console.log('End of word')
+            const wordWithoutDashes = Array.from(cleanedWord)
+              .filter((char) => char !== '-')
+              .join('')
+            setTimeout(() => setInputWord(wordWithoutDashes), 1000)
+            setTimeout(async () => {
+              await playStartBells()
+              setInputWord('')
+              setEnableInput(true)
+            }, 500)
+          }
         }
+
         break
       default:
         if (simulated && currentLesson.level > 0) {
           break
         }
         if ((!simulated && enableInput) || simulated) {
-          setInputWord(inputWord + key)
+          if (key.length === 1) {
+            setInputWord(inputWord + key)
+          }
         }
         break
     }

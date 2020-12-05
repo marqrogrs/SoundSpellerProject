@@ -13,7 +13,7 @@ const LessonProvider = ({ children }) => {
   const [lessonsLoading, setLessonsLoading] = useState(true)
   const [lessons, setLessons] = useState([])
   const { userData } = useContext(UserContext)
-  const { user } = useAuth()
+  const { user, isEducator } = useAuth()
 
   const [currentLesson, setCurrentLesson] = useState()
   const [currentLessonProgress, setCurrentLessonProgress] = useState()
@@ -156,6 +156,34 @@ const LessonProvider = ({ children }) => {
     updateCurrentLesson({ progress })
   }
 
+  const createLesson = ({ title, words, description }) => {
+    // Check if word exists
+    var rejectedWords = []
+    var wordCheckPromises = []
+
+    words.forEach((word) => {
+      wordCheckPromises.push(db.collection('words').doc(word).get())
+    })
+
+    return Promise.all(wordCheckPromises).then((docRefs) => {
+      docRefs.forEach((docRef) => {
+        if (!docRef.exists) {
+          rejectedWords.push(docRef.id)
+        }
+      })
+      if (rejectedWords.length > 1) {
+        return Promise.reject({ rejectedWords })
+      } else {
+        const createdBy = user.uid
+        const educator = isEducator ? user.uid : userData.educator
+        return db
+          .collection('customLessons')
+          .doc()
+          .set({ title, description, words, createdBy, educator })
+      }
+    })
+  }
+
   useEffect(() => {
     if (userData) {
       // console.log('Getting lessons')
@@ -172,6 +200,9 @@ const LessonProvider = ({ children }) => {
           setLessons(lessonData)
           setLessonsLoading(false)
         })
+      // db.collection('customLessons').onSnapshot(queryRef => {
+      //   console.log(queryRef)
+      // })
     }
   }, [userData])
 
@@ -188,6 +219,7 @@ const LessonProvider = ({ children }) => {
         setProgress,
         saveProgress,
         updateScore,
+        createLesson,
       }}
     >
       {children}
