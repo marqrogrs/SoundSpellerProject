@@ -171,7 +171,7 @@ const LessonProvider = ({ children }) => {
           rejectedWords.push(docRef.id)
         }
       })
-      if (rejectedWords.length > 1) {
+      if (rejectedWords.length >= 1) {
         return Promise.reject({ rejectedWords })
       } else {
         const createdBy = user.uid
