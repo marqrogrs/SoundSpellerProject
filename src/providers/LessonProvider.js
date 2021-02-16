@@ -201,9 +201,18 @@ const LessonProvider = ({ children }) => {
           setLessons(lessonData)
           setLessonsLoading(false)
         })
-      db.collection('customLessons').onSnapshot(queryRef => {
-         var customLessons = queryRef.docs.filter((doc) => doc.data().createdBy === user.uid).map(doc => doc.data())
-         setCustomLessons(customLessons)
+      db.collection('customLessons').onSnapshot((queryRef) => {
+        // TODO:@J if a student is signed in, we should be checking if doc.data().createdBy === user.uid (aka the student created the lesson) OR if doc.data().createdBy === student's educator id(hint: if a student user is signed in, you can get the ID of their educator from userData.educator (I'm pretty sure... may need to double check that))
+        var customLessons = queryRef.docs
+          .filter((doc) => {
+            // if educator
+            // return [filter by this]
+            // else if student
+            // return [filter by this]
+            return doc.data().createdBy === user.uid
+          })
+          .map((doc) => doc.data())
+        setCustomLessons(customLessons)
       })
     }
   }, [userData])
