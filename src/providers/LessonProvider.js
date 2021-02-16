@@ -12,6 +12,7 @@ const LessonContext = React.createContext({})
 const LessonProvider = ({ children }) => {
   const [lessonsLoading, setLessonsLoading] = useState(true)
   const [lessons, setLessons] = useState([])
+  const [customLessons, setCustomLessons] = useState([])
   const { userData } = useContext(UserContext)
   const { user, isEducator } = useAuth()
 
@@ -200,9 +201,10 @@ const LessonProvider = ({ children }) => {
           setLessons(lessonData)
           setLessonsLoading(false)
         })
-      // db.collection('customLessons').onSnapshot(queryRef => {
-      //   console.log(queryRef)
-      // })
+      db.collection('customLessons').onSnapshot(queryRef => {
+         var customLessons = queryRef.docs.filter((doc) => doc.data().createdBy === user.uid).map(doc => doc.data())
+         setCustomLessons(customLessons)
+      })
     }
   }, [userData])
 
@@ -213,7 +215,8 @@ const LessonProvider = ({ children }) => {
         currentLesson, //Lesson that user is currently viewing
         currentLessonProgress,
         currentLessonLevel,
-        lessons, //All lessons
+        lessons,
+        customLessons, //All lessons
         setLesson,
         setLevel,
         setProgress,
