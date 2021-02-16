@@ -95,7 +95,7 @@ export default function ProgressListItem({ lesson, progress, showButtons }) {
         <TableCell component='th' scope='row'>
           {lesson.lesson_id}
         </TableCell>
-        <TableCell align='right'>{lesson.title}</TableCell>
+        <TableCell align='right'>{lesson.description}</TableCell>
         <TableCell align='right'>{status}</TableCell>
         <TableCell align='right'>
           {((totalScore / totalPossibleScore) * 100).toFixed(0)}%
