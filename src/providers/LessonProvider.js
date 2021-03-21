@@ -29,55 +29,55 @@ const LessonProvider = ({ children }) => {
     const initProgress =
       lesson_section === '1' // Only three levels
         ? {
-            0: {
-              score: 0,
-              completed_words: 0,
-              high_score: 0,
-              completed: false,
-            },
-            1: {
-              score: 0,
-              completed_words: 0,
-              high_score: 0,
-              completed: false,
-            },
-            2: {
-              score: 0,
-              completed_words: 0,
-              high_score: 0,
-              completed: false,
-            },
-          }
+          0: {
+            score: 0,
+            completed_words: 0,
+            high_score: 0,
+            completed: false,
+          },
+          1: {
+            score: 0,
+            completed_words: 0,
+            high_score: 0,
+            completed: false,
+          },
+          2: {
+            score: 0,
+            completed_words: 0,
+            high_score: 0,
+            completed: false,
+          },
+        }
         : {
-            0: {
-              score: 0,
-              completed_words: 0,
-              high_score: 0,
-              completed: false,
-            },
-            1: {
-              score: 0,
-              completed_words: 0,
-              high_score: 0,
-              completed: false,
-            },
-            2: {
-              score: 0,
-              completed_words: 0,
-              high_score: 0,
-              completed: false,
-            },
-            3: {
-              score: 0,
-              completed_words: 0,
-              high_score: 0,
-              completed: false,
-            },
-          }
+          0: {
+            score: 0,
+            completed_words: 0,
+            high_score: 0,
+            completed: false,
+          },
+          1: {
+            score: 0,
+            completed_words: 0,
+            high_score: 0,
+            completed: false,
+          },
+          2: {
+            score: 0,
+            completed_words: 0,
+            high_score: 0,
+            completed: false,
+          },
+          3: {
+            score: 0,
+            completed_words: 0,
+            high_score: 0,
+            completed: false,
+          },
+        }
     const lesson_subsection = getLessonSubsection(selectedLesson)
     const currentLessonProgressObj =
       userData.progress[lesson_section] &&
-      userData.progress[lesson_section][lesson_subsection]
+        userData.progress[lesson_section][lesson_subsection]
         ? userData.progress[lesson_section][lesson_subsection]
         : initProgress
     console.log(
@@ -202,14 +202,18 @@ const LessonProvider = ({ children }) => {
           setLessonsLoading(false)
         })
       db.collection('customLessons').onSnapshot((queryRef) => {
-        // TODO:@J if a student is signed in, we should be checking if doc.data().createdBy === user.uid (aka the student created the lesson) OR if doc.data().createdBy === student's educator id(hint: if a student user is signed in, you can get the ID of their educator from userData.educator (I'm pretty sure... may need to double check that))
         var customLessons = queryRef.docs
           .filter((doc) => {
             // if educator
-            // return [filter by this]
+            if (isEducator && doc.data().createdBy === user.uid) {
+              return true;
+            }
             // else if student
-            // return [filter by this]
-            return doc.data().createdBy === user.uid
+            else if (!isEducator &&
+              (doc.data().createdBy === user.uid ||
+                doc.data().createdBy === userData.educator)) {
+              return true;
+            }
           })
           .map((doc) => doc.data())
         setCustomLessons(customLessons)
