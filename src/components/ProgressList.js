@@ -17,7 +17,8 @@ import { useStyles } from '../styles/material'
 import { db, auth } from '../firebase'
 
 export default function ProgressList({ student }) {
-  const { lessons } = useContext(LessonContext)
+  const { lessons, customLessons } = useContext(LessonContext)
+
   const { userData } = useContext(UserContext)
   const [userLessonData, setUserLessonData] = useState(null)
   const classes = useStyles()
@@ -76,6 +77,16 @@ export default function ProgressList({ student }) {
                     <ProgressListItem
                       lesson={lesson}
                       progress={progress}
+                      showButtons={student ? false : true}
+                    />
+                  )
+                })}
+                {customLessons.map((customLesson) => {
+                  var userProgress = userLessonData.progress[customLesson.title] ? userLessonData.progress[customLesson.title] : INIT_PROGRESS_OBJ
+                  return (
+                    <ProgressListItem
+                      lesson={customLesson}
+                      progress={userProgress}
                       showButtons={student ? false : true}
                     />
                   )

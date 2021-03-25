@@ -51,6 +51,12 @@ Before making any changes, make sure to change branches:
 git checkout -B new-branch-name
 ```
 
+## Committing/Pushing
+```
+git add <path-to-file>
+git commit -m "My commit message"
+git push
+```
 ## Creating a new page
 Run
 
