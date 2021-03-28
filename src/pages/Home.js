@@ -11,8 +11,7 @@ import Banner from '../components/Banner'
 import { FUN_FACTS } from '../util/constants'
 
 const Home = () => {
-  const { user, username } = useAuth()
-  const classes = useStyles()
+  const { user } = useAuth()
 
   return (
     <Container maxWidth='md'>
