@@ -9,30 +9,17 @@ import Button from '@material-ui/core/Button'
 import CustomAlert from '../components/CustomAlert'
 
 import { useStyles } from '../styles/material'
+import { useFormik } from 'formik'
+
 var Snake = require('../img/Welcome.png')
 
 export default function StudentLogin() {
   const classes = useStyles()
-  const [name, setName] = useState('')
-  const [password, setPassword] = useState('')
   const [error, setError] = useState(null)
   const auth = useAuth()
   const history = useHistory()
 
-  const handleChange = (e) => {
-    switch (e.target.name) {
-      case 'name':
-        setName(e.target.value)
-        break
-      case 'password':
-        setPassword(e.target.value)
-        break
-      default:
-        break
-    }
-  }
-
-  const handleSignIn = () => {
+  const handleSignIn = ({name, password}) => {
     setError(null)
     auth.signInStudent(name, password).catch((error) => {
       console.log(error)
@@ -40,13 +27,39 @@ export default function StudentLogin() {
     })
   }
 
+  const validate = (values) => {
+    const errors = {}
+    const { name, password } = values
+
+    if (!name) {
+      errors.name = 'Required'
+    } else if (!/^[a-z0-9]+$/gi.test(name)) {
+      errors.name = 'Username can only contain letters and numbers'
+    }
+
+    if (!password) {
+      errors.password = 'Required'
+    }
+
+    return errors
+  }
+
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+      password: '',
+    },
+    validate,
+    onSubmit: (values) => {
+      handleSignIn(values)
+    },
+  })
+
   return (
     <div id='landing-container'>
+      {error && <CustomAlert title='Error' message={error} severity='error' />}
       <img src={Snake} />
       <div className='right-panel'>
-        {error && (
-          <CustomAlert title='Error' message={error} severity='error' />
-        )}
         <form>
           <Grid
             container
@@ -64,8 +77,10 @@ export default function StudentLogin() {
                 label='Name'
                 variant='outlined'
                 color='primary'
-                value={name}
-                onChange={handleChange}
+                value={formik.values.name}
+                error={formik.errors.name}
+                helperText={formik.errors.name}
+                onChange={formik.handleChange}
               ></TextField>
             </Grid>
             <Grid item>
@@ -75,15 +90,17 @@ export default function StudentLogin() {
                 variant='outlined'
                 color='primary'
                 type='password'
-                value={password}
-                onChange={handleChange}
+                value={formik.values.password}
+                error={formik.errors.password}
+                helperText={formik.errors.password}
+                onChange={formik.handleChange}
               ></TextField>
             </Grid>
             <Grid item>
               <Button
                 variant='contained'
                 color='primary'
-                onClick={handleSignIn}
+                onClick={formik.handleSubmit}
               >
                 Sign In
               </Button>
