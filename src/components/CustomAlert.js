@@ -13,12 +13,12 @@ export default function CustomAlert({ severity, title, message }) {
   const [open, setOpen] = React.useState(true)
 
   return (
-    <div className={classes.root}>
+    <div>
       <Collapse in={open}>
         <Alert
           severity={severity}
-          variant='filled'
           className={classes.alert}
+          variant="filled"
           action={
             <IconButton
               aria-label='close'

@@ -43,9 +43,6 @@ export const useStyles = makeStyles((theme) => ({
       color: theme.palette.primary.light,
     },
   },
-  alert: {
-    width: '100%',
-  },
   modal: {
     display: 'flex',
     alignItems: 'center',
@@ -93,5 +90,13 @@ export const useStyles = makeStyles((theme) => ({
   },
   speechSlider: {
     width: 500,
+  },
+  alert: {
+    position: 'absolute',
+    top: 0,
+    width: '100%',
+    // '& > * + *': {
+    //   marginTop: theme.spacing(2),
+    // },
   },
 }))
