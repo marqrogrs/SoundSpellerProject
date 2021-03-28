@@ -100,4 +100,7 @@ export const useStyles = makeStyles((theme) => ({
     padding: '1rem',
     margin: '3rem',
   },
+  statistics: {
+    padding: theme.spacing(5),
+  },
 }))
