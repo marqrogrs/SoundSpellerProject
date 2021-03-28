@@ -11,6 +11,7 @@ import { useFormik } from 'formik'
 
 var Snake = require('../img/Welcome.png')
 
+//TODO: not a fan of the styling here
 export default function Login() {
   let { pathname } = useLocation()
   const allowSignUp = pathname !== '/student'
@@ -81,10 +82,6 @@ export default function Login() {
           confirmPassword: '',
         },
     validate,
-    onSubmit: (values) => {
-      console.log('onSubmit')
-      handleSignIn(values)
-    },
   })
 
   return (
@@ -156,7 +153,7 @@ export default function Login() {
                 <Button
                   variant='contained'
                   color='primary'
-                  onClick={formik.handleSubmit}
+                  onClick={() => handleSignIn(formik.values)}
                 >
                   Sign In
                 </Button>
