@@ -65,7 +65,6 @@ export default function StudentLogin() {
             container
             direction='column'
             alignItems='center'
-            className={classes.signUpForm}
             spacing={2}
           >
             <Grid item>
