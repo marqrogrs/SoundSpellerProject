@@ -8,8 +8,7 @@ import {
 import Landing from '../pages/Landing'
 import Error from '../pages/Error'
 import AppBar from '../components/AppBar'
-import StudentLogin from '../pages/StudentLogin'
-import EducatorLogin from '../pages/EducatorLogin'
+import Login from '../pages/Login'
 
 import ContactUs from '../pages/ContactUs.js'
 
@@ -25,10 +24,10 @@ export default function PublicRoutes({ user }) {
           <Landing />
         </Route>
         <Route exact path='/student'>
-          <StudentLogin />
+          <Login />
         </Route>
         <Route exact path='/educator'>
-          <EducatorLogin />
+          <Login />
         </Route>
         {/* <Route exact path='/lessons'>
           <Redirect to='/' />
