@@ -50,10 +50,10 @@ export default function ProgressList({ student }) {
       {lessonSections.map((section) => {
         return (
           <>
-            <Typography variant='h4'>{section.title}</Typography>
+            <Typography variant='h4'>Section {section.id}. {section.title}</Typography>
             <Typography variant='subtitle1'>{section.description}</Typography>
             <TableContainer component={Paper} className={classes.table}>
-              <Table>
+              <Table >
                 <TableHead>
                   <TableRow>
                     <TableCell />

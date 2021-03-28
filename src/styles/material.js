@@ -6,7 +6,7 @@ export const useStyles = makeStyles((theme) => ({
     alignSelf: 'center',
   },
   table: {
-    margin: 'auto',
+    margin: '2rem auto',
     backgroundColor: theme.palette.background.paper,
   },
   menuButton: {
@@ -95,8 +95,9 @@ export const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     top: 0,
     width: '100%',
-    // '& > * + *': {
-    //   marginTop: theme.spacing(2),
-    // },
+  },
+  progressListPaper: {
+    padding: '1rem',
+    margin: '3rem',
   },
 }))
