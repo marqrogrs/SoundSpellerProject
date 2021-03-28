@@ -61,7 +61,7 @@ export default function ProgressList({ student }) {
           <TableBody>
             {userLessonData && (
               <>
-                {lessons.map((lesson) => {
+                {lessons.map((lesson, i) => {
                   const lesson_section = lesson.lesson_section
                   const lesson_subsection = getLessonSubsection(lesson)
 
@@ -77,6 +77,7 @@ export default function ProgressList({ student }) {
                       lesson={lesson}
                       progress={progress}
                       showButtons={student ? false : true}
+                      key={i}
                     />
                   )
                 })}
