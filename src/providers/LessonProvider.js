@@ -12,6 +12,8 @@ const LessonContext = React.createContext({})
 const LessonProvider = ({ children }) => {
   const [lessonsLoading, setLessonsLoading] = useState(true)
   const [lessons, setLessons] = useState([])
+  const [lessonSections, setLessonSections] = useState([])
+
   const { userData } = useContext(UserContext)
   const { user, isEducator } = useAuth()
 
@@ -187,7 +189,8 @@ const LessonProvider = ({ children }) => {
   useEffect(() => {
     if (userData) {
       // console.log('Getting lessons')
-      db.collection('lessons')
+      const getLessons = db
+        .collection('lessons')
         .get()
         .then((lessonDocs) => {
           var lessonData = lessonDocs.docs.map((doc) => doc.data())
@@ -198,8 +201,25 @@ const LessonProvider = ({ children }) => {
           ])
 
           setLessons(lessonData)
-          setLessonsLoading(false)
         })
+      const getLessonSections = db
+        .collection('lessonSections')
+        .get()
+        .then((sectionDocs) => {
+          var sections = sectionDocs.docs.map((doc) => {
+            return { ...doc.data(), id: doc.id }
+          })
+          sections = _.sortBy(sections, [
+            function (doc) {
+              return parseInt(doc.id)
+            },
+          ])
+          setLessonSections(sections)
+        })
+
+      Promise.all([getLessons, getLessonSections]).then(() => {
+        setLessonsLoading(false)
+      })
       // db.collection('customLessons').onSnapshot(queryRef => {
       //   console.log(queryRef)
       // })
@@ -214,6 +234,7 @@ const LessonProvider = ({ children }) => {
         currentLessonProgress,
         currentLessonLevel,
         lessons, //All lessons
+        lessonSections,
         setLesson,
         setLevel,
         setProgress,
