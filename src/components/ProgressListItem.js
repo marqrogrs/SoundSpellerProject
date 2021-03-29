@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Box from '@material-ui/core/Box'
 import Collapse from '@material-ui/core/Collapse'
@@ -8,6 +8,9 @@ import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
+import Card from '@material-ui/core/Card'
+import CardContent from '@material-ui/core/CardContent'
+
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
@@ -16,8 +19,14 @@ import Button from '@material-ui/core/Button'
 import { LEVELS } from '../util/constants'
 
 import { useStyles } from '../styles/material'
+import { Typography } from '@material-ui/core'
 
-export default function ProgressListItem({ lesson, progress, showButtons }) {
+export default function ProgressListItem({
+  lesson,
+  progress,
+  showButtons,
+  rules,
+}) {
   const [open, setOpen] = useState(false)
   const [status, setStatus] = useState('')
   const [button, setButton] = useState('')
@@ -79,7 +88,6 @@ export default function ProgressListItem({ lesson, progress, showButtons }) {
 
     setTotalPossibleScore(total_possible_score)
   }, [lesson, progress])
-
   return (
     <>
       <TableRow className={classes.progressList}>
@@ -105,6 +113,27 @@ export default function ProgressListItem({ lesson, progress, showButtons }) {
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout='auto' unmountOnExit>
             <Box margin={1}>
+              {rules &&
+                rules.map((r) => (
+                  <Card className={classes.rule} variant='outlined' raised>
+                    <CardContent>
+                      <Typography color='textSecondary' gutterBottom>
+                        Rule {r.rule_id}
+                      </Typography>
+                      <Typography variant='h5' component='h2'>
+                        {r.rule_title}
+                      </Typography>
+                      <Typography
+                        variant='body1'
+                        component='p'
+                        style={{ whiteSpace: 'pre-wrap' }}
+                      >
+                        {r.rule}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                ))}
+
               <Table size='small' aria-label='purchases'>
                 <TableHead>
                   <TableRow>

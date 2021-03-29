@@ -103,4 +103,9 @@ export const useStyles = makeStyles((theme) => ({
   statistics: {
     padding: theme.spacing(5),
   },
+  rule: {
+    padding: 20,
+    margin: 20,
+    background: `linear-gradient(15deg, ${theme.palette.secondary.main} 30%, ${theme.palette.secondary.light} 98%)`,
+  },
 }))
