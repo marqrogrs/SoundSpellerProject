@@ -1,4 +1,6 @@
 const firebase = require('firebase/app')
+var admin = require('firebase-admin');
+
 require('firebase/firestore')
 
 const firebaseConfig = {
@@ -24,8 +26,17 @@ rules.forEach((rule) => {
   db.collection('rules')
     .doc(rule.rule_id)
     .set(rule)
+    // .then(() => {
+    //   return db.collection('lessons').doc(rule.rule_les_num).get()
+    // })
+    // .then((doc) => {
+    //   return doc.ref.update({
+    //     rules: firebase.firestore.FieldValue.arrayUnion(rule.rule_id),
+    //     rule: firebase.firestore.FieldValue.delete(),
+    //   })
+    // })
     .catch((err) => {
-      console.log("Failed to add ", rule.rule_id)
+      console.log('Failed to add ', rule.rule_id)
       console.error(err)
     })
 })
