@@ -13,6 +13,7 @@ const LessonProvider = ({ children }) => {
   const [lessonsLoading, setLessonsLoading] = useState(true)
   const [lessons, setLessons] = useState([])
   const [lessonSections, setLessonSections] = useState([])
+  const [rules, setRules] = useState([])
 
   const { userData } = useContext(UserContext)
   const { user, isEducator } = useAuth()
@@ -216,8 +217,20 @@ const LessonProvider = ({ children }) => {
           ])
           setLessonSections(sections)
         })
+      const getRules = db
+        .collection('rules')
+        .get()
+        .then((ruleDocs) => {
+          var rules = {}
 
-      Promise.all([getLessons, getLessonSections]).then(() => {
+          ruleDocs.docs.forEach((doc) => {
+            rules[doc.id] = doc.data()
+          })
+          console.log(rules)
+          setRules(rules)
+        })
+
+      Promise.all([getLessons, getLessonSections, getRules]).then(() => {
         setLessonsLoading(false)
       })
       // db.collection('customLessons').onSnapshot(queryRef => {
@@ -235,6 +248,7 @@ const LessonProvider = ({ children }) => {
         currentLessonLevel,
         lessons, //All lessons
         lessonSections,
+        rules,
         setLesson,
         setLevel,
         setProgress,
