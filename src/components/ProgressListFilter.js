@@ -19,37 +19,26 @@ import Checkbox from '@material-ui/core/Checkbox';
 
 export default function CheckboxLabels() {
   const [state, setState] = React.useState({
-    const [checkedA, setcheckedA] = useState(true),
-    checkedB: true,
-    checkedC: true,
-    checkedD: true,
+    /*const [checkedA, setcheckedA] = useState(true),*/
+    showCustomLessons: true,
+    showStandardLessons: true,
   });
 
   const handleChange = (event) => {
 
-    setState({ ...state, [event.target.name === "checkedA"]: event.target.checked });
+    setState({ ...state, [event.target.name]: event.target.checked });
   };
 
   return (
     <FormGroup row>
       <FormControlLabel
-        control={<Checkbox checked={checkedA} onChange={handleChange} name="checkedA" />}
-        label="A"
+        control={<Checkbox checked={state.showCustomLessons} onChange={handleChange} name="showCustomLessons" />}
+        label="Custom"
       />
 
       <FormControlLabel
-        control={<Checkbox checked={state.checkedA} onChange={handleChange} name="checkedB" />}
-        label="B"
-      />
-
-      <FormControlLabel
-        control={<Checkbox checked={state.checkedA} onChange={handleChange} name="checkedC" />}
-        label="C"
-      />
-
-      <FormControlLabel
-        control={<Checkbox checked={state.checkedA} onChange={handleChange} name="checkedD" />}
-        label="D"
+        control={<Checkbox checked={state.showStandardLessons} onChange={handleChange} name="showStandardLessons" />}
+        label="Standard"
       />
     </FormGroup>
   );
