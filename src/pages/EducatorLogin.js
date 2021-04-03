@@ -146,7 +146,7 @@ export default function EducatorLogin() {
                 </Button>
               </Grid>
             )}
-
+            {/* TODO:@J When Sign Up is clicked, the "confirm password" field should pop up to improve UX  */}
             <Grid item>
               <Button
                 variant='contained'
