@@ -71,16 +71,21 @@ const Auth = ({ children }) => {
 
   // Let registered users log in
   const signInWithEmailAndPassword = (email, password) => {
-    return auth
-      .signInWithEmailAndPassword(email, password)
-      .then(() => {
-        console.log('Signed in')
-        history.push('/')
-      })
-      .catch((error) => {
-        console.log(error)
-        triggerErrorAlert(error.message || error)
-      })
+    // NOTE: had to wrap this in try-catch to catch errors from passing null/undefined to signInWithEmailAndPassword. Feels odd that it wouldn't just get caught in the .catch()... maybe we should investigate this later to see if something is wrong here?
+    try {
+      return auth
+        .signInWithEmailAndPassword(email, password)
+        .then(() => {
+          console.log('Signed in')
+          history.push('/')
+        })
+        .catch((error) => {
+          console.log(error)
+          triggerErrorAlert(error.message || error)
+        })
+    } catch (error) {
+      triggerErrorAlert(error.message || error)
+    }
   }
 
   // Let registered users log in
@@ -89,7 +94,7 @@ const Auth = ({ children }) => {
       console.log(result)
       const { token, error } = result.data
       if (error) {
-        throw new Error(error)
+        triggerErrorAlert(error.message || error)
       } else {
         return auth.signInWithCustomToken(token).then((u_name) => {
           history.push('/')

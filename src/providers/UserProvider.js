@@ -12,6 +12,7 @@ export default function UserProvider({ children }) {
   const [userData, setUserData] = useState(null)
   const [classrooms, setClassrooms] = useState(null)
   const [totalScore, setTotalScore] = useState(0)
+  const [lessonsCompleted, setLessonsCompleted] = useState(0)
   const [userDataLoaded, setUserDataLoaded] = useState(false)
 
   useEffect(() => {
@@ -48,8 +49,22 @@ export default function UserProvider({ children }) {
             0
           )
           setTotalScore(total_score)
-          setUserDataLoaded(true)
 
+          //Calculate # completed
+          const lessons_completed = Object.values(data.progress).reduce(
+            (acc, section) => {
+              var lessons_completed = 0
+              Object.values(section).forEach((id) => {
+                Object.values(id).forEach((level) => {
+                  if (level.completed) lessons_completed++
+                })
+              })
+              return (acc += lessons_completed)
+            },
+            0
+          )
+          setLessonsCompleted(lessons_completed)
+          setUserDataLoaded(true)
         })
         if (isEducator) {
           unsubscribeClasses = userDoc
@@ -85,6 +100,7 @@ export default function UserProvider({ children }) {
         addNewStudent,
         classrooms,
         totalScore,
+        lessonsCompleted
       }}
     >
       {children}
