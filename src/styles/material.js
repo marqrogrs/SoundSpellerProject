@@ -96,6 +96,11 @@ export const useStyles = makeStyles((theme) => ({
     top: 0,
     width: '100%',
   },
+  progressTabContainer: {
+    flexGrow: 1,
+    width: '100%',
+    backgroundColor: theme.palette.background.paper,
+  },
   progressListPaper: {
     padding: '1rem',
     margin: '3rem',

@@ -15,7 +15,11 @@ import { getLessonSubsection } from '../util/functions'
 import { INIT_PROGRESS_OBJ } from '../util/constants'
 import { useStyles } from '../styles/material'
 import { db, auth } from '../firebase'
-import { Typography } from '@material-ui/core'
+import AppBar from '@material-ui/core/AppBar'
+import Tabs from '@material-ui/core/Tabs'
+import Tab from '@material-ui/core/Tab'
+import Typography from '@material-ui/core/Typography'
+import Box from '@material-ui/core/Box'
 
 export default function ProgressList({ student }) {
   const { lessons, lessonSections, rules, lessonsLoading } = useContext(
@@ -23,6 +27,8 @@ export default function ProgressList({ student }) {
   )
   const { userData } = useContext(UserContext)
   const [userLessonData, setUserLessonData] = useState(null)
+  const [selectedTab, setSelectedTab] = useState(0)
+
   const classes = useStyles()
 
   useEffect(() => {
@@ -48,8 +54,103 @@ export default function ProgressList({ student }) {
   }, [student, userData])
 
   return (
-    <>
+    <div className={classes.progressTabContainer}> 
+      <AppBar position='static' color='default'>
+        <Tabs
+          value={selectedTab}
+          onChange={(e, selected) => setSelectedTab(selected)}
+          indicatorColor='primary'
+          textColor='primary'
+          variant='scrollable'
+          scrollButtons='auto'
+          aria-label='section-tabs'
+        >
+          {!lessonsLoading &&
+            lessonSections.map((section, i) => (
+              <Tab
+                label={`Section ${section.id}`}
+                id={`tab-${i}`}
+                aria-controls={`tabpanel-${i}`}
+              />
+            ))}
+        </Tabs>
+      </AppBar>
       {!lessonsLoading &&
+        lessonSections.map((section, i) => {
+          return (
+            <div
+              role='tabpanel'
+              hidden={selectedTab !== i}
+              id={`tab-${i}`}
+              aria-labelledby={`tabpanel-${i}`}
+            >
+              {selectedTab === i && (
+                <>
+                  <Box p={3} bgcolor="primary.main" color="primary.contrastText">
+                    <Typography variant='h4'>{section.title}</Typography>
+                    <Typography variant='subtitle1'>
+                      {section.description}
+                    </Typography>
+                    <TableContainer component={Paper}>
+                      <Table>
+                        <TableHead>
+                          <TableRow>
+                            <TableCell />
+                            <TableCell>Lesson</TableCell>
+                            <TableCell align='right'>Status</TableCell>
+                            <TableCell align='right'>Score</TableCell>
+                            <TableCell align='right'></TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {userLessonData && (
+                            <>
+                              {lessons
+                                .filter(
+                                  (lesson) =>
+                                    lesson.lesson_section === section.id
+                                )
+                                .map((lesson, i) => {
+                                  const lesson_subsection = getLessonSubsection(
+                                    lesson
+                                  )
+
+                                  const progress = userLessonData.progress[
+                                    section.id
+                                  ]
+                                    ? userLessonData.progress[section.id][
+                                        lesson_subsection
+                                      ]
+                                      ? userLessonData.progress[section.id][
+                                          lesson_subsection
+                                        ]
+                                      : INIT_PROGRESS_OBJ
+                                    : INIT_PROGRESS_OBJ
+                                  const lesson_rules = lesson.rules
+                                    ? lesson.rules.map((rule) => rules[rule])
+                                    : null
+                                  return (
+                                    <ProgressListItem
+                                      lesson={lesson}
+                                      rules={lesson_rules}
+                                      progress={progress}
+                                      showButtons={student ? false : true}
+                                      key={i}
+                                    />
+                                  )
+                                })}
+                            </>
+                          )}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                  </Box>
+                </>
+              )}
+            </div>
+          )
+        })}
+      {/* {!lessonsLoading &&
         lessonSections.map((section) => {
           return (
             <>
@@ -109,7 +210,7 @@ export default function ProgressList({ student }) {
               </TableContainer>
             </>
           )
-        })}
-    </>
+        })} */}
+    </div>
   )
 }
