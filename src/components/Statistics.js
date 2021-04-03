@@ -19,17 +19,17 @@ export default function Statistics() {
       <Typography variant='h5' style={{marginBottom: 20}}>My Stats</Typography>
       <Paper className={classes.statistics}>
         <Grid container spacing={3} direction='column'>
-          <Grid item className={classes.statistic}>
+          <Grid item>
             <Typography variant='h2' color='primary'>{totalScore}</Typography>
             <Typography variant='h6'>Total Score</Typography>
             {/* <Divider variant='middle' /> */}
           </Grid>
-          <Grid item className={classes.statistic}>
+          <Grid item>
             <Typography variant='h2' color='primary'>{lessonsCompleted}</Typography>
             <Typography variant='h6'>Lessons Completed</Typography>
             {/* <Divider variant='middle' /> */}
           </Grid>
-          <Grid item className={classes.statistic}>
+          <Grid item>
             <Typography variant='h2' color='primary'>0</Typography>
             <Typography variant='h6'>Words Mastered</Typography>
             {/* <Divider variant='middle' /> */}

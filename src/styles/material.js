@@ -97,9 +97,12 @@ export const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   progressTabContainer: {
-    flexGrow: 1,
-    width: '100%',
+    // flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
+    display: 'flex',
+  },
+  progressTabs: {
+    borderRight: `1px solid ${theme.palette.divider}`,
   },
   progressListPaper: {
     padding: '1rem',
