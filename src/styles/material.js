@@ -6,7 +6,7 @@ export const useStyles = makeStyles((theme) => ({
     alignSelf: 'center',
   },
   table: {
-    margin: 'auto',
+    margin: '2rem auto',
     backgroundColor: theme.palette.background.paper,
   },
   menuButton: {
@@ -42,9 +42,6 @@ export const useStyles = makeStyles((theme) => ({
     '&:hover': {
       color: theme.palette.primary.light,
     },
-  },
-  alert: {
-    width: '100%',
   },
   modal: {
     display: 'flex',
@@ -93,5 +90,30 @@ export const useStyles = makeStyles((theme) => ({
   },
   speechSlider: {
     width: 500,
+  },
+  alert: {
+    position: 'absolute',
+    top: 0,
+    width: '100%',
+  },
+  progressTabContainer: {
+    // flexGrow: 1,
+    backgroundColor: theme.palette.background.paper,
+    display: 'flex',
+  },
+  progressTabs: {
+    borderRight: `1px solid ${theme.palette.divider}`,
+  },
+  progressListPaper: {
+    padding: '1rem',
+    margin: '3rem',
+  },
+  statistics: {
+    padding: theme.spacing(5),
+  },
+  rule: {
+    padding: 20,
+    margin: 20,
+    background: `linear-gradient(15deg, ${theme.palette.secondary.main} 30%, ${theme.palette.secondary.light} 98%)`,
   },
 }))

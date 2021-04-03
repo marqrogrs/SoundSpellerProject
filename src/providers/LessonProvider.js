@@ -12,6 +12,9 @@ const LessonContext = React.createContext({})
 const LessonProvider = ({ children }) => {
   const [lessonsLoading, setLessonsLoading] = useState(true)
   const [lessons, setLessons] = useState([])
+  const [lessonSections, setLessonSections] = useState([])
+  const [rules, setRules] = useState([])
+
   const { userData } = useContext(UserContext)
   const { user, isEducator } = useAuth()
 
@@ -187,7 +190,8 @@ const LessonProvider = ({ children }) => {
   useEffect(() => {
     if (userData) {
       // console.log('Getting lessons')
-      db.collection('lessons')
+      const getLessons = db
+        .collection('lessons')
         .get()
         .then((lessonDocs) => {
           var lessonData = lessonDocs.docs.map((doc) => doc.data())
@@ -198,8 +202,37 @@ const LessonProvider = ({ children }) => {
           ])
 
           setLessons(lessonData)
-          setLessonsLoading(false)
         })
+      const getLessonSections = db
+        .collection('lessonSections')
+        .get()
+        .then((sectionDocs) => {
+          var sections = sectionDocs.docs.map((doc) => {
+            return { ...doc.data(), id: doc.id }
+          })
+          sections = _.sortBy(sections, [
+            function (doc) {
+              return parseInt(doc.id)
+            },
+          ])
+          setLessonSections(sections)
+        })
+      const getRules = db
+        .collection('rules')
+        .get()
+        .then((ruleDocs) => {
+          var rules = {}
+
+          ruleDocs.docs.forEach((doc) => {
+            rules[doc.id] = doc.data()
+          })
+          console.log(rules)
+          setRules(rules)
+        })
+
+      Promise.all([getLessons, getLessonSections, getRules]).then(() => {
+        setLessonsLoading(false)
+      })
       // db.collection('customLessons').onSnapshot(queryRef => {
       //   console.log(queryRef)
       // })
@@ -214,6 +247,8 @@ const LessonProvider = ({ children }) => {
         currentLessonProgress,
         currentLessonLevel,
         lessons, //All lessons
+        lessonSections,
+        rules,
         setLesson,
         setLevel,
         setProgress,

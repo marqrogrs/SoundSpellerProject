@@ -38,6 +38,7 @@ exports.authenticateStudent = functions.https.onCall(async (data, context) => {
     })
 })
 
+//TODO: need to validate that no other student accounts match this username.
 exports.createStudentAccount = functions.https.onCall((data, context) => {
   if (context.auth.uid) {
     const { username, password, classroom } = data
