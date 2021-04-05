@@ -2,7 +2,7 @@
 
 ## Overview
 
-This app is written in React and uses firebase to handle authenticaion, database storage & cloud functions. Styling is done using Material UI.
+This app is written in React and uses firebase to handle authentication, database storage & cloud functions. Styling is done using Material UI.
 
 ### Directory Structuring
 
@@ -51,35 +51,48 @@ Before making any changes, make sure to change branches:
 git checkout -B new-branch-name
 ```
 
-## Creating a new page
-Run
+## Git flow
+The following git flow should be followed when working on SoundSpeller:
+
+1. Before making any changes, checkout develop and pull any changes that have been made to make sure you're working from the most up-to-date code:
 
 ```
-./scripts/createNewPage 
+git checkout develop
+git pull
 ```
-
-and follow the prompts to create a new page. When completed, a file will be created at `SoundSpellerProject/src/pages/{PAGE_TITLE}.js`. Open this file, and add your html where it says `{/* ENTER HTML HERE */}`.
-
-If you haven't already, run `yarn start`. You should see the page title added to the menu bar dropdown, and when you click it, you should be renavigated to the page.
-
-## Deploying
-When you are happy with your changes, push them to github:
+2. Next, checkout into a new branch
 
 ```
-git commit -am "quick note about the changes you made"
+git checkout -B "my-branch"
+```
+Try to use unique and specific branch names based on what you're working on.
+
+3. Make your changes. Every time you've made a significant and functioning change, you should commit your work with a descriptive comment.
+
+First, run `git status` - this will output a list of your changed files, specifying which are staged and which are not. It will also tell you which branch you are on - make sure you are on YOUR branch. If a change is `staged`, that means it will be included in your commit. If it is not staged, it will not be included. Add any files you want into your commit with `git add <file>`. Once you've chosen the files to include, create commit with a descriptive comment.
+```
+git commit -m "updated function to use x instead of y"
+```
+Ideally, commits should be made when your work is in a functioning state (it should compile, no obvious errors, etc). If it's not, you can specify this in your commit:
+
+```
+git commit -m "trying to add feature... WIP"
+```
+
+3. Push to github
+```
 git push
 ```
 
-Then, run 
+4. Open a PR into `develop`. Go to the SoundSpeller project in Github, and select the Pull Requests tab. Click "New Pull Request". For the `base` select `develop`. For `compare`, select your branch.
+5. Write a detailed list / explanation of the changes you made. See [this PR](https://github.com/marqrogrs/SoundSpellerProject/pull/90) for an example.
+6. PR Review: somebody will review your PR and leave comments. If any changes are requested, make those changes. When the code is ready, it will be merged.
+7. Whenever we are ready to deploy, we will merge develop into master.
 
-```
-npm run build
-firebase login
-firebase deploy --only hosting
-```
 
-If firebase deploy does not work, you need to contact April or Mark for access to the SoundSpeller project.
+In summary...
 
+Feature Branch -> Develop -> Main
 ## Reference Videos
 Mark Rogers, [Jul 17, 2020 at 4:16:28 PM]:
 Here is a video clicking through the lesson menues: https://www.screencast.com/t/Gy5dDSYO
