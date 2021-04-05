@@ -17,6 +17,7 @@ import { LEVELS, SUCCESS_MESSAGES, FAILURE_MESSAGES } from '../util/constants'
 import { useStyles } from '../styles/material'
 
 import { useSnackbar } from 'notistack'
+import RulesLesson from '../components/RulesLesson'
 var _ = require('lodash')
 
 export default function Lesson() {
@@ -211,6 +212,7 @@ export default function Lesson() {
     }
   }, [currentLesson, currentLessonLevel, lessonsLoading, currentWordIndex])
   // console.log(currentLessonProgress, currentLessonLevel)
+
   return (
     <>
       <Prompt
@@ -289,6 +291,12 @@ export default function Lesson() {
             Lesson Score: {currentLessonProgress[currentLessonLevel].score}
           </Grid>
         )}
+
+        <RulesLesson 
+          rules={currentLesson?.lesson.rules} 
+          startOpen={!lessonsLoading && currentWordIndex === 0} 
+          //If it is the first word (and the Lessons is already loaded), it means it is the firt time on this lesson, so the modal should be starts open
+        />
         <SpeechRateFab />
       </Container>
     </>
