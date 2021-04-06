@@ -17,7 +17,7 @@ import { LEVELS, SUCCESS_MESSAGES, FAILURE_MESSAGES } from '../util/constants'
 import { useStyles } from '../styles/material'
 
 import { useSnackbar } from 'notistack'
-import RulesLessonModal from '../components/RulesLessonModal'
+import LessonRulesModal from '../components/LessonRulesModal'
 var _ = require('lodash')
 
 export default function Lesson() {
@@ -42,7 +42,7 @@ export default function Lesson() {
   const [isSaved, setIsSaved] = useState(true)
   const [outputWordKey, setOutputWordKey] = useState(Math.random())
   const [displaySpeedSlider, setDisplaySpeedSlider] = useState(false)
-  const [rulesDescription, setRulesDescription] = useState([])
+  const [currentLessonRules, setCurrentLessonRules] = useState([])
 
   const params = useParams()
   const history = useHistory()
@@ -215,12 +215,10 @@ export default function Lesson() {
 
   useEffect(() => {
     if(!lessonsLoading && currentLesson){
-      const rulesDescriptionData = currentLesson.lesson.rulesObject.map( lesson => lesson.rule)
-      setRulesDescription(rulesDescriptionData)
+      const rulesDescriptionData = currentLesson.lesson.rulesObject.map( ruleObj => ruleObj.rule)
+      setCurrentLessonRules(rulesDescriptionData)
     }
   }, [currentLesson])
-
-  useEffect(() => {}, [currentWordIndex])
   
   console.log("Current Word Index:",currentWordIndex)
   console.log("currentWordIndex === 0", currentWordIndex === 0)
@@ -304,8 +302,8 @@ export default function Lesson() {
           </Grid>
         )}
 
-        <RulesLessonModal 
-          rules={rulesDescription} 
+        <LessonRulesModal 
+          rules={currentLessonRules} 
           isOpen={currentWordIndex === 0} 
           //If it is the first word (and the Lessons is already loaded), it means it is the firt time on this lesson, so the modal should be starts open
         />

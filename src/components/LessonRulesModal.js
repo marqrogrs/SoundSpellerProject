@@ -22,10 +22,10 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function RulesLessonModal({ rules, isOpen }) {
+export default function LessonRulesModal({ rules, isOpen }) {
     
     const classes = useStyles();
-    const [open, setOpen] = React.useState(isOpen);
+    const [open, setOpen] = useState(isOpen);
 
     console.log('open modal',open);
     const handleOpen = () => {
