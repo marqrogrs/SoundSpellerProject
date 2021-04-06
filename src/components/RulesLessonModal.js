@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -22,10 +22,12 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function RulesLesson({ rules, startOpen }) {
+export default function RulesLessonModal({ rules, isOpen }) {
+    
     const classes = useStyles();
-    const [open, setOpen] = React.useState(startOpen);
+    const [open, setOpen] = React.useState(isOpen);
 
+    console.log('open modal',open);
     const handleOpen = () => {
         setOpen(true);
     };
@@ -35,10 +37,7 @@ export default function RulesLesson({ rules, startOpen }) {
     };
 
     return (
-
-
         <div>
-
             <Fab
                 color='primary'
                 aria-label='add'

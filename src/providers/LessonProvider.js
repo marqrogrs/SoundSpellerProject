@@ -26,6 +26,9 @@ const LessonProvider = ({ children }) => {
     const selectedLesson = lessons.filter((lesson) => {
       return lesson.lesson_id === lesson_id
     })[0]
+
+    //I don't remove the rule array because I don't know else where is used
+    selectedLesson.rulesObject = selectedLesson.rules.map(rule => rules[rule])
     const { lesson_section } = selectedLesson
 
     const initProgress =

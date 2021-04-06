@@ -17,7 +17,7 @@ import { LEVELS, SUCCESS_MESSAGES, FAILURE_MESSAGES } from '../util/constants'
 import { useStyles } from '../styles/material'
 
 import { useSnackbar } from 'notistack'
-import RulesLesson from '../components/RulesLesson'
+import RulesLessonModal from '../components/RulesLessonModal'
 var _ = require('lodash')
 
 export default function Lesson() {
@@ -35,13 +35,14 @@ export default function Lesson() {
     setLevel,
   } = useContext(LessonContext)
   const [words, setWords] = useState(null)
-  const [currentWordIndex, setCurrentWordIndex] = useState(0)
+  const [currentWordIndex, setCurrentWordIndex] = useState(null)
   const [lessonStarted, setLessonStarted] = useState(false)
   const [inputWord, setInputWord] = useState('')
   const [enableInput, setEnableInput] = useState(false)
   const [isSaved, setIsSaved] = useState(true)
   const [outputWordKey, setOutputWordKey] = useState(Math.random())
   const [displaySpeedSlider, setDisplaySpeedSlider] = useState(false)
+  const [rulesDescription, setRulesDescription] = useState([])
 
   const params = useParams()
   const history = useHistory()
@@ -211,7 +212,18 @@ export default function Lesson() {
       setCurrentWordIndex(start_word)
     }
   }, [currentLesson, currentLessonLevel, lessonsLoading, currentWordIndex])
-  // console.log(currentLessonProgress, currentLessonLevel)
+
+  useEffect(() => {
+    if(!lessonsLoading && currentLesson){
+      const rulesDescriptionData = currentLesson.lesson.rulesObject.map( lesson => lesson.rule)
+      setRulesDescription(rulesDescriptionData)
+    }
+  }, [currentLesson])
+
+  useEffect(() => {}, [currentWordIndex])
+  
+  console.log("Current Word Index:",currentWordIndex)
+  console.log("currentWordIndex === 0", currentWordIndex === 0)
 
   return (
     <>
@@ -292,9 +304,9 @@ export default function Lesson() {
           </Grid>
         )}
 
-        <RulesLesson 
-          rules={currentLesson?.lesson.rules} 
-          startOpen={!lessonsLoading && currentWordIndex === 0} 
+        <RulesLessonModal 
+          rules={rulesDescription} 
+          isOpen={currentWordIndex === 0} 
           //If it is the first word (and the Lessons is already loaded), it means it is the firt time on this lesson, so the modal should be starts open
         />
         <SpeechRateFab />
