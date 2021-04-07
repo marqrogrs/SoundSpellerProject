@@ -69,7 +69,7 @@ export default function LessonRulesModal({ rules, isOpen }) {
             >
                 <Fade in={open}>
                     <div className={classes.paper}>
-                        <h2 id="transition-modal-title">Rules</h2>
+                        <h2 id="transition-modal-title">Spelling Patterns</h2>
                         <p id="transition-modal-description">{rules}</p>
                         <p><span>You can click on </span><AssignmentLateIcon /><span> to see the rules again</span></p>
                         <Button
