@@ -215,13 +215,13 @@ export default function Lesson() {
 
   useEffect(() => {
     if(!lessonsLoading && currentLesson){
-      const rulesDescriptionData = currentLesson.lesson.rulesObject.map( ruleObj => ruleObj.rule)
+      const rulesDescriptionData = currentLesson.lesson.rules.map( ruleObj => ruleObj.rule)
       setCurrentLessonRules(rulesDescriptionData)
     }
   }, [currentLesson])
   
-  console.log("Current Word Index:",currentWordIndex)
-  console.log("currentWordIndex === 0", currentWordIndex === 0)
+  //console.log("Current Word Index:",currentWordIndex)
+  //console.log("currentWordIndex === 0", currentWordIndex === 0)
 
   return (
     <>

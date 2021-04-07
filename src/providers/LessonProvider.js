@@ -27,8 +27,7 @@ const LessonProvider = ({ children }) => {
       return lesson.lesson_id === lesson_id
     })[0]
 
-    //I don't remove the rule array because I don't know else where is used
-    selectedLesson.rulesObject = selectedLesson.rules.map(rule => rules[rule])
+    selectedLesson.rules = selectedLesson.rules.map(rule => rules[rule])
     const { lesson_section } = selectedLesson
 
     const initProgress =
@@ -205,6 +204,7 @@ const LessonProvider = ({ children }) => {
           ])
 
           setLessons(lessonData)
+          //console.log('Lesson Data (Provider)', lessonData)
         })
       const getLessonSections = db
         .collection('lessonSections')
@@ -218,6 +218,7 @@ const LessonProvider = ({ children }) => {
               return parseInt(doc.id)
             },
           ])
+          //console.log('Section Data (Provider)',sections)
           setLessonSections(sections)
         })
       const getRules = db
@@ -229,7 +230,6 @@ const LessonProvider = ({ children }) => {
           ruleDocs.docs.forEach((doc) => {
             rules[doc.id] = doc.data()
           })
-          console.log(rules)
           setRules(rules)
         })
 
