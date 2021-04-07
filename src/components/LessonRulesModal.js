@@ -44,7 +44,6 @@ export default function LessonRulesModal({ rules, isOpen }) {
 
 
 
-      
       <Fab
         color="primary"
         aria-label="add"
