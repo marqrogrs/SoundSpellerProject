@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
+
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
-
 import AssignmentLateIcon from '@material-ui/icons/AssignmentLate';
 import Fab from '@material-ui/core/Fab';
 import Button from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
+
 import { useStyles } from './../styles/material';
 
 export default function LessonRulesModal({ rules, isOpen }) {
@@ -23,15 +25,17 @@ export default function LessonRulesModal({ rules, isOpen }) {
 
   return (
     <div>
-      <Fab
-        color="primary"
-        aria-label="add"
-        className={classes.lessonRuleFab}
-        size="medium"
-        onClick={handleOpen}
-      >
-        <AssignmentLateIcon />
-      </Fab>
+      <Tooltip title="Check the Spelling Patterns of this question">
+        <Fab
+          color="primary"
+          aria-label="add"
+          className={classes.lessonRuleFab}
+          size="medium"
+          onClick={handleOpen}
+        >
+          <AssignmentLateIcon />
+        </Fab>
+      </Tooltip>
 
       <Modal
         aria-labelledby="transition-modal-title"
