@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
@@ -27,14 +26,7 @@ export default function LessonRulesModal({ rules, isOpen }) {
       <Fab
         color="primary"
         aria-label="add"
-        style={{
-          margin: 0,
-          top: 'auto',
-          right: 70,
-          bottom: 20,
-          left: 'auto',
-          position: 'fixed',
-        }}
+        className={classes.lessonRuleFab}
         size="small"
         onClick={handleOpen}
       >
