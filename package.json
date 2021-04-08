@@ -2,11 +2,6 @@
   "name": "soundspeller",
   "version": "0.1.0",
   "private": true,
-  "husky": {
-    "hooks":{
-      "pre-commit": "echo 'testing'"
-    }
-  },
   "resolutions": {
     "@apollo/react-common": "3.1.0"
   },
@@ -74,6 +69,13 @@
     "husky": "^6.0.0",
     "lint-staged": "^10.5.4"
   },
+
+  "husky": {
+    "hooks":{
+      "pre-commit": "echo 'teste'"
+    }
+  },
+
   "lint-staged": {
     "*.js": "prettier --write"
   }
