@@ -10,6 +10,8 @@ import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
+
+    
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -37,14 +39,6 @@ export default function LessonRulesModal({ rules, isOpen }) {
 
   return (
     <div>
-
-
-
-
-
-
-
-      
       <Fab
         color="primary"
         aria-label="add"
