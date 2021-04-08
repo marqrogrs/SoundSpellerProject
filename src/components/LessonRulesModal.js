@@ -7,6 +7,9 @@ import AssignmentLateIcon from '@material-ui/icons/AssignmentLate';
 import Fab from '@material-ui/core/Fab';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
+import Typography from '@material-ui/core/Typography';
+import Avatar from '@material-ui/core/Avatar';
+import Box from '@material-ui/core/Box';
 
 import { useStyles } from './../styles/material';
 
@@ -51,13 +54,38 @@ export default function LessonRulesModal({ rules, isOpen }) {
       >
         <Fade in={open}>
           <div className={classes.modalPaper}>
-            <h2 id="transition-modal-title">Spelling Patterns</h2>
-            <p id="transition-modal-description">{rules}</p>
-            <p>
-              <span>You can click on </span>
-              <AssignmentLateIcon />
-              <span> to see the rules again</span>
-            </p>
+            <Box mb={3}>
+              <Typography
+                align="center"
+                variant="h5"
+                component="h2"
+                id="transition-modal-title"
+              >
+                Spelling Patterns
+              </Typography>
+            </Box>
+
+            <Typography id="transition-modal-description">
+              • {rules}
+            </Typography>
+
+            <Box
+              my={3}
+              id="transition-modal-description"
+              align="center"
+              display="flex"
+              alignItems="center"
+            >
+              <Typography>You can click on </Typography>
+
+              <Box mx={1}>
+                <Avatar>
+                  <AssignmentLateIcon />
+                </Avatar>
+              </Box>
+
+              <Typography>to see the rules again</Typography>
+            </Box>
             <Button
               variant="contained"
               color="primary"
