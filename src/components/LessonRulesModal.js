@@ -7,20 +7,7 @@ import Fade from '@material-ui/core/Fade';
 import AssignmentLateIcon from '@material-ui/icons/AssignmentLate';
 import Fab from '@material-ui/core/Fab';
 import Button from '@material-ui/core/Button';
-
-const useStyles = makeStyles((theme) => ({
-  modal: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  paper: {
-    backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-  },
-}));
+import { useStyles } from './../styles/material';
 
 export default function LessonRulesModal({ rules, isOpen }) {
   const classes = useStyles();
@@ -67,7 +54,7 @@ export default function LessonRulesModal({ rules, isOpen }) {
         }}
       >
         <Fade in={open}>
-          <div className={classes.paper}>
+          <div className={classes.modalPaper}>
             <h2 id="transition-modal-title">Spelling Patterns</h2>
             <p id="transition-modal-description">{rules}</p>
             <p>
