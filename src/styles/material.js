@@ -119,7 +119,7 @@ export const useStyles = makeStyles((theme) => ({
   lessonRuleFab: {
     margin: 0,
     top: 'auto',
-    right: 70,
+    right: 20,
     bottom: 20,
     left: 'auto',
     position: 'fixed !important',
@@ -128,8 +128,8 @@ export const useStyles = makeStyles((theme) => ({
   speechRateFab: {
     margin: 0,
     top: 'auto',
-    right: 20,
-    bottom: 20,
+    right: 24,
+    bottom: 80,
     left: 'auto',
     position: 'fixed !important',
   },

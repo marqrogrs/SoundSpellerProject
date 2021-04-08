@@ -27,7 +27,7 @@ export default function LessonRulesModal({ rules, isOpen }) {
         color="primary"
         aria-label="add"
         className={classes.lessonRuleFab}
-        size="small"
+        size="medium"
         onClick={handleOpen}
       >
         <AssignmentLateIcon />
