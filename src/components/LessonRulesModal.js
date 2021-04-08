@@ -8,10 +8,11 @@ import Fab from '@material-ui/core/Fab';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
-import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
+import VolumeUpIcon from '@material-ui/icons/VolumeUp';
 
 import { useStyles } from './../styles/material';
+import { textToSpeech } from './../util/Audio';
 
 export default function LessonRulesModal({ rules, isOpen }) {
   const classes = useStyles();
@@ -54,15 +55,33 @@ export default function LessonRulesModal({ rules, isOpen }) {
       >
         <Fade in={open}>
           <div className={classes.modalPaper}>
-            <Box mb={3}>
+            <Box
+              mb={3}
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+            >
               <Typography
-                align="center"
                 variant="h5"
                 component="h2"
                 id="transition-modal-title"
+                alignItems="center"
               >
                 Spelling Patterns
               </Typography>
+
+              <Box mx={1}>
+                <Fab
+                  color="primary"
+                  aria-label="add"
+                  size="small"
+                  onClick={() =>
+                    textToSpeech(`Spelling Patterns: ${rules}`)
+                  }
+                >
+                  <VolumeUpIcon />
+                </Fab>
+              </Box>
             </Box>
 
             <Typography id="transition-modal-description">
@@ -79,9 +98,9 @@ export default function LessonRulesModal({ rules, isOpen }) {
               <Typography>You can click on </Typography>
 
               <Box mx={1}>
-                <Avatar>
+                <Fab color="primary" aria-label="add" size="small">
                   <AssignmentLateIcon />
-                </Avatar>
+                </Fab>
               </Box>
 
               <Typography>to see the rules again</Typography>
