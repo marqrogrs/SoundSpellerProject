@@ -137,13 +137,7 @@ export const changeSpeechSpeed = (speed) => {
       return voice.lang === 'en-US' && voice.localService === true;
     })[2];
 
-    var text = `This is how ${speedString} speed sounds.`;
-    var speech = new SpeechSynthesisUtterance(speedString);
-    speech.voice = voice;
-    speech.text = text;
-    speech.rate = SPEECH_RATE;
-    speech.lang = 'en-US';
-    synthesis.speak(speech);
+    textToSpeech(`This is how ${speedString} speed sounds.`);
   });
 };
 
