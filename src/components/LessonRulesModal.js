@@ -31,8 +31,12 @@ export default function LessonRulesModal({ currentLesson, isOpen }) {
     setOpen(false);
   };
 
-  const sayRules = () =>
-    textToSpeech(`Spelling Patterns: ${rulesDescription}`);
+  const sayRules = () => {
+    textToSpeech('Spelling Patterns:');
+    rulesDescription.forEach((description) =>
+      textToSpeech(description),
+    );
+  };
 
   useEffect(() => {
     if (open) sayRules();
