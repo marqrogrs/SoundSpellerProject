@@ -83,6 +83,10 @@ export default function AppBar({ user }) {
     history.push("/");
   };
 
+  const handleSpellingPatterns = () => {
+    history.push("/spelling-patterns");
+  };
+
   return (
     <div>
       <MaterialAppBar position="static">
@@ -161,6 +165,9 @@ export default function AppBar({ user }) {
                 )}
                 {/* <MenuItem onClick={handleCreateLesson} >Create Lesson</MenuItem> */}
                 <MenuItem onClick={handleViewLessons}>View Lessons</MenuItem>
+                <MenuItem onClick={handleSpellingPatterns}>
+                  Spelling Patterns
+                </MenuItem>
                 <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
                 {/* <MenuItem onClick={() => history.push('/contact-us')}>
                   Contact Us
