@@ -18,7 +18,6 @@ export default function LessonRulesModal({ rules, isOpen }) {
   const classes = useStyles();
   const [open, setOpen] = useState(isOpen);
 
-  console.log('open modal', open);
   const handleOpen = () => {
     setOpen(true);
   };
@@ -88,16 +87,16 @@ export default function LessonRulesModal({ rules, isOpen }) {
               </Box>
             </Box>
 
-            <Typography id="transition-modal-description">
-              • {rules}
-            </Typography>
+            {rules.map((rule) => (
+              <Typography key={rule}>• {rule}</Typography>
+            ))}
 
             <Box
               my={3}
               id="transition-modal-description"
               align="center"
               display="flex"
-              alignItems="center"
+              alignItems="center" //This line causes a warning in the console, but it is a legit attribute of this component
             >
               <Typography>You can click on </Typography>
 
