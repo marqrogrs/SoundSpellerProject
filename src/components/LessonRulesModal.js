@@ -14,7 +14,12 @@ import VolumeUpIcon from '@material-ui/icons/VolumeUp';
 import { useStyles } from './../styles/material';
 import { textToSpeech } from './../util/Audio';
 
-export default function LessonRulesModal({ rules, isOpen }) {
+export default function LessonRulesModal({ currentLesson, isOpen }) {
+  const rulesDescription = currentLesson?.lesson.rules.map(
+    (rule) => rule.rule,
+  );
+  console.log(rulesDescription);
+
   const classes = useStyles();
   const [open, setOpen] = useState(isOpen);
 
@@ -26,7 +31,8 @@ export default function LessonRulesModal({ rules, isOpen }) {
     setOpen(false);
   };
 
-  const sayRules = () => textToSpeech(`Spelling Patterns: ${rules}`);
+  const sayRules = () =>
+    textToSpeech(`Spelling Patterns: ${rulesDescription}`);
 
   useEffect(() => {
     if (open) sayRules();
@@ -87,7 +93,7 @@ export default function LessonRulesModal({ rules, isOpen }) {
               </Box>
             </Box>
 
-            {rules.map((rule) => (
+            {rulesDescription?.map((rule) => (
               <Typography key={rule}>• {rule}</Typography>
             ))}
 
