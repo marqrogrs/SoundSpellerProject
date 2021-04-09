@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
-import AssignmentLateIcon from '@material-ui/icons/AssignmentLate';
+import CategoryIcon from '@material-ui/icons/Category';
 import Fab from '@material-ui/core/Fab';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -37,7 +37,7 @@ export default function LessonRulesModal({ rules, isOpen }) {
           size="medium"
           onClick={handleOpen}
         >
-          <AssignmentLateIcon />
+          <CategoryIcon />
         </Fab>
       </Tooltip>
 
@@ -99,7 +99,7 @@ export default function LessonRulesModal({ rules, isOpen }) {
 
               <Box mx={1}>
                 <Fab color="primary" aria-label="add" size="small">
-                  <AssignmentLateIcon />
+                  <CategoryIcon />
                 </Fab>
               </Box>
 
