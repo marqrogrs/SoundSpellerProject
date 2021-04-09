@@ -5,8 +5,11 @@ import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import Box from "@material-ui/core/Box";
 
-const SpellingPatternsDetails = ({ rule }) => {
+const SpellingPatternsDetails = ({ rule, lessons }) => {
+  console.log(lessons);
+
   return (
     <Accordion>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -14,7 +17,26 @@ const SpellingPatternsDetails = ({ rule }) => {
       </AccordionSummary>
 
       <AccordionDetails>
-        <Typography>{rule.rule}</Typography>
+        <Box>
+          <Typography>{rule.rule}</Typography>
+
+          {lessons.length > 0 ? (
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                Associated Lessons
+              </AccordionSummary>
+              <AccordionDetails>
+                {lessons.map((lesson) => (
+                  <Typography key={lesson.lesson_id}>
+                    {lesson.description}
+                  </Typography>
+                ))}
+              </AccordionDetails>{" "}
+            </Accordion>
+          ) : (
+            ""
+          )}
+        </Box>
       </AccordionDetails>
     </Accordion>
   );
