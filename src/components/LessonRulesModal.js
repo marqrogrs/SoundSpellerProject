@@ -102,7 +102,7 @@ export default function LessonRulesModal({ rules, isOpen }) {
               <Typography>You can click on </Typography>
 
               <Box mx={1}>
-                <Fab color="primary" aria-label="add" size="small">
+                <Fab color="primary" size="small" disabled={true}>
                   <CategoryIcon />
                 </Fab>
               </Box>
