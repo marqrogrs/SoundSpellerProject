@@ -112,7 +112,7 @@ export default function LessonRulesModal({ rules, isOpen }) {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => setOpen(false)}
+              onClick={handleClose}
             >
               I got it
             </Button>
