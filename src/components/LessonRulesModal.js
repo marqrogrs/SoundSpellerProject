@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -26,6 +26,12 @@ export default function LessonRulesModal({ rules, isOpen }) {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const sayRules = () => textToSpeech(`Spelling Patterns: ${rules}`);
+
+  useEffect(() => {
+    if (open) sayRules();
+  }, [open]);
 
   return (
     <div>
@@ -75,9 +81,7 @@ export default function LessonRulesModal({ rules, isOpen }) {
                   color="primary"
                   aria-label="add"
                   size="small"
-                  onClick={() =>
-                    textToSpeech(`Spelling Patterns: ${rules}`)
-                  }
+                  onClick={sayRules}
                 >
                   <VolumeUpIcon />
                 </Fab>
