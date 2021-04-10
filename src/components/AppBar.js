@@ -169,7 +169,7 @@ export default function AppBar({ user }) {
           )}
         </Toolbar>
       </MaterialAppBar>
-      {user && (
+      {/* {user && (
         <Breadcrumbs aria-label='breadcrumb'>
           {pathname.split('/').map((path, index) => {
             const last = pathname.split('/').length - 1
@@ -205,7 +205,7 @@ export default function AppBar({ user }) {
             )
           })}
         </Breadcrumbs>
-      )}
+      )} */}
     </div>
   )
 }
