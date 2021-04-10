@@ -15,6 +15,7 @@ const LessonProvider = ({ children }) => {
   const [lessonSections, setLessonSections] = useState([])
   const [rules, setRules] = useState([])
 
+  const [customLessons, setCustomLessons] = useState([])
   const { userData } = useContext(UserContext)
   const { user, isEducator } = useAuth()
 
@@ -31,55 +32,55 @@ const LessonProvider = ({ children }) => {
     const initProgress =
       lesson_section === '1' // Only three levels
         ? {
-            0: {
-              score: 0,
-              completed_words: 0,
-              high_score: 0,
-              completed: false,
-            },
-            1: {
-              score: 0,
-              completed_words: 0,
-              high_score: 0,
-              completed: false,
-            },
-            2: {
-              score: 0,
-              completed_words: 0,
-              high_score: 0,
-              completed: false,
-            },
-          }
+          0: {
+            score: 0,
+            completed_words: 0,
+            high_score: 0,
+            completed: false,
+          },
+          1: {
+            score: 0,
+            completed_words: 0,
+            high_score: 0,
+            completed: false,
+          },
+          2: {
+            score: 0,
+            completed_words: 0,
+            high_score: 0,
+            completed: false,
+          },
+        }
         : {
-            0: {
-              score: 0,
-              completed_words: 0,
-              high_score: 0,
-              completed: false,
-            },
-            1: {
-              score: 0,
-              completed_words: 0,
-              high_score: 0,
-              completed: false,
-            },
-            2: {
-              score: 0,
-              completed_words: 0,
-              high_score: 0,
-              completed: false,
-            },
-            3: {
-              score: 0,
-              completed_words: 0,
-              high_score: 0,
-              completed: false,
-            },
-          }
+          0: {
+            score: 0,
+            completed_words: 0,
+            high_score: 0,
+            completed: false,
+          },
+          1: {
+            score: 0,
+            completed_words: 0,
+            high_score: 0,
+            completed: false,
+          },
+          2: {
+            score: 0,
+            completed_words: 0,
+            high_score: 0,
+            completed: false,
+          },
+          3: {
+            score: 0,
+            completed_words: 0,
+            high_score: 0,
+            completed: false,
+          },
+        }
     const lesson_subsection = getLessonSubsection(selectedLesson)
     const currentLessonProgressObj =
       userData.progress[lesson_section] &&
-      userData.progress[lesson_section][lesson_subsection]
+        userData.progress[lesson_section][lesson_subsection]
         ? userData.progress[lesson_section][lesson_subsection]
         : initProgress
     console.log(
@@ -236,6 +237,23 @@ const LessonProvider = ({ children }) => {
       // db.collection('customLessons').onSnapshot(queryRef => {
       //   console.log(queryRef)
       // })
+      db.collection('customLessons').onSnapshot((queryRef) => {
+        var customLessons = queryRef.docs
+          .filter((doc) => {
+            // if educator
+            if (isEducator && doc.data().createdBy === user.uid) {
+              return true;
+            }
+            // else if student
+            else if (!isEducator &&
+              (doc.data().createdBy === user.uid ||
+                doc.data().createdBy === userData.educator)) {
+              return true;
+            }
+          })
+          .map((doc) => doc.data())
+        setCustomLessons(customLessons)
+      })
     }
   }, [userData])
 
@@ -249,6 +267,7 @@ const LessonProvider = ({ children }) => {
         lessons, //All lessons
         lessonSections,
         rules,
+        customLessons, //All lessons
         setLesson,
         setLevel,
         setProgress,
