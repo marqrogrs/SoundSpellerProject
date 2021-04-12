@@ -51,7 +51,6 @@ export default function Lesson() {
   const [isSaved, setIsSaved] = useState(true);
   const [outputWordKey, setOutputWordKey] = useState(Math.random());
   const [displaySpeedSlider, setDisplaySpeedSlider] = useState(false);
-  const [currentLessonRules, setCurrentLessonRules] = useState([]);
 
   const params = useParams();
   const history = useHistory();
@@ -229,18 +228,6 @@ export default function Lesson() {
     lessonsLoading,
     currentWordIndex,
   ]);
-
-  useEffect(() => {
-    if (!lessonsLoading && currentLesson) {
-      const rulesDescriptionData = currentLesson.lesson.rules.map(
-        (ruleObj) => ruleObj.rule,
-      );
-      setCurrentLessonRules(rulesDescriptionData);
-    }
-  }, [currentLesson]);
-
-  //console.log("Current Word Index:",currentWordIndex)
-  //console.log("currentWordIndex === 0", currentWordIndex === 0)
 
   return (
     <>
