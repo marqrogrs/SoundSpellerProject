@@ -21,9 +21,9 @@ export default function PrivateRoutes({ user, isEducator }) {
           <Route exact path='/'>
             <Home />
           </Route>
-          <Route exact path='/lessons'>
+          {/* <Route exact path='/lessons'>
             <Lessons />
-          </Route>
+          </Route> */}
           <Route exact path='/lessons/:lesson' children={<Lesson />} />
           <Route exact path='/progress'>
             <Progress />

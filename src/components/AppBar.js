@@ -67,9 +67,9 @@ export default function AppBar({ user }) {
     auth.signOut()
   }
 
-  const handleViewLessons = () => {
-    history.push('/lessons')
-  }
+  // const handleViewLessons = () => {
+  //   history.push('/lessons')
+  // }
 
   const handleCreateLesson = () => {
     history.push('/create-lesson')
@@ -158,7 +158,7 @@ export default function AppBar({ user }) {
                   <MenuItem onClick={handleViewStudents}>My Students</MenuItem>
                 )}
                 <MenuItem onClick={handleCreateLesson} >Create Lesson</MenuItem>
-                <MenuItem onClick={handleViewLessons}>View Lessons</MenuItem>
+                {/* <MenuItem onClick={handleViewLessons}>My Lessons</MenuItem> */}
                 <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
                 {/* <MenuItem onClick={() => history.push('/contact-us')}>
                   Contact Us
