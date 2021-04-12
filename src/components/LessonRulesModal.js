@@ -111,7 +111,15 @@ export default function LessonRulesModal({ currentLesson, isOpen }) {
               <Typography>You can click on </Typography>
 
               <Box mx={1}>
-                <Fab color="primary" size="small" disabled={true}>
+                <Fab
+                  color="primary"
+                  size="small"
+                  disabled
+                  style={{
+                    backgroundColor: '#0d47a1',
+                    color: 'white',
+                  }}
+                >
                   <CategoryIcon />
                 </Fab>
               </Box>
