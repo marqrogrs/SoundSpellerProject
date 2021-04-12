@@ -26,6 +26,8 @@ const LessonProvider = ({ children }) => {
     const selectedLesson = lessons.filter((lesson) => {
       return lesson.lesson_id === lesson_id
     })[0]
+
+    selectedLesson.rules = selectedLesson.rules.map(rule => rules[rule])
     const { lesson_section } = selectedLesson
 
     const initProgress =
@@ -202,6 +204,7 @@ const LessonProvider = ({ children }) => {
           ])
 
           setLessons(lessonData)
+          //console.log('Lesson Data (Provider)', lessonData)
         })
       const getLessonSections = db
         .collection('lessonSections')
@@ -215,6 +218,7 @@ const LessonProvider = ({ children }) => {
               return parseInt(doc.id)
             },
           ])
+          //console.log('Section Data (Provider)',sections)
           setLessonSections(sections)
         })
       const getRules = db
@@ -226,7 +230,6 @@ const LessonProvider = ({ children }) => {
           ruleDocs.docs.forEach((doc) => {
             rules[doc.id] = doc.data()
           })
-          console.log(rules)
           setRules(rules)
         })
 
