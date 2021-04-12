@@ -27,7 +27,6 @@ export default function ProgressListItem({
   showButtons,
   rules,
 }) {
-  console.log('RUles: ', rules);
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState('');
   const [button, setButton] = useState('');
