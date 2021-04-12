@@ -7,10 +7,8 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import SpellingPatternsDetails from "./../components/SpellingPatternsDetails";
 import { LessonContext } from "./../providers/LessonProvider";
 
-export default function SpelingPatterns() {
+export default function SpellingPatterns() {
   const { rules, lessons } = useContext(LessonContext);
-  // console.log("rules:", rules);
-  // console.log("lessons:", lessons);
 
   return (
     <Container maxWidth="sm">
