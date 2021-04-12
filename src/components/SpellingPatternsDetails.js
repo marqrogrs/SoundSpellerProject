@@ -8,9 +8,11 @@ import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
 
 const SpellingPatternsDetails = ({ rule, lessons }) => {
-  console.log(lessons);
   const history = useHistory();
 
   return (
@@ -24,31 +26,22 @@ const SpellingPatternsDetails = ({ rule, lessons }) => {
           <Typography>{rule.rule}</Typography>
 
           {lessons.length > 0 ? (
-            <Accordion>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                Associated Lessons
-              </AccordionSummary>
-              <AccordionDetails>
+            <Box my={2}>
+              <Typography variant="h6">Associated Lessons</Typography>
+
+              <List>
                 {lessons.map((lesson) => (
-                  <>
-                    <Typography key={lesson.lesson_id}>
-                      {lesson.description}
-                    </Typography>
-                    <Box ml={2}>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() =>
-                          history.push(`/lessons/${lesson.lesson_id}`)
-                        }
-                      >
-                        Go to lesson
-                      </Button>
-                    </Box>
-                  </>
+                  <ListItem button key={lesson.lesson_id}>
+                    <ListItemText
+                      primary={lesson.description}
+                      onClick={() =>
+                        history.push(`/lessons/${lesson.lesson_id}`)
+                      }
+                    />
+                  </ListItem>
                 ))}
-              </AccordionDetails>{" "}
-            </Accordion>
+              </List>
+            </Box>
           ) : (
             ""
           )}
