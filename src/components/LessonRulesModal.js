@@ -12,7 +12,7 @@ import Box from '@material-ui/core/Box';
 import VolumeUpIcon from '@material-ui/icons/VolumeUp';
 
 import { useStyles } from './../styles/material';
-import { textToSpeech } from './../util/Audio';
+import { textToSpeech, terminateAudio } from './../util/Audio';
 
 export default function LessonRulesModal({ currentLesson, isOpen }) {
   const rulesDescription = currentLesson?.lesson.rules.map(
@@ -29,6 +29,7 @@ export default function LessonRulesModal({ currentLesson, isOpen }) {
 
   const handleClose = () => {
     setOpen(false);
+    terminateAudio();
   };
 
   const sayRules = () => {

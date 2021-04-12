@@ -169,6 +169,7 @@ export const setPlayAudio = (should_play) => {
 export const terminateAudio = () => {
   PLAY_AUDIO = false;
   synthesis.cancel();
+  PLAY_AUDIO = true;
 };
 
 export { SPEECH_RATE };
