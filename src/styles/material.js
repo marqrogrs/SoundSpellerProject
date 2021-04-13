@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles((theme) => ({
   word: {
@@ -118,4 +118,21 @@ export const useStyles = makeStyles((theme) => ({
     margin: 20,
     background: `linear-gradient(15deg, ${theme.palette.secondary.main} 30%, ${theme.palette.secondary.light} 98%)`,
   },
-}))
+  lessonRuleFab: {
+    margin: 0,
+    top: 'auto',
+    right: 20,
+    bottom: 20,
+    left: 'auto',
+    position: 'fixed !important',
+  },
+
+  speechRateFab: {
+    margin: 0,
+    top: 'auto',
+    right: 24,
+    bottom: 80,
+    left: 'auto',
+    position: 'fixed !important',
+  },
+}));
