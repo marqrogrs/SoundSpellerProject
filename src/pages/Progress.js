@@ -11,7 +11,7 @@ export default function Progress() {
   return (
     <>
       <Container maxWidth='md'>
-        <ProgressListFilter />
+        {/* <ProgressListFilter /> */}
         <ProgressList student={student} />
       </Container>
     </>
