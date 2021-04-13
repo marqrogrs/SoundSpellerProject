@@ -42,58 +42,67 @@ export default function CustomLessonProgress({ student, userProgress }) {
   }, [lessonsLoading])
 
   return (
-    <div className={classes.progressTabContainer}>
-      <Tabs
-        value={selectedTab}
-        onChange={(e, selected) => setSelectedTab(selected)}
-        indicatorColor='primary'
-        textColor='primary'
-        variant='scrollable'
-        scrollButtons='auto'
-        orientation='vertical'
-        aria-label='section-tabs'
-        className={classes.progressTabs}
-      >
-        {!lessonsLoading &&
-          customLessons.map((lesson, i) => (
-            <Tab
-              label={`${lesson.title}`}
-              id={`tab-${i}`}
-              aria-controls={`tabpanel-${i}`}
-            />
-          ))}
-      </Tabs>
-      {customLessonProgress && (
-        <>
-          {customLessons.map((customLesson, i) => {
-            return (
-              <div
-                role='tabpanel'
-                hidden={selectedTab !== i}
+    <>
+      <Typography variant='h3'>Custom Lessons</Typography>
+      <div className={classes.progressTabContainer}>
+        <Tabs
+          value={selectedTab}
+          onChange={(e, selected) => setSelectedTab(selected)}
+          indicatorColor='primary'
+          textColor='primary'
+          variant='scrollable'
+          scrollButtons='on'
+          orientation='vertical'
+          aria-label='section-tabs'
+          className={classes.progressTabs}
+        >
+          {!lessonsLoading &&
+            customLessons.map((lesson, i) => (
+              <Tab
+                label={`${lesson.title}`}
                 id={`tab-${i}`}
-                aria-labelledby={`tabpanel-${i}`}
-              >
-                {selectedTab === i && (
-                  <>
-                    <Box p={3} maxWidth={700}>
-                      <Typography variant='h4'>{customLesson.title}</Typography>
-                      <Typography variant='subtitle1'>
-                        {customLesson.description}
-                      </Typography>
-                      <ProgressListItem
-                        lesson={customLesson}
-                        progress={customLessonProgress[customLesson.id]}
-                        showButtons={student ? false : true}
-                        key={i}
-                      />
-                    </Box>
-                  </>
-                )}
-              </div>
-            )
-          })}
-        </>
-      )}
-    </div>
+                aria-controls={`tabpanel-${i}`}
+              />
+            ))}
+        </Tabs>
+        {customLessonProgress && (
+          <>
+            {customLessons.map((customLesson, i) => {
+              return (
+                <div
+                  role='tabpanel'
+                  hidden={selectedTab !== i}
+                  id={`tab-${i}`}
+                  aria-labelledby={`tabpanel-${i}`}
+                  style={{ overflowY: 'scroll' }}
+                >
+                  {selectedTab === i && (
+                    <>
+                      <Box p={3} maxWidth={700}>
+                        <Typography variant='h4'>
+                          {customLesson.title}
+                        </Typography>
+                        <Typography variant='subtitle1'>
+                          {customLesson.description}
+                        </Typography>
+                        <ProgressListItem
+                          lesson={customLesson}
+                          progress={customLessonProgress[customLesson.id]}
+                          showButtons={student ? false : true}
+                          key={i}
+                          isOpen={true}
+                          collapsible={false}
+                          showDescription={false}
+                        />
+                      </Box>
+                    </>
+                  )}
+                </div>
+              )
+            })}
+          </>
+        )}
+      </div>
+    </>
   )
 }
