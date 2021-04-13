@@ -27,13 +27,18 @@ const LessonProvider = ({ children }) => {
   const [currentLessonLevel, setCurrentLessonLevel] = useState();
 
   const setLesson = ({ lesson_id }) => {
-    const selectedLesson = lessons.filter((lesson) => {
-      return lesson.lesson_id === lesson_id;
-    })[0];
+    const selectedLesson = lessons
+      .concat(customLessons)
+      .filter((lesson) => {
+        return lesson.lesson_id === lesson_id;
+      })[0];
 
-    selectedLesson.rules = selectedLesson.rules.map(
-      (rule) => rules[rule],
-    );
+    if (selectedLesson.rules) {
+      selectedLesson.rules = selectedLesson.rules.map(
+        (rule) => rules[rule],
+      );
+    }
+
     const { lesson_section } = selectedLesson;
 
     const initProgress =
@@ -191,12 +196,24 @@ const LessonProvider = ({ children }) => {
       if (rejectedWords.length >= 1) {
         return Promise.reject({ rejectedWords });
       } else {
+        const lesson_id = title.replace(' ', '-');
+        // TODO: can custom lessons have rules?
+        const rules = [];
+        //TODO: can custom lessons be grouped into sections?
+        var lesson_section;
+
         const createdBy = user.uid;
         const educator = isEducator ? user.uid : userData.educator;
-        return db
-          .collection('customLessons')
-          .doc()
-          .set({ title, description, words, createdBy, educator });
+        return db.collection('customLessons').doc().set({
+          lesson_id,
+          lesson_section,
+          title,
+          description,
+          words,
+          createdBy,
+          educator,
+          rules,
+        });
       }
     });
   };
