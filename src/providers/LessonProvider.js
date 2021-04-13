@@ -200,7 +200,7 @@ const LessonProvider = ({ children }) => {
         // TODO: can custom lessons have rules?
         const rules = [];
         //TODO: can custom lessons be grouped into sections?
-        var lesson_section;
+        var lesson_section = '';
 
         const createdBy = user.uid;
         const educator = isEducator ? user.uid : userData.educator;
