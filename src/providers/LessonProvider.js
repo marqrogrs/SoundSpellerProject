@@ -178,7 +178,7 @@ const LessonProvider = ({ children }) => {
     updateCurrentLesson({ progress });
   };
 
-  const createLesson = ({ title, words, description }) => {
+  const createLesson = ({ title, words, description, rules }) => {
     // Check if word exists
     var rejectedWords = [];
     var wordCheckPromises = [];
@@ -196,9 +196,7 @@ const LessonProvider = ({ children }) => {
       if (rejectedWords.length >= 1) {
         return Promise.reject({ rejectedWords });
       } else {
-        const lesson_id = title.replace(' ', '-');
-        // TODO: can custom lessons have rules?
-        const rules = [];
+        const lesson_id = encodeURIComponent(title);
         //TODO: can custom lessons be grouped into sections?
         var lesson_section = '';
 
