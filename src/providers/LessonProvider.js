@@ -196,7 +196,7 @@ const LessonProvider = ({ children }) => {
       if (rejectedWords.length >= 1) {
         return Promise.reject({ rejectedWords });
       } else {
-        const lesson_id = encodeURIComponent(title);
+        const lesson_id = title.replace(/\s/g, '-');
         //TODO: can custom lessons be grouped into sections?
         var lesson_section = '';
 
