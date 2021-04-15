@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useAuth } from '../hooks/useAuth';
 
-import { db } from '../firebase';
+import { db, firestore } from '../firebase';
 import { UserContext } from './UserProvider';
 import { getLessonSubsection } from '../util/functions';
-import { LEVELS } from '../util/constants';
+import { INIT_PROGRESS_OBJ, LEVELS } from '../util/constants';
 var _ = require('lodash');
 
 const LessonContext = React.createContext({});
@@ -40,61 +40,13 @@ const LessonProvider = ({ children }) => {
     }
 
     const { lesson_section } = selectedLesson;
+    var initProgress = JSON.parse(JSON.stringify(INIT_PROGRESS_OBJ));
 
-    const initProgress =
-      lesson_section === '1' // Only three levels
-        ? {
-            0: {
-              score: 0,
-              completed_words: 0,
-              high_score: 0,
-              completed: false,
-            },
-            1: {
-              score: 0,
-              completed_words: 0,
-              high_score: 0,
-              completed: false,
-            },
-            2: {
-              score: 0,
-              completed_words: 0,
-              high_score: 0,
-              completed: false,
-            },
-          }
-        : {
-            0: {
-              score: 0,
-              completed_words: 0,
-              high_score: 0,
-              completed: false,
-            },
-            1: {
-              score: 0,
-              completed_words: 0,
-              high_score: 0,
-              completed: false,
-            },
-            2: {
-              score: 0,
-              completed_words: 0,
-              high_score: 0,
-              completed: false,
-            },
-            3: {
-              score: 0,
-              completed_words: 0,
-              high_score: 0,
-              completed: false,
-            },
-          };
-    const lesson_subsection = getLessonSubsection(selectedLesson);
+    if (lesson_section === '1') {
+      delete initProgress[3];
+    }
     const currentLessonProgressObj =
-      userData.progress[lesson_section] &&
-      userData.progress[lesson_section][lesson_subsection]
-        ? userData.progress[lesson_section][lesson_subsection]
-        : initProgress;
+      userData.progress[`${lesson_id}`] || initProgress;
     console.log(
       'Setting current lesson to: ',
       selectedLesson,
@@ -157,14 +109,13 @@ const LessonProvider = ({ children }) => {
   };
 
   const saveProgress = () => {
-    console.log('Saving to: ', user);
-    var { progress } = currentLesson;
-    return db
-      .collection('users')
-      .doc(user.uid)
-      .update({
-        [`progress.${currentLesson.lesson.lesson_id}`]: progress,
-      });
+    var { progress, lesson } = currentLesson;
+    const field = new firestore.FieldPath(
+      'progress',
+      lesson.lesson_id,
+    );
+    const value = progress;
+    return db.collection('users').doc(user.uid).update(field, value);
   };
 
   const updateScore = (word, isCorrect) => {
@@ -211,6 +162,7 @@ const LessonProvider = ({ children }) => {
           createdBy,
           educator,
           rules,
+          isCustom: true,
         });
       }
     });
