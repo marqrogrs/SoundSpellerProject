@@ -24,7 +24,9 @@ export default function CustomLessonProgress({
   student,
   userProgress,
 }) {
-  const { lessonsLoading, customLessons } = useContext(LessonContext);
+  const { lessonsLoading, customLessons, rules } = useContext(
+    LessonContext,
+  );
   const { userData } = useContext(UserContext);
   const [customLessonProgress, setCustomLessonProgress] = useState(
     null,
@@ -39,7 +41,9 @@ export default function CustomLessonProgress({
         if (userProgress[customLesson.id]) {
           progress[customLesson.id] = userProgress[customLesson.id];
         } else {
-          progress[customLesson.id] = INIT_PROGRESS_OBJ;
+          progress[customLesson.id] = JSON.parse(
+            JSON.stringify(INIT_PROGRESS_OBJ),
+          );
         }
       });
       setCustomLessonProgress(progress);
