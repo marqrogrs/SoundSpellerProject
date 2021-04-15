@@ -82,8 +82,6 @@ export default function Lesson() {
 
       if (!isCorrect) {
         const level = currentLesson.progress[currentLesson.level];
-        if (!level.hasOwnProperty('study_words'))
-          level['study_words'] = {};
         level.study_words[expectedWord] = {
           correct_attempts_needed: 2,
         };

@@ -1,193 +1,161 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { useAuth } from '../hooks/useAuth'
+import React, { useState, useEffect, useContext } from 'react';
+import { useAuth } from '../hooks/useAuth';
 
-import { db } from '../firebase'
-import { UserContext } from './UserProvider'
-import { getLessonSubsection } from '../util/functions'
-import { LEVELS } from '../util/constants'
-var _ = require('lodash')
+import { db } from '../firebase';
+import { UserContext } from './UserProvider';
+import { getLessonSubsection } from '../util/functions';
+import { LEVELS } from '../util/constants';
 
-const LessonContext = React.createContext({})
+import { createInitProgress } from './../util/functions';
+var _ = require('lodash');
+
+const LessonContext = React.createContext({});
 
 const LessonProvider = ({ children }) => {
-  const [lessonsLoading, setLessonsLoading] = useState(true)
-  const [lessons, setLessons] = useState([])
-  const [lessonSections, setLessonSections] = useState([])
-  const [rules, setRules] = useState([])
+  const [lessonsLoading, setLessonsLoading] = useState(true);
+  const [lessons, setLessons] = useState([]);
+  const [lessonSections, setLessonSections] = useState([]);
+  const [rules, setRules] = useState([]);
 
-  const { userData } = useContext(UserContext)
-  const { user, isEducator } = useAuth()
+  const { userData } = useContext(UserContext);
+  const { user, isEducator } = useAuth();
 
-  const [currentLesson, setCurrentLesson] = useState()
-  const [currentLessonProgress, setCurrentLessonProgress] = useState()
-  const [currentLessonLevel, setCurrentLessonLevel] = useState()
+  const [currentLesson, setCurrentLesson] = useState();
+  const [
+    currentLessonProgress,
+    setCurrentLessonProgress,
+  ] = useState();
+  const [currentLessonLevel, setCurrentLessonLevel] = useState();
 
   const setLesson = ({ lesson_id }) => {
     const selectedLesson = lessons.filter((lesson) => {
-      return lesson.lesson_id === lesson_id
-    })[0]
+      return lesson.lesson_id === lesson_id;
+    })[0];
 
-    selectedLesson.rules = selectedLesson.rules.map(rule => rules[rule])
-    const { lesson_section } = selectedLesson
+    selectedLesson.rules = selectedLesson.rules.map(
+      (rule) => rules[rule],
+    );
+    const { lesson_section } = selectedLesson;
 
-    const initProgress =
-      lesson_section === '1' // Only three levels
-        ? {
-            0: {
-              score: 0,
-              completed_words: 0,
-              high_score: 0,
-              completed: false,
-            },
-            1: {
-              score: 0,
-              completed_words: 0,
-              high_score: 0,
-              completed: false,
-            },
-            2: {
-              score: 0,
-              completed_words: 0,
-              high_score: 0,
-              completed: false,
-            },
-          }
-        : {
-            0: {
-              score: 0,
-              completed_words: 0,
-              high_score: 0,
-              completed: false,
-            },
-            1: {
-              score: 0,
-              completed_words: 0,
-              high_score: 0,
-              completed: false,
-            },
-            2: {
-              score: 0,
-              completed_words: 0,
-              high_score: 0,
-              completed: false,
-            },
-            3: {
-              score: 0,
-              completed_words: 0,
-              high_score: 0,
-              completed: false,
-            },
-          }
-    const lesson_subsection = getLessonSubsection(selectedLesson)
+    const levelsQuantity = lesson_section === '1' ? 3 : 4;
+    const initProgress = createInitProgress(levelsQuantity);
+
+    const lesson_subsection = getLessonSubsection(selectedLesson);
     const currentLessonProgressObj =
       userData.progress[lesson_section] &&
       userData.progress[lesson_section][lesson_subsection]
         ? userData.progress[lesson_section][lesson_subsection]
-        : initProgress
+        : initProgress;
     console.log(
       'Setting current lesson to: ',
       selectedLesson,
-      currentLessonProgressObj
-    )
+      currentLessonProgressObj,
+    );
     setCurrentLesson({
       lesson: selectedLesson,
       level: 0,
       progress: currentLessonProgressObj,
-    })
-    setCurrentLessonProgress(currentLessonProgressObj)
-    setCurrentLessonLevel(0)
-  }
+    });
+    setCurrentLessonProgress(currentLessonProgressObj);
+    setCurrentLessonLevel(0);
+  };
 
   const updateCurrentLesson = ({ level, progress }) => {
-    var updatedLesson = currentLesson
+    var updatedLesson = currentLesson;
     if (level !== undefined) {
-      updatedLesson.level = level
-      setCurrentLessonLevel(level)
+      updatedLesson.level = level;
+      setCurrentLessonLevel(level);
     }
 
     if (progress) {
-      updatedLesson.progress = progress
-      setCurrentLessonProgress(progress)
+      updatedLesson.progress = progress;
+      setCurrentLessonProgress(progress);
     }
 
-    setCurrentLesson(updatedLesson)
-  }
+    setCurrentLesson(updatedLesson);
+  };
 
   const setLevel = (level) => {
     // setCurrentLevel(level)
-    updateCurrentLesson({ level })
-  }
+    updateCurrentLesson({ level });
+  };
 
   const setProgress = (completed_words) => {
-    var { progress, level } = currentLesson
-    const total_words = currentLesson.lesson.words.length
-    const justFinishedLevel = completed_words === total_words
+    var { progress, level } = currentLesson;
+    const total_words = currentLesson.lesson.words.length;
+    const justFinishedLevel = completed_words === total_words;
     // Set completed flag
     progress[level].completed = progress[level].completed
       ? true
-      : justFinishedLevel
+      : justFinishedLevel;
     // Update completed words
     // If level has been completed, we switch back to 0
-    progress[level].completed_words = justFinishedLevel ? 0 : completed_words
+    progress[level].completed_words = justFinishedLevel
+      ? 0
+      : completed_words;
 
     if (justFinishedLevel) {
       // Update high score
       progress[level].high_score =
         progress[level].score > progress[level].high_score
           ? progress[level].score
-          : progress[level].high_score
+          : progress[level].high_score;
 
-      progress[level].score = 0
+      progress[level].score = 0;
     }
 
-    updateCurrentLesson({ progress })
-  }
+    updateCurrentLesson({ progress });
+  };
 
   const saveProgress = () => {
-    console.log('Saving to: ', user)
-    var { progress } = currentLesson
+    console.log('Saving to: ', user);
+    var { progress } = currentLesson;
     return db
       .collection('users')
       .doc(user.uid)
-      .update({ [`progress.${currentLesson.lesson.lesson_id}`]: progress })
-  }
+      .update({
+        [`progress.${currentLesson.lesson.lesson_id}`]: progress,
+      });
+  };
 
   const updateScore = (word, isCorrect) => {
-    console.log('updating score')
-    var { progress, level } = currentLesson
-    const currentScore = progress[level].score
-    const newScore = isCorrect ? (level + 1) * 5 + currentScore : currentScore
-    progress[level].score = newScore
-    updateCurrentLesson({ progress })
-  }
+    console.log('updating score');
+    var { progress, level } = currentLesson;
+    const currentScore = progress[level].score;
+    const newScore = isCorrect
+      ? (level + 1) * 5 + currentScore
+      : currentScore;
+    progress[level].score = newScore;
+    updateCurrentLesson({ progress });
+  };
 
   const createLesson = ({ title, words, description }) => {
     // Check if word exists
-    var rejectedWords = []
-    var wordCheckPromises = []
+    var rejectedWords = [];
+    var wordCheckPromises = [];
 
     words.forEach((word) => {
-      wordCheckPromises.push(db.collection('words').doc(word).get())
-    })
+      wordCheckPromises.push(db.collection('words').doc(word).get());
+    });
 
     return Promise.all(wordCheckPromises).then((docRefs) => {
       docRefs.forEach((docRef) => {
         if (!docRef.exists) {
-          rejectedWords.push(docRef.id)
+          rejectedWords.push(docRef.id);
         }
-      })
+      });
       if (rejectedWords.length >= 1) {
-        return Promise.reject({ rejectedWords })
+        return Promise.reject({ rejectedWords });
       } else {
-        const createdBy = user.uid
-        const educator = isEducator ? user.uid : userData.educator
+        const createdBy = user.uid;
+        const educator = isEducator ? user.uid : userData.educator;
         return db
           .collection('customLessons')
           .doc()
-          .set({ title, description, words, createdBy, educator })
+          .set({ title, description, words, createdBy, educator });
       }
-    })
-  }
+    });
+  };
 
   useEffect(() => {
     if (userData) {
@@ -196,51 +164,53 @@ const LessonProvider = ({ children }) => {
         .collection('lessons')
         .get()
         .then((lessonDocs) => {
-          var lessonData = lessonDocs.docs.map((doc) => doc.data())
+          var lessonData = lessonDocs.docs.map((doc) => doc.data());
           lessonData = _.sortBy(lessonData, [
             function (doc) {
-              return parseInt(doc.lesson_id)
+              return parseInt(doc.lesson_id);
             },
-          ])
+          ]);
 
-          setLessons(lessonData)
+          setLessons(lessonData);
           //console.log('Lesson Data (Provider)', lessonData)
-        })
+        });
       const getLessonSections = db
         .collection('lessonSections')
         .get()
         .then((sectionDocs) => {
           var sections = sectionDocs.docs.map((doc) => {
-            return { ...doc.data(), id: doc.id }
-          })
+            return { ...doc.data(), id: doc.id };
+          });
           sections = _.sortBy(sections, [
             function (doc) {
-              return parseInt(doc.id)
+              return parseInt(doc.id);
             },
-          ])
+          ]);
           //console.log('Section Data (Provider)',sections)
-          setLessonSections(sections)
-        })
+          setLessonSections(sections);
+        });
       const getRules = db
         .collection('rules')
         .get()
         .then((ruleDocs) => {
-          var rules = {}
+          var rules = {};
 
           ruleDocs.docs.forEach((doc) => {
-            rules[doc.id] = doc.data()
-          })
-          setRules(rules)
-        })
+            rules[doc.id] = doc.data();
+          });
+          setRules(rules);
+        });
 
-      Promise.all([getLessons, getLessonSections, getRules]).then(() => {
-        setLessonsLoading(false)
-      })
+      Promise.all([getLessons, getLessonSections, getRules]).then(
+        () => {
+          setLessonsLoading(false);
+        },
+      );
       // db.collection('customLessons').onSnapshot(queryRef => {
       //   console.log(queryRef)
       // })
     }
-  }, [userData])
+  }, [userData]);
 
   return (
     <LessonContext.Provider
@@ -262,7 +232,7 @@ const LessonProvider = ({ children }) => {
     >
       {children}
     </LessonContext.Provider>
-  )
-}
+  );
+};
 
-export { LessonProvider, LessonContext }
+export { LessonProvider, LessonContext };
