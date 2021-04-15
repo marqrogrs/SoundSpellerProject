@@ -13,7 +13,7 @@ const LessonProvider = ({ children }) => {
   const [lessonsLoading, setLessonsLoading] = useState(true);
   const [lessons, setLessons] = useState([]);
   const [lessonSections, setLessonSections] = useState([]);
-  const [rules, setRules] = useState([]);
+  const [rules, setRules] = useState(null);
 
   const [customLessons, setCustomLessons] = useState([]);
   const { userData } = useContext(UserContext);
