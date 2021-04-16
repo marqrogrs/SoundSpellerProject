@@ -30,7 +30,7 @@ export default function ProgressListItem({
   collapsible = true,
   showDescription = true,
 }) {
-  const { rules } = useContext(LessonContext);
+  const { rules, lessonsLoading } = useContext(LessonContext);
   const [open, setOpen] = useState(isOpen);
   const [status, setStatus] = useState('');
   const [button, setButton] = useState('');
@@ -41,60 +41,63 @@ export default function ProgressListItem({
 
   const classes = useStyles();
   useEffect(() => {
-    // isInProgress if at at least one level is completed or had >0 completed words
-    const isInProgress = Object.values(progress).filter(
-      (p) => p.completed_words > 0 || p.completed,
-    )[0];
+    if (!lessonsLoading) {
+      // isInProgress if at at least one level is completed or had >0 completed words
+      const isInProgress = Object.values(progress).filter(
+        (p) => p.completed_words > 0 || p.completed,
+      )[0];
 
-    // isCompleted is level 4 is complete
-    const finalLevel =
-      lesson.lesson_section === 1
-        ? progress[`${LEVELS.length - 2}`]
-        : progress[`${LEVELS.length - 2}`];
-    const isCompleted = finalLevel.completed;
+      // isCompleted is level 4 is complete
+      const finalLevel =
+        lesson.lesson_section === 1
+          ? progress[`${LEVELS.length - 2}`]
+          : progress[`${LEVELS.length - 2}`];
+      const isCompleted = finalLevel.completed;
 
-    if (isCompleted) {
-      setStatus(<CheckCircleIcon color="primary" />);
-    } else if (isInProgress) {
-      setStatus('In progress');
-      setButton(
-        <Link to={`lessons/${lesson.lesson_id}`}>
-          <Button color="primary" variant="contained">
-            Continue
-          </Button>
-        </Link>,
+      if (isCompleted) {
+        setStatus(<CheckCircleIcon color="primary" />);
+      } else if (isInProgress) {
+        setStatus('In progress');
+        setButton(
+          <Link to={`lessons/${lesson.lesson_id}`}>
+            <Button color="primary" variant="contained">
+              Continue
+            </Button>
+          </Link>,
+        );
+      } else {
+        setStatus('Not started');
+        setButton(
+          <Link to={`lessons/${lesson.lesson_id}`}>
+            <Button color="primary" variant="outlined">
+              Start
+            </Button>
+          </Link>,
+        );
+      }
+      const total_score = Object.values(progress).reduce(
+        (acc, current) => acc + current.high_score,
+        0,
       );
-    } else {
-      setStatus('Not started');
-      setButton(
-        <Link to={`lessons/${lesson.lesson_id}`}>
-          <Button color="primary" variant="outlined">
-            Start
-          </Button>
-        </Link>,
-      );
+      setTotalScore(total_score);
+
+      const total_possible_score =
+        lesson.lesson_section === '1' // Only 3 levels
+          ? lesson.words.length * 5 +
+            lesson.words.length * 10 +
+            lesson.words.length * 15
+          : lesson.words.length * 5 +
+            lesson.words.length * 10 +
+            lesson.words.length * 15 +
+            lesson.words.length * 20;
+
+      setTotalPossibleScore(total_possible_score);
+
+      const lesson_rules = lesson?.rules.map((rule) => rules[rule]);
+      setLessonRules(lesson_rules);
     }
-    const total_score = Object.values(progress).reduce(
-      (acc, current) => acc + current.high_score,
-      0,
-    );
-    setTotalScore(total_score);
+  }, [lesson, progress, lessonsLoading]);
 
-    const total_possible_score =
-      lesson.lesson_section === '1' // Only 3 levels
-        ? lesson.words.length * 5 +
-          lesson.words.length * 10 +
-          lesson.words.length * 15
-        : lesson.words.length * 5 +
-          lesson.words.length * 10 +
-          lesson.words.length * 15 +
-          lesson.words.length * 20;
-
-    setTotalPossibleScore(total_possible_score);
-
-    const lesson_rules = lesson?.rules.map((rule) => rules[rule]);
-    setLessonRules(lesson_rules);
-  }, [lesson, progress]);
   return (
     <>
       <TableRow className={classes.progressList}>
