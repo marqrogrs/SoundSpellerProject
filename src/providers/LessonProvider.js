@@ -153,17 +153,20 @@ const LessonProvider = ({ children }) => {
 
         const createdBy = user.uid;
         const educator = isEducator ? user.uid : userData.educator;
-        return db.collection('customLessons').doc().set({
-          lesson_id,
-          lesson_section,
-          title,
-          description,
-          words,
-          createdBy,
-          educator,
-          rules,
-          isCustom: true,
-        });
+        return db
+          .collection('users')
+          .doc(user.uid)
+          .collection('customLessons')
+          .doc(lesson_id)
+          .set({
+            lesson_id,
+            lesson_section,
+            title,
+            description,
+            words,
+            rules,
+            isCustom: true,
+          });
       }
     });
   };
