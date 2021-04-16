@@ -20,25 +20,26 @@ import { LEVELS } from '../util/constants';
 
 import { useStyles } from '../styles/material';
 import { Typography } from '@material-ui/core';
+import { LessonContext } from '../providers/LessonProvider';
 
 export default function ProgressListItem({
   lesson,
   progress,
   showButtons,
-  rules,
   isOpen = false,
   collapsible = true,
   showDescription = true,
 }) {
+  const { rules } = useContext(LessonContext);
   const [open, setOpen] = useState(isOpen);
   const [status, setStatus] = useState('');
   const [button, setButton] = useState('');
+  const [lessonRules, setLessonRules] = useState(null);
 
   const [totalScore, setTotalScore] = useState(0);
   const [totalPossibleScore, setTotalPossibleScore] = useState(1);
 
   const classes = useStyles();
-
   useEffect(() => {
     // isInProgress if at at least one level is completed or had >0 completed words
     const isInProgress = Object.values(progress).filter(
@@ -90,6 +91,9 @@ export default function ProgressListItem({
           lesson.words.length * 20;
 
     setTotalPossibleScore(total_possible_score);
+
+    const lesson_rules = lesson?.rules.map((rule) => rules[rule]);
+    setLessonRules(lesson_rules);
   }, [lesson, progress]);
   return (
     <>
@@ -127,8 +131,8 @@ export default function ProgressListItem({
         >
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box margin={1}>
-              {rules &&
-                rules.map((r) => (
+              {lessonRules &&
+                lessonRules.map((r) => (
                   <Card
                     className={classes.rule}
                     variant="outlined"
