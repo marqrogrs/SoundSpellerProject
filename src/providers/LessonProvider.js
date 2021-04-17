@@ -4,7 +4,9 @@ import { useAuth } from '../hooks/useAuth';
 import { db, firestore } from '../firebase';
 import { UserContext } from './UserProvider';
 import { getLessonSubsection } from '../util/functions';
-import { INIT_PROGRESS_OBJ, LEVELS } from '../util/constants';
+import { LEVELS } from '../util/constants';
+
+import { createInitProgress } from './../util/functions';
 var _ = require('lodash');
 
 const LessonContext = React.createContext({});
@@ -13,7 +15,7 @@ const LessonProvider = ({ children }) => {
   const [lessonsLoading, setLessonsLoading] = useState(true);
   const [lessons, setLessons] = useState([]);
   const [lessonSections, setLessonSections] = useState([]);
-  const [rules, setRules] = useState(null);
+  const [rules, setRules] = useState([]);
 
   const [customLessons, setCustomLessons] = useState([]);
   const [customLessonSections, setCustomLessonSections] = useState(
@@ -44,11 +46,9 @@ const LessonProvider = ({ children }) => {
     }
 
     const { lesson_section } = selectedLesson;
-    var initProgress = JSON.parse(JSON.stringify(INIT_PROGRESS_OBJ));
+    const levelsQuantity = lesson_section === '1' ? 3 : 4;
+    const initProgress = createInitProgress(levelsQuantity);
 
-    if (lesson_section === '1') {
-      delete initProgress[3];
-    }
     const currentLessonProgressObj =
       userData.progress[`${lesson_id}`] || initProgress;
     console.log(
