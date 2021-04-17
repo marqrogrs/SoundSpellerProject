@@ -20,13 +20,28 @@ import { INIT_PROGRESS_OBJ } from '../util/constants';
 import { useStyles } from '../styles/material';
 import { db, auth } from '../firebase';
 
+const Header = () => (
+  <TableHead>
+    <TableRow>
+      <TableCell />
+      <TableCell>Lesson</TableCell>
+      <TableCell align="right">Status</TableCell>
+      <TableCell align="right">Score</TableCell>
+      <TableCell align="right"></TableCell>
+    </TableRow>
+  </TableHead>
+);
+
 export default function CustomLessonProgress({
   student,
   userProgress,
 }) {
-  const { lessonsLoading, customLessons, rules } = useContext(
-    LessonContext,
-  );
+  const {
+    lessonsLoading,
+    customLessons,
+    rules,
+    customLessonSections,
+  } = useContext(LessonContext);
   const { userData } = useContext(UserContext);
   const [customLessonProgress, setCustomLessonProgress] = useState(
     null,
@@ -66,9 +81,9 @@ export default function CustomLessonProgress({
           className={classes.progressTabs}
         >
           {!lessonsLoading &&
-            customLessons.map((lesson, i) => (
+            customLessonSections.map((section, i) => (
               <Tab
-                label={`${lesson.title}`}
+                label={`${section.title}`}
                 id={`tab-${i}`}
                 aria-controls={`tabpanel-${i}`}
               />
@@ -76,7 +91,7 @@ export default function CustomLessonProgress({
         </Tabs>
         {customLessonProgress && (
           <>
-            {customLessons.map((customLesson, i) => {
+            {customLessonSections.map((customLessonSection, i) => {
               return (
                 <div
                   role="tabpanel"
@@ -89,22 +104,44 @@ export default function CustomLessonProgress({
                     <>
                       <Box p={3} maxWidth={700}>
                         <Typography variant="h4">
-                          {customLesson.title}
+                          {customLessonSection.title}
                         </Typography>
                         <Typography variant="subtitle1">
-                          {customLesson.description}
+                          {customLessonSection.description}
                         </Typography>
-                        <ProgressListItem
-                          lesson={customLesson}
-                          progress={
-                            customLessonProgress[customLesson.id]
-                          }
-                          showButtons={student ? false : true}
-                          key={i}
-                          isOpen={true}
-                          collapsible={false}
-                          showDescription={false}
-                        />
+                        <TableContainer component={Paper}>
+                          <Table>
+                            <Header />
+                            <TableBody>
+                              {!lessonsLoading &&
+                                customLessons
+                                  .filter(
+                                    (lesson) =>
+                                      lesson.lesson_section ===
+                                      customLessonSection.id,
+                                  )
+                                  .map((lesson, i) => {
+                                    return (
+                                      <ProgressListItem
+                                        lesson={lesson}
+                                        progress={
+                                          customLessonProgress[
+                                            lesson.id
+                                          ]
+                                        }
+                                        showButtons={
+                                          student ? false : true
+                                        }
+                                        key={i}
+                                        // isOpen={true}
+                                        // collapsible={false}
+                                        // showDescription={false}
+                                      />
+                                    );
+                                  })}
+                            </TableBody>
+                          </Table>
+                        </TableContainer>
                       </Box>
                     </>
                   )}
