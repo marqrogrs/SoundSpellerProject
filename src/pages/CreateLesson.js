@@ -24,10 +24,6 @@ export default function CreateLesson() {
   const [creatingLessonLoading, setCreatingLessonLoading] = useState(
     false,
   );
-  const [lessonWords, setLessonWords] = useState('');
-  const [lessonSection, setLessonSection] = useState('');
-  const [lessonTitle, setLessonTitle] = useState('');
-  const [description, setDescription] = useState('');
   const [selectedRules, setSelectedRules] = useState([]);
   const [openRulesDropdown, setOpenRulesDropdown] = useState(false);
   const history = useHistory();
@@ -37,32 +33,30 @@ export default function CreateLesson() {
     customLessonSections,
     rules,
     lessonsLoading,
+    createLessonSection,
   } = useContext(LessonContext);
-
   const validate = (values) => {
     const errors = {};
     const {
       lesson_section,
-      newLessonSection,
       title,
       description,
-      rules,
       words,
+      newLessonSectionTitle,
+      newLessonSectionDescription,
     } = values;
     if (!title) {
       errors.title = 'Required';
     }
 
-    if (!lesson_section && !newLessonSection) {
-      errors.newLessonSection = 'Required';
-    } else if (
-      newLessonSection &&
-      !/^[a-z0-9]+$/gi.test(newLessonSection)
-    ) {
-      errors.newLessonSection =
-        'Lesson section can only contain letters and numbers';
-    } else if (newLessonSection === 'newLessonSection') {
-      errors.newLessonSection = 'Invalid lesson section';
+    if (lesson_section === 'newLessonSection') {
+      //Validate title and description
+      if (!newLessonSectionTitle) {
+        errors.newLessonSectionTitle = 'Required';
+      }
+      if (!newLessonSectionDescription) {
+        errors.newLessonSectionDescription = 'Required';
+      }
     }
 
     if (!description) {
@@ -83,37 +77,41 @@ export default function CreateLesson() {
   const formik = useFormik({
     initialValues: {
       lesson_section: '',
-      newLessonSection: '',
+      newLessonSectionTitle: '',
+      newLessonSectionDescription: '',
       title: '',
       description: '',
-      rules: [],
       words: [],
     },
     validate,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       setCreatingLessonLoading(true);
-      const {
+      var {
         lesson_section,
         title,
         description,
-        rules,
         words,
-        newLessonSection,
+        newLessonSectionTitle,
+        newLessonSectionDescription,
       } = values;
-      const lessonSection =
-        lesson_section === 'newLessonSection'
-          ? newLessonSection
-          : lesson_section;
+      //TODO: need error catching here
+      if (lesson_section === 'newLessonSection') {
+        lesson_section = await createLessonSection({
+          title: newLessonSectionTitle,
+          description: newLessonSectionDescription,
+        });
+      }
+
       const lessonWords = words
         .split(/[^A-Z]/gi)
         .filter((w) => w.length > 1)
         .map((w) => w.toUpperCase());
       createLesson({
         title,
-        lesson_section: lessonSection,
+        lesson_section,
         words: lessonWords,
         description,
-        rules,
+        rules: selectedRules,
       })
         .then((res) => {
           setCreatingLessonLoading(false);
@@ -147,10 +145,11 @@ export default function CreateLesson() {
             <FormControl>
               <InputLabel>Lesson Section</InputLabel>
               <Select
+                name="lesson_section"
                 onChange={formik.handleChange}
-                error={formik.errors.lessonSection}
-                helperText={formik.errors.lessonSection}
-                value={formik.values.lessonSection}
+                error={formik.errors.lesson_section}
+                helperText={formik.errors.lesson_section}
+                value={formik.values.lesson_section}
               >
                 <MenuItem
                   value="newLessonSection"
@@ -167,18 +166,33 @@ export default function CreateLesson() {
                 })}
               </Select>
             </FormControl>
-            {formik.values.lessonSection === 'newLessonSection' && (
-              <TextField
-                name="newLessonSection"
-                label="New Lesson Section"
-                variant="outlined"
-                color="primary"
-                margin="normal"
-                error={formik.errors.newLessonSection}
-                helperText={formik.errors.newLessonSection}
-                value={formik.values.newLessonSection}
-                onChange={formik.handleChange}
-              ></TextField>
+            {formik.values.lesson_section === 'newLessonSection' && (
+              <>
+                <TextField
+                  name="newLessonSectionTitle"
+                  label="Lesson Section Title"
+                  variant="outlined"
+                  color="primary"
+                  margin="normal"
+                  error={formik.errors.newLessonSectionTitle}
+                  helperText={formik.errors.newLessonSectionTitle}
+                  value={formik.values.newLessonSectionTitle}
+                  onChange={formik.handleChange}
+                ></TextField>
+                <TextField
+                  name="newLessonSectionDescription"
+                  label="Lesson Section Description"
+                  variant="outlined"
+                  color="primary"
+                  margin="normal"
+                  error={formik.errors.newLessonSectionDescription}
+                  helperText={
+                    formik.errors.newLessonSectionDescription
+                  }
+                  value={formik.values.newLessonSectionDescription}
+                  onChange={formik.handleChange}
+                ></TextField>
+              </>
             )}
             <TextField
               id="title"

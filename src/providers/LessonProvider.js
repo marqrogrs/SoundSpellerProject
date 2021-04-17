@@ -134,16 +134,18 @@ const LessonProvider = ({ children }) => {
   };
 
   const createLessonSection = ({ title, description }) => {
-    return db
+    const docRef = db
       .collection('users')
       .doc(user.uid)
       .collection('customLessonSections')
-      .doc()
+      .doc();
+    return docRef
       .set({
         title,
         description,
         isCustom: true,
-      });
+      })
+      .then(() => docRef.id);
   };
 
   const createLesson = ({
@@ -171,11 +173,7 @@ const LessonProvider = ({ children }) => {
         return Promise.reject({ rejectedWords });
       } else {
         const lesson_id = title.replace(/\s/g, '-');
-        //TODO: can custom lessons be grouped into sections?
-        var lesson_section = '';
 
-        const createdBy = user.uid;
-        const educator = isEducator ? user.uid : userData.educator;
         return db
           .collection('users')
           .doc(user.uid)
