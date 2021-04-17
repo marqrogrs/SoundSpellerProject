@@ -236,6 +236,7 @@ const LessonProvider = ({ children }) => {
           setRules(rules);
         });
 
+      // TODO: this only gets the custom lessons created by the current signed in user, as opposed to ALL the custom lessons they should be seeing
       const getCustomLessons = db
         .collection('users')
         .doc(user.uid)
