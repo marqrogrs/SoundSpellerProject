@@ -14,9 +14,16 @@ import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import Chip from '@material-ui/core/Chip';
 
+import { useFormik } from 'formik';
+import { useStyles } from '../styles/material';
+
 import { LessonContext } from '../providers/LessonProvider';
 
 export default function CreateLesson() {
+  const classes = useStyles();
+  const [creatingLessonLoading, setCreatingLessonLoading] = useState(
+    false,
+  );
   const [lessonWords, setLessonWords] = useState('');
   const [lessonSection, setLessonSection] = useState('');
   const [lessonTitle, setLessonTitle] = useState('');
@@ -32,43 +39,105 @@ export default function CreateLesson() {
     lessonsLoading,
   } = useContext(LessonContext);
 
-  const handleSubmit = () => {
-    const words = lessonWords
-      .split(/[^A-Z]/gi)
-      .filter((w) => w.length > 1)
-      .map((w) => w.toUpperCase());
-    //TODO: lesson sections?
-    createLesson({
-      title: lessonTitle,
-      words,
+  const validate = (values) => {
+    const errors = {};
+    const {
+      lesson_section,
+      newLessonSection,
+      title,
       description,
-      rules: selectedRules,
-    })
-      .then((res) =>
-        swal('Yippee!', `Lesson has been created.`, 'success'),
-      )
-      .then(() => {
-        history.push('/');
-      })
-      .catch((err) => {
-        if (err.rejectedWords) {
-          swal(
-            'Oops!',
-            `The following words could not be found: ${err.rejectedWords.join(
-              ', ',
-            )}`,
-            'error',
-          );
-        } else {
-          console.error(err);
-        }
-      });
+      rules,
+      words,
+    } = values;
+    if (!title) {
+      errors.title = 'Required';
+    }
+
+    if (!lesson_section && !newLessonSection) {
+      errors.newLessonSection = 'Required';
+    } else if (
+      newLessonSection &&
+      !/^[a-z0-9]+$/gi.test(newLessonSection)
+    ) {
+      errors.newLessonSection =
+        'Lesson section can only contain letters and numbers';
+    } else if (newLessonSection === 'newLessonSection') {
+      errors.newLessonSection = 'Invalid lesson section';
+    }
+
+    if (!description) {
+      errors.description = 'Required';
+    }
+
+    if (!words) {
+      errors.words = 'Required';
+    }
+    return errors;
   };
 
   const handleRulesChanged = (event) => {
     setSelectedRules(event.target.value);
     setOpenRulesDropdown(false);
   };
+
+  const formik = useFormik({
+    initialValues: {
+      lesson_section: '',
+      newLessonSection: '',
+      title: '',
+      description: '',
+      rules: [],
+      words: [],
+    },
+    validate,
+    onSubmit: (values) => {
+      setCreatingLessonLoading(true);
+      const {
+        lesson_section,
+        title,
+        description,
+        rules,
+        words,
+        newLessonSection,
+      } = values;
+      const lessonSection =
+        lesson_section === 'newLessonSection'
+          ? newLessonSection
+          : lesson_section;
+      const lessonWords = words
+        .split(/[^A-Z]/gi)
+        .filter((w) => w.length > 1)
+        .map((w) => w.toUpperCase());
+      createLesson({
+        title,
+        lesson_section: lessonSection,
+        words: lessonWords,
+        description,
+        rules,
+      })
+        .then((res) => {
+          setCreatingLessonLoading(false);
+          swal('Yippee!', `Lesson has been created.`, 'success');
+        })
+        .then(() => {
+          history.push('/');
+        })
+        .catch((err) => {
+          if (err.rejectedWords) {
+            swal(
+              'Oops!',
+              `The following words could not be found: ${err.rejectedWords.join(
+                ', ',
+              )}`,
+              'error',
+            );
+          } else {
+            console.error(err);
+          }
+        })
+        .catch((e) => console.log(e));
+    },
+  });
 
   return (
     <Container maxWidth="md">
@@ -78,9 +147,17 @@ export default function CreateLesson() {
             <FormControl>
               <InputLabel>Lesson Section</InputLabel>
               <Select
-                value={lessonSection}
-                onChange={(e) => setLessonSection(e.target.value)}
+                onChange={formik.handleChange}
+                error={formik.errors.lessonSection}
+                helperText={formik.errors.lessonSection}
+                value={formik.values.lessonSection}
               >
+                <MenuItem
+                  value="newLessonSection"
+                  className={classes.selectConstant}
+                >
+                  + New Lesson Section
+                </MenuItem>
                 {customLessonSections.map((section) => {
                   return (
                     <MenuItem key={section.id} value={section.id}>
@@ -90,17 +167,34 @@ export default function CreateLesson() {
                 })}
               </Select>
             </FormControl>
+            {formik.values.lessonSection === 'newLessonSection' && (
+              <TextField
+                name="newLessonSection"
+                label="New Lesson Section"
+                variant="outlined"
+                color="primary"
+                margin="normal"
+                error={formik.errors.newLessonSection}
+                helperText={formik.errors.newLessonSection}
+                value={formik.values.newLessonSection}
+                onChange={formik.handleChange}
+              ></TextField>
+            )}
             <TextField
-              id="name"
+              id="title"
               label="Lesson Name"
-              value={lessonTitle}
-              onChange={(e) => setLessonTitle(e.target.value)}
+              onChange={formik.handleChange}
+              error={formik.errors.title}
+              helperText={formik.errors.title}
+              value={formik.values.title}
             />
             <TextField
               id="description"
               label="Lesson Description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              onChange={formik.handleChange}
+              error={formik.errors.description}
+              helperText={formik.errors.description}
+              value={formik.values.description}
             />
             <FormControl>
               <InputLabel>Rules</InputLabel>
@@ -137,13 +231,19 @@ export default function CreateLesson() {
               multiline
               rows={20}
               placeholder="Enter lesson words here"
-              value={lessonWords}
-              onChange={(e) => setLessonWords(e.target.value)}
+              onChange={formik.handleChange}
+              error={formik.errors.words}
+              helperText={formik.errors.words}
+              value={formik.values.words}
             />
             <Button
               color="primary"
               variant="contained"
-              onClick={handleSubmit}
+              onClick={formik.handleSubmit}
+              disabled={
+                Object.keys(formik.errors).length > 0 ||
+                creatingLessonLoading
+              }
             >
               Create Lesson
             </Button>
