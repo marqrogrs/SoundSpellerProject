@@ -18,7 +18,6 @@ export default function LessonRulesModal({ currentLesson, isOpen }) {
   const rulesDescription = currentLesson?.lesson.rules.map(
     (rule) => rule.rule,
   );
-  console.log(rulesDescription);
 
   const classes = useStyles();
   const [open, setOpen] = useState(isOpen);
