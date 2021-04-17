@@ -16,6 +16,10 @@ const LessonProvider = ({ children }) => {
   const [rules, setRules] = useState(null);
 
   const [customLessons, setCustomLessons] = useState([]);
+  const [customLessonSections, setCustomLessonSections] = useState(
+    [],
+  );
+
   const { userData } = useContext(UserContext);
   const { user, isEducator } = useAuth();
 
@@ -129,7 +133,26 @@ const LessonProvider = ({ children }) => {
     updateCurrentLesson({ progress });
   };
 
-  const createLesson = ({ title, words, description, rules }) => {
+  const createLessonSection = ({ title, description }) => {
+    return db
+      .collection('users')
+      .doc(user.uid)
+      .collection('customLessonSections')
+      .doc()
+      .set({
+        title,
+        description,
+        isCustom: true,
+      });
+  };
+
+  const createLesson = ({
+    title,
+    words,
+    description,
+    rules,
+    lesson_section,
+  }) => {
     // Check if word exists
     var rejectedWords = [];
     var wordCheckPromises = [];
@@ -215,39 +238,39 @@ const LessonProvider = ({ children }) => {
           setRules(rules);
         });
 
-      // db.collection('customLessons').onSnapshot(queryRef => {
-      //   console.log(queryRef)
-      // })
       const getCustomLessons = db
+        .collection('users')
+        .doc(user.uid)
         .collection('customLessons')
         .get()
-        .then((queryRef) => {
-          var customLessons = queryRef.docs
-            .filter((doc) => {
-              // if educator
-              if (isEducator && doc.data().createdBy === user.uid) {
-                return true;
-              }
-              // else if student
-              else if (
-                !isEducator &&
-                (doc.data().createdBy === user.uid ||
-                  doc.data().createdBy === userData.educator)
-              ) {
-                return true;
-              }
-            })
-            .map((doc) => {
+        .then((customLessonsRef) => {
+          var customLessonData = customLessonsRef.docs.map((doc) =>
+            doc.data(),
+          );
+
+          setCustomLessons(customLessonData);
+        });
+
+      const getCustomLessonSections = db
+        .collection('users')
+        .doc(user.uid)
+        .collection('customLessonSections')
+        .get()
+        .then((customLessonSectionsRef) => {
+          var customLessonSectionsData = customLessonSectionsRef.docs.map(
+            (doc) => {
               return { ...doc.data(), id: doc.id };
-            });
-          setCustomLessons(customLessons);
-          console.log(customLessons);
+            },
+          );
+
+          setCustomLessonSections(customLessonSectionsData);
         });
       Promise.all([
         getLessons,
         getLessonSections,
         getRules,
         getCustomLessons,
+        getCustomLessonSections,
       ]).then(() => {
         setLessonsLoading(false);
       });
@@ -265,12 +288,14 @@ const LessonProvider = ({ children }) => {
         lessonSections,
         rules,
         customLessons, //All lessons
+        customLessonSections,
         setLesson,
         setLevel,
         setProgress,
         saveProgress,
         updateScore,
         createLesson,
+        createLessonSection,
       }}
     >
       {children}
