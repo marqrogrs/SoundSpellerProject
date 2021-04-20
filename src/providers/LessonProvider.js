@@ -5,6 +5,8 @@ import { db } from '../firebase';
 import { UserContext } from './UserProvider';
 import { getLessonSubsection } from '../util/functions';
 import { LEVELS } from '../util/constants';
+
+import { createInitProgress } from './../util/functions';
 var _ = require('lodash');
 
 const LessonContext = React.createContext({});
@@ -35,54 +37,9 @@ const LessonProvider = ({ children }) => {
     );
     const { lesson_section } = selectedLesson;
 
-    const initProgress =
-      lesson_section === '1' // Only three levels
-        ? {
-            0: {
-              score: 0,
-              completed_words: 0,
-              high_score: 0,
-              completed: false,
-            },
-            1: {
-              score: 0,
-              completed_words: 0,
-              high_score: 0,
-              completed: false,
-            },
-            2: {
-              score: 0,
-              completed_words: 0,
-              high_score: 0,
-              completed: false,
-            },
-          }
-        : {
-            0: {
-              score: 0,
-              completed_words: 0,
-              high_score: 0,
-              completed: false,
-            },
-            1: {
-              score: 0,
-              completed_words: 0,
-              high_score: 0,
-              completed: false,
-            },
-            2: {
-              score: 0,
-              completed_words: 0,
-              high_score: 0,
-              completed: false,
-            },
-            3: {
-              score: 0,
-              completed_words: 0,
-              high_score: 0,
-              completed: false,
-            },
-          };
+    const levelsQuantity = lesson_section === '1' ? 3 : 4;
+    const initProgress = createInitProgress(levelsQuantity);
+
     const lesson_subsection = getLessonSubsection(selectedLesson);
     const currentLessonProgressObj =
       userData.progress[lesson_section] &&

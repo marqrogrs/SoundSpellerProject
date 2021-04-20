@@ -57,7 +57,7 @@ export const textToSpeech = (textString) => {
 //TODO: pass in speechOn t/f
 export const speakWord = (word, firstWord = false) => {
   var text = `${firstWord ? 'Your first' : 'Next'} word is: ${word}.`;
-  textToSpeech(text);
+  return textToSpeech(text);
 };
 
 //TODO: 400 should vary based on speech speed ( i htink? )
@@ -137,7 +137,7 @@ export const changeSpeechSpeed = (speed) => {
       return voice.lang === 'en-US' && voice.localService === true;
     })[2];
 
-    textToSpeech(`This is how ${speedString} speed sounds.`);
+    return textToSpeech(`This is how ${speedString} speed sounds.`);
   });
 };
 
