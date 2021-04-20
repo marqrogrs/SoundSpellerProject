@@ -237,6 +237,8 @@ export default function Lesson() {
     currentWordIndex,
   ]);
 
+  console.log(currentLesson?.lesson.rules);
+
   return (
     <>
       <Prompt
@@ -317,7 +319,7 @@ export default function Lesson() {
           </Grid>
         )}
 
-        {currentLesson?.lesson.rules && (
+        {currentLesson?.lesson.rules.length && (
           <LessonRulesModal
             currentLesson={currentLesson}
             isOpen={currentWordIndex === 0}
