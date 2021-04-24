@@ -1,7 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useAuth } from '../hooks/useAuth';
 
-import { db } from '../firebase';
+import {
+  db,
+  lessonsCollection,
+  lessonSectionsCollection,
+  rulesCollection,
+  usersCollection,
+  wordsCollection,
+} from '../firebase';
 import { UserContext } from './UserProvider';
 import { getLessonSubsection } from '../util/functions';
 import { LEVELS } from '../util/constants';
@@ -110,12 +117,9 @@ const LessonProvider = ({ children }) => {
   const saveProgress = () => {
     console.log('Saving to: ', user);
     var { progress } = currentLesson;
-    return db
-      .collection('users')
-      .doc(user.uid)
-      .update({
-        [`progress.${currentLesson.lesson.lesson_id}`]: progress,
-      });
+    return usersCollection.doc(user.uid).update({
+      [`progress.${currentLesson.lesson.lesson_id}`]: progress,
+    });
   };
 
   const updateScore = (word, isCorrect) => {
@@ -135,7 +139,7 @@ const LessonProvider = ({ children }) => {
     var wordCheckPromises = [];
 
     words.forEach((word) => {
-      wordCheckPromises.push(db.collection('words').doc(word).get());
+      wordCheckPromises.push(wordsCollection.doc(word).get());
     });
 
     return Promise.all(wordCheckPromises).then((docRefs) => {
@@ -160,8 +164,7 @@ const LessonProvider = ({ children }) => {
   useEffect(() => {
     if (userData) {
       // console.log('Getting lessons')
-      const getLessons = db
-        .collection('lessons')
+      const getLessons = lessonsCollection
         .get()
         .then((lessonDocs) => {
           var lessonData = lessonDocs.docs.map((doc) => doc.data());
@@ -174,8 +177,7 @@ const LessonProvider = ({ children }) => {
           setLessons(lessonData);
           //console.log('Lesson Data (Provider)', lessonData)
         });
-      const getLessonSections = db
-        .collection('lessonSections')
+      const getLessonSections = lessonSectionsCollection
         .get()
         .then((sectionDocs) => {
           var sections = sectionDocs.docs.map((doc) => {
@@ -189,17 +191,14 @@ const LessonProvider = ({ children }) => {
           //console.log('Section Data (Provider)',sections)
           setLessonSections(sections);
         });
-      const getRules = db
-        .collection('rules')
-        .get()
-        .then((ruleDocs) => {
-          var rules = {};
+      const getRules = rulesCollection.get().then((ruleDocs) => {
+        var rules = {};
 
-          ruleDocs.docs.forEach((doc) => {
-            rules[doc.id] = doc.data();
-          });
-          setRules(rules);
+        ruleDocs.docs.forEach((doc) => {
+          rules[doc.id] = doc.data();
         });
+        setRules(rules);
+      });
 
       Promise.all([getLessons, getLessonSections, getRules]).then(
         () => {
