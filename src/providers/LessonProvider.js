@@ -32,7 +32,7 @@ const LessonProvider = ({ children }) => {
       return lesson.lesson_id === lesson_id;
     })[0];
 
-    selectedLesson.rules = selectedLesson.rules.map(
+    selectedLesson.rules = selectedLesson.rules?.map(
       (rule) => rules[rule],
     );
     const { lesson_section } = selectedLesson;
