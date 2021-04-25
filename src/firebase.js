@@ -24,14 +24,12 @@ const firebaseConfig = {
 };
 
 const devFirebaseConfig = {
-  apiKey: 'AIzaSyBC9FNI_d_Lse9Kw1u_1jbWUvqcHShHXZQ',
-  authDomain: 'soundspeller-c5e53.firebaseapp.com',
-  databaseURL: 'https://soundspeller-c5e53.firebaseio.com',
-  projectId: 'soundspeller-c5e53',
-  storageBucket: 'soundspeller-c5e53.appspot.com',
-  messagingSenderId: '254713323790',
-  appId: '1:254713323790:web:34db07de840605a21b375f',
-  measurementId: 'G-CMHKZ57DDP',
+  apiKey: 'AIzaSyAI6wc0BvTKxAejqKA49ppj5icSsnPAR7c',
+  authDomain: 'dev-soundspeller.firebaseapp.com',
+  projectId: 'dev-soundspeller',
+  storageBucket: 'dev-soundspeller.appspot.com',
+  messagingSenderId: '232974061126',
+  appId: '1:232974061126:web:3ddf3f38ae19a8072e8447',
 };
 
 // Initialize Firebase
