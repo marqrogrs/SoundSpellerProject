@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -13,11 +13,10 @@ import VolumeUpIcon from '@material-ui/icons/VolumeUp';
 
 import { useStyles } from './../styles/material';
 import { textToSpeech, terminateAudio } from './../util/Audio';
+import { LessonContext } from '../providers/LessonProvider';
 
-export default function LessonRulesModal({ currentLesson, isOpen }) {
-  const rulesDescription = currentLesson?.lesson.rules.map(
-    (rule) => rule.rule,
-  );
+export default function LessonRulesModal({ isOpen }) {
+  const { currentLesson } = useContext(LessonContext);
 
   const classes = useStyles();
   const [open, setOpen] = useState(isOpen);
@@ -33,14 +32,18 @@ export default function LessonRulesModal({ currentLesson, isOpen }) {
 
   const sayRules = () => {
     textToSpeech('Spelling Patterns:');
-    rulesDescription.forEach((description) =>
-      textToSpeech(description),
+    currentLesson.lesson.rules.forEach((rule) =>
+      textToSpeech(rule.rule),
     );
   };
 
   useEffect(() => {
-    if (open) sayRules();
-  }, [open]);
+    if (open && currentLesson) sayRules();
+  }, [open, currentLesson]);
+
+  useEffect(() => {
+    setOpen(isOpen);
+  }, [isOpen]);
 
   return (
     <div>
@@ -97,8 +100,10 @@ export default function LessonRulesModal({ currentLesson, isOpen }) {
               </Box>
             </Box>
 
-            {rulesDescription?.map((rule) => (
-              <Typography key={rule}>• {rule}</Typography>
+            {currentLesson?.lesson.rules.map((rule) => (
+              <Typography key={rule.rule_id}>
+                • {rule.rule}
+              </Typography>
             ))}
 
             <Box

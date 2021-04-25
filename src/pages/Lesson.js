@@ -318,13 +318,8 @@ export default function Lesson() {
             {currentLessonProgress[currentLessonLevel].score}
           </Grid>
         )}
-
-        {currentLesson?.lesson.rules.length && (
-          <LessonRulesModal
-            currentLesson={currentLesson}
-            isOpen={currentWordIndex === 0}
-            //If it is the first word (and the Lessons is already loaded), it means it is the firt time on this lesson, so the modal should be starts open
-          />
+        {currentLesson?.lesson.rules.length > 0 && (
+          <LessonRulesModal isOpen={currentWordIndex === 0} />
         )}
 
         <SpeechRateFab />
