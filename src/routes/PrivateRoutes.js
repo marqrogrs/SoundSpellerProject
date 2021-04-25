@@ -1,16 +1,21 @@
-import React from 'react'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import Home from '../pages/Home'
-import Error from '../pages/Error'
-import Lesson from '../pages/Lesson'
-import Lessons from '../pages/Lessons'
-import Progress from '../pages/Progress'
-import Students from '../pages/Students'
-import ContactUs from '../pages/ContactUs'
-import CreateLesson from '../pages/CreateLesson'
-import AppBar from '../components/AppBar'
-import { LessonProvider } from '../providers/LessonProvider'
-import UserProvider from '../providers/UserProvider'
+import React from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from 'react-router-dom';
+import Home from '../pages/Home';
+import Error from '../pages/Error';
+import Lesson from '../pages/Lesson';
+import Lessons from '../pages/Lessons';
+import Progress from '../pages/Progress';
+import Students from '../pages/Students';
+import ContactUs from '../pages/ContactUs';
+import CreateLesson from '../pages/CreateLesson';
+import SpellingPatterns from '../pages/SpellingPatterns';
+import AppBar from '../components/AppBar';
+import { LessonProvider } from '../providers/LessonProvider';
+import UserProvider from '../providers/UserProvider';
 
 export default function PrivateRoutes({ user, isEducator }) {
   return (
@@ -18,25 +23,36 @@ export default function PrivateRoutes({ user, isEducator }) {
       <LessonProvider>
         <AppBar user={user} />
         <Switch>
-          <Route exact path='/'>
+          <Route exact path="/">
             <Home />
           </Route>
           {/* <Route exact path='/lessons'>
             <Lessons />
           </Route> */}
-          <Route exact path='/lessons/:lesson' children={<Lesson />} />
-          <Route exact path='/progress'>
+          <Route
+            exact
+            path="/lessons/:lesson"
+            children={<Lesson />}
+          />
+          <Route exact path="/progress">
             <Progress />
           </Route>
+          <Route exact path="/spelling-patterns">
+            <SpellingPatterns />
+          </Route>
           {isEducator && (
-            <Route exact path='/students'>
+            <Route exact path="/students">
               <Students />
             </Route>
           )}
           {isEducator && (
-            <Route exact path='/students/:student' children={<Progress />} />
+            <Route
+              exact
+              path="/students/:student"
+              children={<Progress />}
+            />
           )}
-          <Route exact path='/create-lesson'>
+          <Route exact path="/create-lesson">
             <CreateLesson />
           </Route>
           {/* <Route exact path='/contact-us'>
@@ -46,5 +62,5 @@ export default function PrivateRoutes({ user, isEducator }) {
         </Switch>
       </LessonProvider>
     </UserProvider>
-  )
+  );
 }
