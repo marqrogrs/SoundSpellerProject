@@ -9,8 +9,11 @@ import 'firebase/auth';
 import 'firebase/firestore'; //database
 import 'firebase/functions';
 
-const env = process.env.NODE_ENV;
-const isProduction = env == 'production';
+// const env = process.env.NODE_ENV;
+//TODO: there is probably a nicer way to do this:
+const isProduction = window.location.hostname.includes(
+  'soundspeller-c5e53',
+);
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBC9FNI_d_Lse9Kw1u_1jbWUvqcHShHXZQ',
