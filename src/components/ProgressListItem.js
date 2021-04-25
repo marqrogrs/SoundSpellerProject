@@ -93,7 +93,8 @@ export default function ProgressListItem({
 
       setTotalPossibleScore(total_possible_score);
 
-      const lesson_rules = lesson?.rules.map((rule) => rules[rule]);
+      //TODO: this should just happen in our lesson provider. When we get lessons, we should expand the rules asap
+      const lesson_rules = lesson.rules.map((rule) => rules[rule]);
       setLessonRules(lesson_rules);
     }
   }, [lesson, progress, lessonsLoading]);
@@ -134,6 +135,8 @@ export default function ProgressListItem({
         >
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box margin={1}>
+              //TODO: there is a bug here. if you access progress list
+              by hitting "back", r is undefined in the loop
               {lessonRules &&
                 lessonRules.map((r) => (
                   <Card
@@ -158,7 +161,6 @@ export default function ProgressListItem({
                     </CardContent>
                   </Card>
                 ))}
-
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
