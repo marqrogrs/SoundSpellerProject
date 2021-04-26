@@ -1,13 +1,13 @@
 // Firebase App (the core Firebase SDK) is always required and must be listed first
-import * as firebase from 'firebase/app'
+import * as firebase from 'firebase/app';
 
 // If you enabled Analytics in your project, add the Firebase SDK for Analytics
-import 'firebase/analytics'
+import 'firebase/analytics';
 
 // Add the Firebase products that you want to use
-import 'firebase/auth'
-import 'firebase/firestore' //database
-import 'firebase/functions' 
+import 'firebase/auth';
+import 'firebase/firestore'; //database
+import 'firebase/functions';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBC9FNI_d_Lse9Kw1u_1jbWUvqcHShHXZQ',
@@ -18,21 +18,22 @@ const firebaseConfig = {
   messagingSenderId: '254713323790',
   appId: '1:254713323790:web:34db07de840605a21b375f',
   measurementId: 'G-CMHKZ57DDP',
-}
+};
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig)
+firebase.initializeApp(firebaseConfig);
 
-export const db = firebase.firestore()
-export const auth = firebase.auth()
-auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
+export const db = firebase.firestore();
+export const auth = firebase.auth();
+export const firestore = firebase.firestore;
+auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
 
 export const authenticateStudent = firebase
   .functions()
-  .httpsCallable('authenticateStudent')
+  .httpsCallable('authenticateStudent');
 export const createStudentAccount = firebase
   .functions()
-  .httpsCallable('createStudentAccount')
+  .httpsCallable('createStudentAccount');
 export const resetStudentPassword = firebase
   .functions()
-  .httpsCallable('resetStudentPassword')
+  .httpsCallable('resetStudentPassword');

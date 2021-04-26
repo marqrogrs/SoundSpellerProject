@@ -1,17 +1,21 @@
-import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Home from "../pages/Home";
-import Error from "../pages/Error";
-import Lesson from "../pages/Lesson";
-import Lessons from "../pages/Lessons";
-import Progress from "../pages/Progress";
-import Students from "../pages/Students";
-import ContactUs from "../pages/ContactUs";
-import CreateLesson from "../pages/CreateLesson";
-import SpellingPatterns from "../pages/SpellingPatterns";
-import AppBar from "../components/AppBar";
-import { LessonProvider } from "../providers/LessonProvider";
-import UserProvider from "../providers/UserProvider";
+import React from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from 'react-router-dom';
+import Home from '../pages/Home';
+import Error from '../pages/Error';
+import Lesson from '../pages/Lesson';
+import Lessons from '../pages/Lessons';
+import Progress from '../pages/Progress';
+import Students from '../pages/Students';
+import ContactUs from '../pages/ContactUs';
+import CreateLesson from '../pages/CreateLesson';
+import SpellingPatterns from '../pages/SpellingPatterns';
+import AppBar from '../components/AppBar';
+import { LessonProvider } from '../providers/LessonProvider';
+import UserProvider from '../providers/UserProvider';
 
 export default function PrivateRoutes({ user, isEducator }) {
   return (
@@ -22,10 +26,14 @@ export default function PrivateRoutes({ user, isEducator }) {
           <Route exact path="/">
             <Home />
           </Route>
-          <Route exact path="/lessons">
+          {/* <Route exact path='/lessons'>
             <Lessons />
-          </Route>
-          <Route exact path="/lessons/:lesson" children={<Lesson />} />
+          </Route> */}
+          <Route
+            exact
+            path="/lessons/:lesson"
+            children={<Lesson />}
+          />
           <Route exact path="/progress">
             <Progress />
           </Route>
@@ -38,7 +46,11 @@ export default function PrivateRoutes({ user, isEducator }) {
             </Route>
           )}
           {isEducator && (
-            <Route exact path="/students/:student" children={<Progress />} />
+            <Route
+              exact
+              path="/students/:student"
+              children={<Progress />}
+            />
           )}
           <Route exact path="/create-lesson">
             <CreateLesson />

@@ -100,6 +100,8 @@ export const useStyles = makeStyles((theme) => ({
     // flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
     display: 'flex',
+    maxHeight: 500,
+    // margin: "1rem auto"
   },
   progressTabs: {
     borderRight: `1px solid ${theme.palette.divider}`,

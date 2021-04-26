@@ -1,10 +1,10 @@
-import React, { useState, useContext } from "react";
-import { useLocation, useHistory } from "react-router-dom";
+import React, { useState, useContext } from 'react';
+import { useLocation, useHistory } from 'react-router-dom';
 
-import { useStyles } from "../styles/material";
+import { useStyles } from '../styles/material';
 
-import { default as MaterialAppBar } from "@material-ui/core/AppBar";
-import MenuIcon from "@material-ui/icons/Menu";
+import { default as MaterialAppBar } from '@material-ui/core/AppBar';
+import MenuIcon from '@material-ui/icons/Menu';
 import {
   Breadcrumbs,
   Link,
@@ -16,20 +16,20 @@ import {
   List,
   ListItem,
   ListItemText,
-} from "@material-ui/core";
+} from '@material-ui/core';
 
-import ExpandLess from "@material-ui/icons/ExpandLess";
-import ExpandMore from "@material-ui/icons/ExpandMore";
-import Collapse from "@material-ui/core/Collapse";
-import IconButton from "@material-ui/core/IconButton";
-import AccountCircle from "@material-ui/icons/AccountCircle";
-import Settings from "@material-ui/icons/Settings";
-import SpeechSlider from "../components/SpeechSlider";
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import Collapse from '@material-ui/core/Collapse';
+import IconButton from '@material-ui/core/IconButton';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import Settings from '@material-ui/icons/Settings';
+import SpeechSlider from '../components/SpeechSlider';
 
-import { useAuth } from "../hooks/useAuth";
-import { UserContext } from "../providers/UserProvider";
+import { useAuth } from '../hooks/useAuth';
+import { UserContext } from '../providers/UserProvider';
 
-import { PAYPAL_URL, SOUNDSPELLER_URL } from "../util/constants";
+import { PAYPAL_URL, SOUNDSPELLER_URL } from '../util/constants';
 
 export default function AppBar({ user }) {
   const classes = useStyles();
@@ -54,9 +54,9 @@ export default function AppBar({ user }) {
 
   const handleClose = (menu) => {
     switch (menu) {
-      case "left":
+      case 'left':
         setLeftAnchorEl(null);
-      case "right":
+      case 'right':
         setRightAnchorEl(null);
       default:
         return;
@@ -67,24 +67,24 @@ export default function AppBar({ user }) {
     auth.signOut();
   };
 
-  const handleViewLessons = () => {
-    history.push("/lessons");
-  };
+  // const handleViewLessons = () => {
+  //   history.push('/lessons')
+  // }
 
   const handleCreateLesson = () => {
-    history.push("/create-lesson");
+    history.push('/create-lesson');
   };
 
   const handleViewStudents = () => {
-    history.push("/students");
+    history.push('/students');
   };
 
   const handleRedirectToHome = () => {
-    history.push("/");
+    history.push('/');
   };
 
   const handleSpellingPatterns = () => {
-    history.push("/spelling-patterns");
+    history.push('/spelling-patterns');
   };
 
   return (
@@ -104,25 +104,29 @@ export default function AppBar({ user }) {
             id="menu-appbar"
             anchorEl={leftAnchorEl}
             anchorOrigin={{
-              vertical: "top",
-              horizontal: "right",
+              vertical: 'top',
+              horizontal: 'right',
             }}
             keepMounted
             transformOrigin={{
-              vertical: "top",
-              horizontal: "right",
+              vertical: 'top',
+              horizontal: 'right',
             }}
             open={leftMenuOpen}
-            onClose={() => handleClose("left")}
+            onClose={() => handleClose('left')}
           >
-            <MenuItem onClick={() => window.open(SOUNDSPELLER_URL, "_blank")}>
+            <MenuItem
+              onClick={() => window.open(SOUNDSPELLER_URL, '_blank')}
+            >
               About
             </MenuItem>
             {/* <MenuItem onClick={() => window.open(PAYPAL_URL, '_blank')}>
               Donate
             </MenuItem> */}
             <MenuItem
-              onClick={() => window.location.assign("mailto:mark@birdhaven.us")}
+              onClick={() =>
+                window.location.assign('mailto:mark@birdhaven.us')
+              }
             >
               Contact Us
             </MenuItem>
@@ -149,22 +153,25 @@ export default function AppBar({ user }) {
                 id="menu-appbar"
                 anchorEl={rightAnchorEl}
                 anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
+                  vertical: 'top',
+                  horizontal: 'right',
                 }}
                 keepMounted
                 transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
+                  vertical: 'top',
+                  horizontal: 'right',
                 }}
                 open={rightMenuOpen}
-                onClose={() => handleClose("right")}
+                onClose={() => handleClose('right')}
               >
                 {auth.isEducator && (
-                  <MenuItem onClick={handleViewStudents}>My Students</MenuItem>
+                  <MenuItem onClick={handleViewStudents}>
+                    My Students
+                  </MenuItem>
                 )}
-                {/* <MenuItem onClick={handleCreateLesson} >Create Lesson</MenuItem> */}
-                <MenuItem onClick={handleViewLessons}>View Lessons</MenuItem>
+                <MenuItem onClick={handleCreateLesson}>
+                  Create Lesson
+                </MenuItem>
                 <MenuItem onClick={handleSpellingPatterns}>
                   Spelling Patterns
                 </MenuItem>
@@ -178,10 +185,10 @@ export default function AppBar({ user }) {
           )}
         </Toolbar>
       </MaterialAppBar>
-      {user && (
-        <Breadcrumbs aria-label="breadcrumb">
-          {pathname.split("/").map((path, index) => {
-            const last = pathname.split("/").length - 1;
+      {/* {user && (
+        <Breadcrumbs aria-label='breadcrumb'>
+          {pathname.split('/').map((path, index) => {
+            const last = pathname.split('/').length - 1
             if (index === 0) {
               return (
                 <Link
@@ -214,7 +221,7 @@ export default function AppBar({ user }) {
             );
           })}
         </Breadcrumbs>
-      )}
+      )} */}
     </div>
   );
 }

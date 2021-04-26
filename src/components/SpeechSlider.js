@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 
-import Slider from '@material-ui/core/Slider'
-import { changeSpeechSpeed, SPEECH_RATE } from '../util/Audio'
-import Grid from '@material-ui/core/Grid'
+import Slider from '@material-ui/core/Slider';
+import { changeSpeechSpeed, SPEECH_RATE } from '../util/Audio';
+import Grid from '@material-ui/core/Grid';
 
-import { useStyles } from '../styles/material'
+import { useStyles } from '../styles/material';
 
 const MARKS = [
   {
@@ -27,49 +27,49 @@ const MARKS = [
     value: 100,
     label: 'Faster',
   },
-]
+];
 
 export default function SpeechSlider() {
-  const [speed, setSpeed] = useState(50)
-  const classes = useStyles()
+  const [speed, setSpeed] = useState(50);
+  const classes = useStyles();
   const handleChangeSpeed = (e, newSpeed) => {
-    setSpeed(newSpeed)
-  }
+    setSpeed(newSpeed);
+  };
 
   const handleChangeSpeedCommitted = (e, newSpeed) => {
-    changeSpeechSpeed(newSpeed)
-  }
+    changeSpeechSpeed(newSpeed);
+  };
 
   useEffect(() => {
-    var transformedSpeed
+    var transformedSpeed;
     switch (SPEECH_RATE) {
       case 0.5:
-        transformedSpeed = 0
-        break
+        transformedSpeed = 0;
+        break;
       case 0.6:
-        transformedSpeed = 25
-        break
+        transformedSpeed = 25;
+        break;
       case 1.0:
-        transformedSpeed = 50
-        break
+        transformedSpeed = 50;
+        break;
       case 1.5:
-        transformedSpeed = 75
-        break
+        transformedSpeed = 75;
+        break;
       case 2.0:
-        transformedSpeed = 100
-        break
+        transformedSpeed = 100;
+        break;
       default:
-        return
+        return;
     }
-    setSpeed(transformedSpeed)
-  }, [])
+    setSpeed(transformedSpeed);
+  }, []);
 
   return (
     <Grid
       container
       style={{ width: 600 }}
-      direction='column'
-      alignItems='center'
+      direction="column"
+      alignItems="center"
     >
       Speed:
       <Slider
@@ -77,10 +77,10 @@ export default function SpeechSlider() {
         value={speed}
         onChange={handleChangeSpeed}
         onChangeCommitted={handleChangeSpeedCommitted}
-        valueLabelDisplay='off'
+        valueLabelDisplay="off"
         marks={MARKS}
         step={25}
       />
     </Grid>
-  )
+  );
 }
