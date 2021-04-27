@@ -18,3 +18,6 @@ export const createInitProgress = (lessonQtd) => {
   }
   return lessonObject;
 };
+
+export const isEmptyObject = (objectToCheck) =>
+  JSON.stringify(objectToCheck) === JSON.stringify({});
