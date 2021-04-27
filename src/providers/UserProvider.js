@@ -30,7 +30,7 @@ export default function UserProvider({ children }) {
         unsubscribeUser = userDoc.onSnapshot((snap) => {
           const data = isEducator ? snap.data() : snap.docs[0].data();
           setUserData(data);
-          console.log('User Data', data);
+
           //Calculate total score
           const total_score = Object.values(data.progress).reduce(
             (acc, lesson) => {
