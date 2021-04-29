@@ -1,16 +1,18 @@
-import React from 'react'
-import { useParams } from 'react-router-dom'
-import ProgressList from '../components/ProgressList'
-import Container from '@material-ui/core/Container'
+import React from 'react';
+import { useParams } from 'react-router-dom';
+import ProgressList from '../components/ProgressList';
+import Container from '@material-ui/core/Container';
+import ProgressListFilter from '../components/ProgressListFilter';
 
 export default function Progress() {
-  const { student } = useParams()
+  const { student } = useParams();
 
   return (
     <>
-      <Container maxWidth='md'>
-        <ProgressList student={student} />
+      <Container maxWidth="md">
+        <ProgressList student={student} type="standard" />
+        <ProgressList student={student} type="custom" />
       </Container>
     </>
-  )
+  );
 }

@@ -1,10 +1,10 @@
-import React, { useState, useContext } from 'react'
-import { useLocation, useHistory } from 'react-router-dom'
+import React, { useState, useContext } from 'react';
+import { useLocation, useHistory } from 'react-router-dom';
 
-import { useStyles } from '../styles/material'
+import { useStyles } from '../styles/material';
 
-import { default as MaterialAppBar } from '@material-ui/core/AppBar'
-import MenuIcon from '@material-ui/icons/Menu'
+import { default as MaterialAppBar } from '@material-ui/core/AppBar';
+import MenuIcon from '@material-ui/icons/Menu';
 import {
   Breadcrumbs,
   Link,
@@ -16,88 +16,92 @@ import {
   List,
   ListItem,
   ListItemText,
-} from '@material-ui/core'
+} from '@material-ui/core';
 
-import ExpandLess from '@material-ui/icons/ExpandLess'
-import ExpandMore from '@material-ui/icons/ExpandMore'
-import Collapse from '@material-ui/core/Collapse'
-import IconButton from '@material-ui/core/IconButton'
-import AccountCircle from '@material-ui/icons/AccountCircle'
-import Settings from '@material-ui/icons/Settings'
-import SpeechSlider from '../components/SpeechSlider'
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import Collapse from '@material-ui/core/Collapse';
+import IconButton from '@material-ui/core/IconButton';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import Settings from '@material-ui/icons/Settings';
+import SpeechSlider from '../components/SpeechSlider';
 
-import { useAuth } from '../hooks/useAuth'
-import { UserContext } from '../providers/UserProvider'
+import { useAuth } from '../hooks/useAuth';
+import { UserContext } from '../providers/UserProvider';
 
-import { PAYPAL_URL, SOUNDSPELLER_URL } from '../util/constants'
+import { PAYPAL_URL, SOUNDSPELLER_URL } from '../util/constants';
 
 export default function AppBar({ user }) {
-  const classes = useStyles()
-  const auth = useAuth()
-  const { pathname } = useLocation()
-  const history = useHistory()
-  const [leftAnchorEl, setLeftAnchorEl] = useState(null)
-  const [rightAnchorEl, setRightAnchorEl] = useState(null)
+  const classes = useStyles();
+  const auth = useAuth();
+  const { pathname } = useLocation();
+  const history = useHistory();
+  const [leftAnchorEl, setLeftAnchorEl] = useState(null);
+  const [rightAnchorEl, setRightAnchorEl] = useState(null);
 
-  const rightMenuOpen = Boolean(rightAnchorEl)
-  const leftMenuOpen = Boolean(leftAnchorEl)
+  const rightMenuOpen = Boolean(rightAnchorEl);
+  const leftMenuOpen = Boolean(leftAnchorEl);
 
-  const { totalScore } = useContext(UserContext)
+  const { totalScore } = useContext(UserContext);
 
   const handleLeftMenu = (e) => {
-    setLeftAnchorEl(e.currentTarget)
-  }
+    setLeftAnchorEl(e.currentTarget);
+  };
 
   const handleRightMenu = (e) => {
-    setRightAnchorEl(e.currentTarget)
-  }
+    setRightAnchorEl(e.currentTarget);
+  };
 
   const handleClose = (menu) => {
     switch (menu) {
       case 'left':
-        setLeftAnchorEl(null)
+        setLeftAnchorEl(null);
       case 'right':
-        setRightAnchorEl(null)
+        setRightAnchorEl(null);
       default:
-        return
+        return;
     }
-  }
+  };
 
   const handleSignOut = () => {
-    auth.signOut()
-  }
+    auth.signOut();
+  };
 
-  const handleViewLessons = () => {
-    history.push('/lessons')
-  }
+  // const handleViewLessons = () => {
+  //   history.push('/lessons')
+  // }
 
   const handleCreateLesson = () => {
-    history.push('/create-lesson')
-  }
+    history.push('/create-lesson');
+  };
 
   const handleViewStudents = () => {
-    history.push('/students')
-  }
+    history.push('/students');
+  };
 
   const handleRedirectToHome = () => {
-    history.push('/')
-  }
+    history.push('/');
+  };
+
+  const handleSpellingPatterns = () => {
+    history.push('/spelling-patterns');
+  };
 
   return (
     <div>
-      <MaterialAppBar position='static'>
+      <MaterialAppBar position="static">
         <Toolbar>
           <IconButton
-            edge='start'
+            edge="start"
             className={classes.menuButton}
-            color='inherit'
-            aria-label='menu'
+            color="inherit"
+            aria-label="menu"
             onClick={handleLeftMenu}
           >
             <MenuIcon />
           </IconButton>
           <Menu
-            id='menu-appbar'
+            id="menu-appbar"
             anchorEl={leftAnchorEl}
             anchorOrigin={{
               vertical: 'top',
@@ -111,18 +115,24 @@ export default function AppBar({ user }) {
             open={leftMenuOpen}
             onClose={() => handleClose('left')}
           >
-            <MenuItem onClick={() => window.open(SOUNDSPELLER_URL, '_blank')}>
+            <MenuItem
+              onClick={() => window.open(SOUNDSPELLER_URL, '_blank')}
+            >
               About
             </MenuItem>
             {/* <MenuItem onClick={() => window.open(PAYPAL_URL, '_blank')}>
               Donate
             </MenuItem> */}
-            <MenuItem onClick={() => window.location.assign('mailto:mark@birdhaven.us')}>
+            <MenuItem
+              onClick={() =>
+                window.location.assign('mailto:mark@birdhaven.us')
+              }
+            >
               Contact Us
             </MenuItem>
           </Menu>
           <Typography
-            variant='h6'
+            variant="h6"
             className={classes.menuTitle}
             onClick={handleRedirectToHome}
           >
@@ -131,16 +141,16 @@ export default function AppBar({ user }) {
           {user && (
             <>
               <IconButton
-                aria-label='account of current user'
-                aria-controls='menu-appbar'
-                aria-haspopup='true'
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
                 onClick={handleRightMenu}
-                color='inherit'
+                color="inherit"
               >
                 <AccountCircle />
               </IconButton>
               <Menu
-                id='menu-appbar'
+                id="menu-appbar"
                 anchorEl={rightAnchorEl}
                 anchorOrigin={{
                   vertical: 'top',
@@ -155,10 +165,16 @@ export default function AppBar({ user }) {
                 onClose={() => handleClose('right')}
               >
                 {auth.isEducator && (
-                  <MenuItem onClick={handleViewStudents}>My Students</MenuItem>
+                  <MenuItem onClick={handleViewStudents}>
+                    My Students
+                  </MenuItem>
                 )}
-                {/* <MenuItem onClick={handleCreateLesson} >Create Lesson</MenuItem> */}
-                <MenuItem onClick={handleViewLessons}>View Lessons</MenuItem>
+                <MenuItem onClick={handleCreateLesson}>
+                  Create Lesson
+                </MenuItem>
+                <MenuItem onClick={handleSpellingPatterns}>
+                  Spelling Patterns
+                </MenuItem>
                 <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
                 {/* <MenuItem onClick={() => history.push('/contact-us')}>
                   Contact Us
@@ -169,43 +185,43 @@ export default function AppBar({ user }) {
           )}
         </Toolbar>
       </MaterialAppBar>
-      {user && (
+      {/* {user && (
         <Breadcrumbs aria-label='breadcrumb'>
           {pathname.split('/').map((path, index) => {
             const last = pathname.split('/').length - 1
             if (index === 0) {
               return (
                 <Link
-                  color='inherit'
-                  onClick={() => history.push('/')}
+                  color="inherit"
+                  onClick={() => history.push("/")}
                   key={path}
                 >
                   Sound Speller
                 </Link>
-              )
+              );
             }
             return (
               <Link
-                color={index === last ? 'textPrimary' : 'textSecondary'}
+                color={index === last ? "textPrimary" : "textSecondary"}
                 onClick={() =>
                   history.push(
                     pathname
-                      .split('/')
+                      .split("/")
                       .slice(0, index + 1)
-                      .join('/')
+                      .join("/")
                   )
                 }
-                aria-current='page'
+                aria-current="page"
                 key={path}
               >
-                {typeof path === 'string'
+                {typeof path === "string"
                   ? path.charAt(0).toUpperCase() + path.slice(1)
                   : path}
               </Link>
-            )
+            );
           })}
         </Breadcrumbs>
-      )}
+      )} */}
     </div>
-  )
+  );
 }
