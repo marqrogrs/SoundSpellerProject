@@ -12,7 +12,7 @@ import {
 import { UserContext } from './UserProvider';
 import { getLessonSubsection } from '../util/functions';
 import { LEVELS } from '../util/constants';
-
+import { triggerErrorAlert } from '../util/alerts';
 import { createInitProgress } from './../util/functions';
 var _ = require('lodash');
 
@@ -210,8 +210,8 @@ const LessonProvider = ({ children }) => {
           ]);
 
           setLessons(lessonData);
-          //console.log('Lesson Data (Provider)', lessonData)
-        });
+        })
+        .catch((err) => console.error('getLessons: ', err));
       const getLessonSections = lessonSectionsCollection
         .get()
         .then((sectionDocs) => {
@@ -225,17 +225,22 @@ const LessonProvider = ({ children }) => {
           ]);
           //console.log('Section Data (Provider)',sections)
           setLessonSections(sections);
-        });
-      const getRules = rulesCollection.get().then((ruleDocs) => {
-        var rules = {};
+        })
+        .catch((err) => console.error('getLessonSections: ', err));
+      const getRules = rulesCollection
+        .get()
+        .then((ruleDocs) => {
+          var rules = {};
 
-        ruleDocs.docs.forEach((doc) => {
-          rules[doc.id] = doc.data();
-        });
-        setRules(rules);
-      });
+          ruleDocs.docs.forEach((doc) => {
+            rules[doc.id] = doc.data();
+          });
+          setRules(rules);
+        })
+        .catch((err) => console.error('getRules: ', err));
 
       // TODO: this only gets the custom lessons created by the current signed in user, as opposed to ALL the custom lessons they should be seeing
+      var allCustomLessonsData = [];
       const getCustomLessons = db
         .collection('users')
         .doc(user.uid)
@@ -245,10 +250,29 @@ const LessonProvider = ({ children }) => {
           var customLessonData = customLessonsRef.docs.map((doc) =>
             doc.data(),
           );
+          allCustomLessonsData = customLessonData;
+          if (!isEducator) {
+            return db
+              .collection('users')
+              .doc(userData.educator)
+              .collection('customLessons')
+              .get();
+          }
+          setCustomLessons(allCustomLessonsData);
+          return;
+        })
+        .then((customLessonsByEducatorRef) => {
+          if (!isEducator) {
+            var customLessonData = customLessonsByEducatorRef.docs.map(
+              (doc) => doc.data(),
+            );
+            allCustomLessonsData.push(...customLessonData);
+          }
+          setCustomLessons(allCustomLessonsData);
+        })
+        .catch((err) => console.error('getCustomLessons: ', err));
 
-          setCustomLessons(customLessonData);
-        });
-
+      var allCustomLessonSectionsData = [];
       const getCustomLessonSections = db
         .collection('users')
         .doc(user.uid)
@@ -260,9 +284,35 @@ const LessonProvider = ({ children }) => {
               return { ...doc.data(), id: doc.id };
             },
           );
+          allCustomLessonSectionsData = customLessonSectionsData;
 
-          setCustomLessonSections(customLessonSectionsData);
-        });
+          if (!isEducator) {
+            return db
+              .collection('users')
+              .doc(userData.educator)
+              .collection('customLessonSections')
+              .get();
+          }
+          setCustomLessonSections(allCustomLessonSectionsData);
+          return;
+        })
+        .then((customLessonSectionsByEducatorRef) => {
+          if (!isEducator) {
+            var customLessonSectionsByEducatorData = customLessonSectionsByEducatorRef.docs.map(
+              (doc) => {
+                return { ...doc.data(), id: doc.id };
+              },
+            );
+            allCustomLessonSectionsData.push(
+              ...customLessonSectionsByEducatorData,
+            );
+          }
+          setCustomLessonSections(allCustomLessonSectionsData);
+        })
+        .catch((err) =>
+          console.error('getCustomLessonSections: ', err),
+        );
+
       Promise.all([
         getLessons,
         getLessonSections,
