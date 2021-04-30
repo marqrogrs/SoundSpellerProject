@@ -135,8 +135,8 @@ export default function ProgressListItem({
         >
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box margin={1}>
-              //TODO: there is a bug here. if you access progress list
-              by hitting "back", r is undefined in the loop
+              {/* //TODO: there is a bug here. if you access progress list
+              by hitting "back", r is undefined in the loop */}
               {lessonRules &&
                 lessonRules.map((r) => (
                   <Card
