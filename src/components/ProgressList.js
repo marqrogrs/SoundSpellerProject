@@ -15,20 +15,12 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
 import { UserContext } from '../providers/UserProvider';
-import { LessonContext } from '../providers/LessonProvider';
 import { getLessonSubsection } from '../util/functions';
 import { INIT_PROGRESS_OBJ } from '../util/constants';
 import { useStyles } from '../styles/material';
 import { db, auth, usersCollection } from '../firebase';
 
-export default function ProgressList({ student }) {
-  const {
-    lessons,
-    lessonSections,
-    rules,
-    lessonsLoading,
-  } = useContext(LessonContext);
-  const { userData } = useContext(UserContext);
+export default function ProgressList({ student, type }) {
   const {
     lessons,
     lessonSections,
@@ -36,7 +28,8 @@ export default function ProgressList({ student }) {
     customLessonSections,
     customLessons,
   } = useContext(LessonContext);
-  const [userLessonData, setUserLessonData] = useState(null);
+  const { userData } = useContext(UserContext);
+
   const isCustom = type === 'custom';
   const [userProgress, setUserProgress] = useState(null);
   const [sections, setSections] = useState([]);

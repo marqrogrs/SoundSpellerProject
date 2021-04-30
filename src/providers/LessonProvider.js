@@ -121,10 +121,7 @@ const LessonProvider = ({ children }) => {
 
   const saveProgress = () => {
     var { progress, lesson } = currentLesson;
-    const field = new firestore.FieldPath(
-      'progress',
-      lesson.lesson_id,
-    );
+    const field = new db.FieldPath('progress', lesson.lesson_id);
     const value = progress;
     return usersCollection.doc(user.uid).update(field, value);
   };
