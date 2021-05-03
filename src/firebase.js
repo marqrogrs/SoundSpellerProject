@@ -44,6 +44,7 @@ const devApp = firebase.initializeApp(
 
 const currentApp = isProduction ? firebase : devApp;
 
+export const firestore = firebase.firestore;
 export const db = currentApp.firestore();
 
 // Need to use the users collection of current env
