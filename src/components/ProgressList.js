@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useStyles } from '../styles/material';
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -7,22 +6,21 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
+import { LessonContext } from '../providers/LessonProvider';
+import ProgressListItem from './ProgressListItem';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
-import { INIT_PROGRESS_OBJ } from '../util/constants';
 import { UserContext } from '../providers/UserProvider';
-import { LessonContext } from '../providers/LessonProvider';
-
-import { db, auth } from '../firebase';
-
-import ProgressListItem from './ProgressListItem';
+import { getLessonSubsection } from '../util/functions';
+import { INIT_PROGRESS_OBJ } from '../util/constants';
+import { useStyles } from '../styles/material';
+import { db, auth, usersCollection } from '../firebase';
 
 export default function ProgressList({ student, type }) {
-  const { userData } = useContext(UserContext);
   const {
     lessons,
     lessonSections,
@@ -30,19 +28,21 @@ export default function ProgressList({ student, type }) {
     customLessonSections,
     customLessons,
   } = useContext(LessonContext);
+  const { userData } = useContext(UserContext);
+
   const isCustom = type === 'custom';
   const [userProgress, setUserProgress] = useState(null);
   const [sections, setSections] = useState([]);
   const [typeLessons, setTypeLessons] = useState(null);
-
+  //TODO: instead of initializing to `0` being the selected tab, let's try to guesstimate what section the user would want to be on. We will do that by finding the section at which all previous consecutive lessons are completed. OR... we can implement the ability to store the last lesson the user worked on
   const [selectedTab, setSelectedTab] = useState(0);
+
   const classes = useStyles();
 
   useEffect(() => {
     var unsubscribeStudent = () => {};
     if (student) {
-      unsubscribeStudent = db
-        .collection('users')
+      unsubscribeStudent = usersCollection
         .where('username', '==', student)
         .where('educator', '==', auth.currentUser.uid)
         .onSnapshot((snap) => {

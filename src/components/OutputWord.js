@@ -16,7 +16,7 @@ import {
   setPlayAudio,
 } from '../util/Audio';
 import { COMMON_PHONEMES } from '../util/constants';
-import { db } from '../firebase';
+import { db, wordsCollection } from '../firebase';
 import simulateEvent from 'simulate-event';
 
 const useStyles = makeStyles({
@@ -135,13 +135,13 @@ export default function OutputWord({ wordString, index }) {
   };
 
   useEffect(() => {
-    db.collection('words')
+    wordsCollection
       .doc(wordString)
       .get()
       .then(async (wordDoc) => {
         if (
           wordDoc.exists &&
-          currentLesson.lesson.lesson_section !== 1
+          currentLesson.lesson.lesson_section > 1
         ) {
           var {
             word,

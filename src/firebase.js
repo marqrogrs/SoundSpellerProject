@@ -9,6 +9,12 @@ import 'firebase/auth';
 import 'firebase/firestore'; //database
 import 'firebase/functions';
 
+// const env = process.env.NODE_ENV;
+//TODO: there is probably a nicer way to do this:
+const isProduction = window.location.hostname.includes(
+  'soundspeller-c5e53',
+);
+
 const firebaseConfig = {
   apiKey: 'AIzaSyBC9FNI_d_Lse9Kw1u_1jbWUvqcHShHXZQ',
   authDomain: 'soundspeller-c5e53.firebaseapp.com',
@@ -20,20 +26,56 @@ const firebaseConfig = {
   measurementId: 'G-CMHKZ57DDP',
 };
 
+const devFirebaseConfig = {
+  apiKey: 'AIzaSyAI6wc0BvTKxAejqKA49ppj5icSsnPAR7c',
+  authDomain: 'dev-soundspeller.firebaseapp.com',
+  projectId: 'dev-soundspeller',
+  storageBucket: 'dev-soundspeller.appspot.com',
+  messagingSenderId: '232974061126',
+  appId: '1:232974061126:web:3ddf3f38ae19a8072e8447',
+};
+
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
+const devApp = firebase.initializeApp(
+  devFirebaseConfig,
+  'development',
+);
 
-export const db = firebase.firestore();
-export const auth = firebase.auth();
+const currentApp = isProduction ? firebase : devApp;
+
 export const firestore = firebase.firestore;
+export const db = currentApp.firestore();
+
+// Need to use the users collection of current env
+export const usersCollection = db.collection('users');
+
+// Otherwise, grab all static lesson data from production
+export const lessonSectionsCollection = firebase
+  .firestore()
+  .collection('lessonSections');
+export const lessonsCollection = firebase
+  .firestore()
+  .collection('lessons');
+export const phonemesCollection = firebase
+  .firestore()
+  .collection('phonemes');
+export const rulesCollection = firebase
+  .firestore()
+  .collection('rules');
+export const wordsCollection = firebase
+  .firestore()
+  .collection('words');
+
+export const auth = currentApp.auth();
 auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
 
-export const authenticateStudent = firebase
+export const authenticateStudent = currentApp
   .functions()
   .httpsCallable('authenticateStudent');
-export const createStudentAccount = firebase
+export const createStudentAccount = currentApp
   .functions()
   .httpsCallable('createStudentAccount');
-export const resetStudentPassword = firebase
+export const resetStudentPassword = currentApp
   .functions()
   .httpsCallable('resetStudentPassword');

@@ -52,6 +52,7 @@ git checkout -B new-branch-name
 ```
 
 ## Git flow
+
 The following git flow should be followed when working on SoundSpeller:
 
 1. Before making any changes, checkout develop and pull any changes that have been made to make sure you're working from the most up-to-date code:
@@ -60,19 +61,23 @@ The following git flow should be followed when working on SoundSpeller:
 git checkout develop
 git pull
 ```
+
 2. Next, checkout into a new branch
 
 ```
 git checkout -B "my-branch"
 ```
+
 Try to use unique and specific branch names based on what you're working on.
 
 3. Make your changes. Every time you've made a significant and functioning change, you should commit your work with a descriptive comment.
 
 First, run `git status` - this will output a list of your changed files, specifying which are staged and which are not. It will also tell you which branch you are on - make sure you are on YOUR branch. If a change is `staged`, that means it will be included in your commit. If it is not staged, it will not be included. Add any files you want into your commit with `git add <file>`. Once you've chosen the files to include, create commit with a descriptive comment.
+
 ```
 git commit -m "updated function to use x instead of y"
 ```
+
 Ideally, commits should be made when your work is in a functioning state (it should compile, no obvious errors, etc). If it's not, you can specify this in your commit:
 
 ```
@@ -80,6 +85,7 @@ git commit -m "trying to add feature... WIP"
 ```
 
 3. Push to github
+
 ```
 git push
 ```
@@ -89,11 +95,32 @@ git push
 6. PR Review: somebody will review your PR and leave comments. If any changes are requested, make those changes. When the code is ready, it will be merged.
 7. Whenever we are ready to deploy, we will merge develop into master.
 
-
 In summary...
 
 Feature Branch -> Develop -> Main
+
+## SoundSpeller Environments
+
+Using multiple environments in web app development allows developers to tinker with code without affecting the production version of the app. SoundSpeller uses 3 environments:
+
+1. Local Environment
+
+- This is the environment used when you locally run SoundSpeller through your localhost to work on your feature branch.
+
+2. Development Environment
+
+- As feature branches are merged into "develop", they will be deployed to dev-soundspeller.web.app. This is a hosted version of our app that can easily be accessed across the team to test new features and see how the app will behave once deployed.
+
+3. Production Environment
+
+- The official app used by consumers, and will match the `main` branch.
+
+Generally speaking, our local & development environment will use the `dev-soundspeller` firebase project, while the production version uses the `SoundSpeller` firebase project. However, our app re-routes our local/dev environments to use the production `words`, `lessons`, `lessonSections`, `rules` and `words` collections (as of now).
+
+The app already programatically re-routes to the appropriate project (see `firebase.js`). However, if you want to deploy anything (functions, hosting), you will need to switch to the appropriate project in the command line: `firebase use development`
+
 ## Reference Videos
+
 Mark Rogers, [Jul 17, 2020 at 4:16:28 PM]:
 Here is a video clicking through the lesson menues: https://www.screencast.com/t/Gy5dDSYO
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
-import { db } from '../firebase';
+import { usersCollection } from '../firebase';
 import { useHistory } from 'react-router-dom';
 import { createStudentAccount } from '../firebase';
 
@@ -20,9 +20,8 @@ export default function UserProvider({ children }) {
       const isEducator = user.email !== null;
       console.log(isEducator);
       const userDoc = isEducator
-        ? db.collection('users').doc(user.uid)
-        : db.collection('users').where('username', '==', user.uid);
-
+        ? usersCollection.doc(user.uid)
+        : usersCollection.where('username', '==', user.uid);
       var unsubscribeUser = () => {};
       var unsubscribeClasses = () => {};
       if (user) {
