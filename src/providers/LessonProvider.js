@@ -1,7 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useAuth } from '../hooks/useAuth';
 
-import { db, firestore } from '../firebase';
+import {
+  db,
+  lessonsCollection,
+  lessonSectionsCollection,
+  rulesCollection,
+  usersCollection,
+  wordsCollection,
+  firestore,
+} from '../firebase';
 import { UserContext } from './UserProvider';
 import { getLessonSubsection } from '../util/functions';
 import { LEVELS } from '../util/constants';
@@ -119,7 +127,7 @@ const LessonProvider = ({ children }) => {
       lesson.lesson_id,
     );
     const value = progress;
-    return db.collection('users').doc(user.uid).update(field, value);
+    return usersCollection.doc(user.uid).update(field, value);
   };
 
   const updateScore = (word, isCorrect) => {
@@ -160,7 +168,7 @@ const LessonProvider = ({ children }) => {
     var wordCheckPromises = [];
 
     words.forEach((word) => {
-      wordCheckPromises.push(db.collection('words').doc(word).get());
+      wordCheckPromises.push(wordsCollection.doc(word).get());
     });
 
     return Promise.all(wordCheckPromises).then((docRefs) => {
@@ -195,8 +203,7 @@ const LessonProvider = ({ children }) => {
   useEffect(() => {
     if (userData) {
       // console.log('Getting lessons')
-      const getLessons = db
-        .collection('lessons')
+      const getLessons = lessonsCollection
         .get()
         .then((lessonDocs) => {
           var lessonData = lessonDocs.docs.map((doc) => doc.data());
@@ -209,8 +216,7 @@ const LessonProvider = ({ children }) => {
           setLessons(lessonData);
           //console.log('Lesson Data (Provider)', lessonData)
         });
-      const getLessonSections = db
-        .collection('lessonSections')
+      const getLessonSections = lessonSectionsCollection
         .get()
         .then((sectionDocs) => {
           var sections = sectionDocs.docs.map((doc) => {
@@ -224,17 +230,14 @@ const LessonProvider = ({ children }) => {
           //console.log('Section Data (Provider)',sections)
           setLessonSections(sections);
         });
-      const getRules = db
-        .collection('rules')
-        .get()
-        .then((ruleDocs) => {
-          var rules = {};
+      const getRules = rulesCollection.get().then((ruleDocs) => {
+        var rules = {};
 
-          ruleDocs.docs.forEach((doc) => {
-            rules[doc.id] = doc.data();
-          });
-          setRules(rules);
+        ruleDocs.docs.forEach((doc) => {
+          rules[doc.id] = doc.data();
         });
+        setRules(rules);
+      });
 
       // TODO: this only gets the custom lessons created by the current signed in user, as opposed to ALL the custom lessons they should be seeing
       const getCustomLessons = db

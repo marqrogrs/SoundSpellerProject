@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "soundspeller-c5e53"
+    "default": "soundspeller-c5e53",
+    "development": "dev-soundspeller"
   }
 }
