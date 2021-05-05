@@ -9,50 +9,11 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 
-import { isEmptyObject } from './../util/functions';
+import useStudyWords from '../hooks/useStudyWords';
 
 const StudyWords = () => {
   const { userData, userDataLoaded } = useContext(UserContext);
-
-  const progressLessons =
-    userDataLoaded && Object.keys(userData.progress);
-
-  const progressSections =
-    userDataLoaded &&
-    progressLessons.map((lesson) => ({
-      lesson,
-      sections: Object.keys(userData.progress[lesson]),
-    }));
-
-  //It is possible to assign studyWord directly with its value changing all the .forEach for .map, but is too nested so it is needed several returns, so this way is shorter
-  const studyWords = [];
-  {
-    userDataLoaded &&
-      progressSections.forEach((progressSection) =>
-        progressSection.sections.forEach((section) => {
-          if (
-            !isEmptyObject(
-              userData.progress[progressSection.lesson][section]
-                .study_words,
-            )
-          ) {
-            const words = Object.keys(
-              userData.progress[progressSection.lesson][section]
-                .study_words,
-            );
-            words.forEach((word) => {
-              studyWords.push({
-                lesson: progressSection.lesson,
-                section,
-                word,
-              });
-            });
-          }
-        }),
-      );
-
-    //console.log(studyWords);
-  }
+  const studyWords = useStudyWords(userData, userDataLoaded);
 
   return (
     <>
