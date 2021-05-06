@@ -1,43 +1,55 @@
 import { useState, useEffect } from 'react';
-import { isEmptyObject } from './../util/functions';
+
+const getProgressSections = (userProgress, progressLessons) =>
+  progressLessons
+    .map((lesson) => {
+      const sections = Object.keys(userProgress[lesson]);
+      const lessonAndSections = sections.map((section) => ({
+        lesson,
+        section,
+      }));
+      return lessonAndSections;
+    })
+    .flat();
+
+const getProgressWords = (userProgress, progressSections) =>
+  progressSections
+    .map((progressSection) => {
+      const words = Object.keys(
+        userProgress[progressSection.lesson][progressSection.section]
+          .study_words,
+      );
+
+      const lessonAndSectionsAndWords = words.map((word) => ({
+        lesson: progressSection.lesson,
+        section: progressSection.section,
+        word,
+      }));
+
+      return lessonAndSectionsAndWords;
+    })
+    .flat();
 
 const useStudyWords = (userData, userDataLoaded) => {
   const [studyWords, setStudyWords] = useState([]);
 
   useEffect(() => {
     if (userDataLoaded) {
-      const progressLessons = Object.keys(userData.progress);
+      const userProgress = userData.progress;
+      const progressLessons = Object.keys(userProgress);
+      if (progressLessons.length === 0) return; //If there is no progress, automatically there isn't any study word
 
-      const progressSections = progressLessons.map((lesson) => ({
-        lesson,
-        sections: Object.keys(userData.progress[lesson]),
-      }));
-
-      progressSections.forEach((progressSection) =>
-        progressSection.sections.forEach((section) => {
-          if (
-            !isEmptyObject(
-              userData.progress[progressSection.lesson][section]
-                .study_words,
-            )
-          ) {
-            const words = Object.keys(
-              userData.progress[progressSection.lesson][section]
-                .study_words,
-            );
-
-            const studyWordsBuffer = [];
-            words.forEach((word) => {
-              studyWordsBuffer.push({
-                lesson: progressSection.lesson,
-                section,
-                word,
-              });
-              setStudyWords(studyWordsBuffer);
-            });
-          }
-        }),
+      const progressSections = getProgressSections(
+        userProgress,
+        progressLessons,
       );
+
+      const progressWords = getProgressWords(
+        userProgress,
+        progressSections,
+      );
+
+      setStudyWords(progressWords);
     }
   }, [userDataLoaded]);
   return studyWords;
