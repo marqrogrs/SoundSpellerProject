@@ -122,6 +122,8 @@ const LessonProvider = ({ children }) => {
 
   const saveProgress = () => {
     var { progress, lesson } = currentLesson;
+    console.log(progress);
+    console.log(lesson);
     const field = new firestore.FieldPath(
       'progress',
       lesson.lesson_id,
@@ -132,6 +134,16 @@ const LessonProvider = ({ children }) => {
 
   const updateScore = (word, isCorrect) => {
     console.log('updating score');
+
+    if (!isCorrect) {
+      const currentStudyWords =
+        currentLessonProgress[currentLessonLevel].study_words;
+
+      currentStudyWords[word] = {
+        correct_attempts_needed: 2,
+      };
+    }
+
     var { progress, level } = currentLesson;
     const currentScore = progress[level].score;
     const newScore = isCorrect

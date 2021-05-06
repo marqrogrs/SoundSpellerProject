@@ -25,7 +25,7 @@ const StudyWords = () => {
               <TableRow>
                 <TableCell align="center">Word</TableCell>
                 <TableCell align="center">Lesson</TableCell>
-                <TableCell align="center">Section</TableCell>
+                <TableCell align="center">Level</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -38,7 +38,7 @@ const StudyWords = () => {
                     {studyWord.lesson}
                   </TableCell>
                   <TableCell align="center">
-                    {studyWord.section}
+                    {studyWord.level}
                   </TableCell>
                 </TableRow>
               ))}

@@ -3,30 +3,30 @@ import { useState, useEffect } from 'react';
 const getProgressSections = (userProgress, progressLessons) =>
   progressLessons
     .map((lesson) => {
-      const sections = Object.keys(userProgress[lesson]);
-      const lessonAndSections = sections.map((section) => ({
+      const levels = Object.keys(userProgress[lesson]);
+      const lessonAndLevels = levels.map((level) => ({
         lesson,
-        section,
+        level,
       }));
-      return lessonAndSections;
+      return lessonAndLevels;
     })
     .flat();
 
-const getProgressWords = (userProgress, progressSections) =>
-  progressSections
-    .map((progressSection) => {
+const getProgressWords = (userProgress, progressLevels) =>
+  progressLevels
+    .map((progressLevel) => {
       const words = Object.keys(
-        userProgress[progressSection.lesson][progressSection.section]
+        userProgress[progressLevel.lesson][progressLevel.level]
           .study_words,
       );
 
-      const lessonAndSectionsAndWords = words.map((word) => ({
-        lesson: progressSection.lesson,
-        section: progressSection.section,
+      const lessonAndLevelsAndWords = words.map((word) => ({
+        lesson: progressLevel.lesson,
+        level: progressLevel.level,
         word,
       }));
 
-      return lessonAndSectionsAndWords;
+      return lessonAndLevelsAndWords;
     })
     .flat();
 
@@ -39,14 +39,14 @@ const useStudyWords = (userData, userDataLoaded) => {
       const progressLessons = Object.keys(userProgress);
       if (progressLessons.length === 0) return; //If there is no progress, automatically there isn't any study word
 
-      const progressSections = getProgressSections(
+      const progressLevels = getProgressSections(
         userProgress,
         progressLessons,
       );
 
       const progressWords = getProgressWords(
         userProgress,
-        progressSections,
+        progressLevels,
       );
 
       setStudyWords(progressWords);

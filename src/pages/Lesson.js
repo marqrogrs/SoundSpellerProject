@@ -79,14 +79,6 @@ export default function Lesson() {
         inputWord.toLowerCase() === expectedWord.toLowerCase();
       renderScoreSnackbar(isCorrect);
       updateScore(expectedWord, isCorrect);
-
-      if (!isCorrect) {
-        const level = currentLesson.progress[currentLesson.level];
-        level.study_words[expectedWord] = {
-          correct_attempts_needed: 2,
-        };
-        saveProgress();
-      }
     }
     setProgress(currentWordIndex + 1);
 
@@ -237,7 +229,7 @@ export default function Lesson() {
     currentWordIndex,
   ]);
 
-  //console.log(currentLesson?.lesson.rules);
+  //console.log(currentLessonProgress?.[currentLessonLevel]);
 
   return (
     <>
