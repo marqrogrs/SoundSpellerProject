@@ -28,7 +28,7 @@ export default function ProgressList({ student, type }) {
     customLessonSections,
     customLessons,
   } = useContext(LessonContext);
-  const { userData } = useContext(UserContext);
+  const { userData, userDataLoaded } = useContext(UserContext);
 
   const isCustom = type === 'custom';
   const [userProgress, setUserProgress] = useState(null);
@@ -42,6 +42,7 @@ export default function ProgressList({ student, type }) {
   useEffect(() => {
     var unsubscribeStudent = () => {};
     if (student) {
+      // Educator is signed in and looking at a student - find the selected student's info
       unsubscribeStudent = usersCollection
         .where('username', '==', student)
         .where('educator', '==', auth.currentUser.uid)
@@ -50,14 +51,14 @@ export default function ProgressList({ student, type }) {
           setUserProgress(snap.docs[0].data().progress);
         });
     } else {
-      if (userData && userData.progress) {
+      if (userDataLoaded) {
         setUserProgress(userData.progress);
       }
     }
     return () => {
       unsubscribeStudent();
     };
-  }, [student, userData]);
+  }, [student, userDataLoaded]);
 
   useEffect(() => {
     if (isCustom) {
