@@ -1,14 +1,17 @@
-import './App.css'
-import React from 'react'
-import Auth, { useAuth } from './hooks/useAuth'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import { BrowserRouter as Router } from 'react-router-dom'
+import './App.css';
+import React from 'react';
+import Auth, { useAuth } from './hooks/useAuth';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { BrowserRouter as Router } from 'react-router-dom';
 
-import PublicRoutes from './routes/PublicRoutes'
-import PrivateRoutes from './routes/PrivateRoutes'
+import PublicRoutes from './routes/PublicRoutes';
+import PrivateRoutes from './routes/PrivateRoutes';
 
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
-import { SnackbarProvider } from 'notistack'
+import {
+  createMuiTheme,
+  ThemeProvider,
+} from '@material-ui/core/styles';
+import { SnackbarProvider } from 'notistack';
 
 const theme = createMuiTheme({
   palette: {
@@ -25,7 +28,7 @@ const theme = createMuiTheme({
       contrastText: '#000',
     },
   },
-})
+});
 const App = (props) => {
   return (
     <>
@@ -40,24 +43,27 @@ const App = (props) => {
         </SnackbarProvider>
       </ThemeProvider>
     </>
-  )
-}
-export default App
+  );
+};
+export default App;
 
 function RequireAuthentication() {
-  const auth = useAuth()
-  // console.log(auth.user)
+  const auth = useAuth();
   if (!auth) {
-    return <div>Loading</div>
+    // TODO: loading modules
+    return <div>Loading</div>;
   }
 
   return (
     <>
       {auth.user ? (
-        <PrivateRoutes user={auth.user} isEducator={auth.isEducator} />
+        <PrivateRoutes
+          user={auth.user}
+          isEducator={auth.isEducator}
+        />
       ) : (
         <PublicRoutes user={auth.user} />
       )}
     </>
-  )
+  );
 }
