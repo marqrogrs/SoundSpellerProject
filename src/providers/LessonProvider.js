@@ -201,7 +201,7 @@ const LessonProvider = ({ children }) => {
       });
       setRules(rules);
     });
-  });
+  }, []);
 
   useEffect(() => {
     if (userData && rules) {
@@ -220,11 +220,9 @@ const LessonProvider = ({ children }) => {
               return parseInt(doc.lesson_id);
             },
           ]);
-
           setLessons(lessonData);
           //console.log('Lesson Data (Provider)', lessonData)
         });
-
       const getLessonSections = lessonSectionsCollection
         .get()
         .then((sectionDocs) => {
@@ -239,7 +237,6 @@ const LessonProvider = ({ children }) => {
           //console.log('Section Data (Provider)',sections)
           setLessonSections(sections);
         });
-
       // TODO: this only gets the custom lessons created by the current signed in user, as opposed to ALL the custom lessons they should be seeing
       const getCustomLessons = db
         .collection('users')
@@ -253,10 +250,8 @@ const LessonProvider = ({ children }) => {
             }
             return lesson;
           });
-
           setCustomLessons(customLessonData);
         });
-
       const getCustomLessonSections = db
         .collection('users')
         .doc(user.uid)
@@ -265,7 +260,6 @@ const LessonProvider = ({ children }) => {
           var customLessonSectionsData = snap.docs.map((doc) => {
             return { ...doc.data(), id: doc.id };
           });
-
           setCustomLessonSections(customLessonSectionsData);
         });
       Promise.all([
