@@ -23,7 +23,7 @@ const LessonProvider = ({ children }) => {
   const [lessonsLoading, setLessonsLoading] = useState(true);
   const [lessons, setLessons] = useState([]);
   const [lessonSections, setLessonSections] = useState([]);
-  const [rules, setRules] = useState([]);
+  const [rules, setRules] = useState(null);
 
   const [customLessons, setCustomLessons] = useState([]);
   const [customLessonSections, setCustomLessonSections] = useState(
@@ -193,20 +193,21 @@ const LessonProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (userData) {
-      // console.log('Getting lessons')
-      const getRules = rulesCollection.get().then((ruleDocs) => {
-        var rules = {};
+    rulesCollection.get().then((ruleDocs) => {
+      var rules = {};
 
-        ruleDocs.docs.forEach((doc) => {
-          rules[doc.id] = doc.data();
-        });
-        setRules(rules);
-        return rules;
+      ruleDocs.docs.forEach((doc) => {
+        rules[doc.id] = doc.data();
       });
+      setRules(rules);
+    });
+  });
 
-      const getLessons = getRules.then((rules) => {
-        lessonsCollection.get().then((lessonDocs) => {
+  useEffect(() => {
+    if (userData && rules) {
+      const getLessons = lessonsCollection
+        .get()
+        .then((lessonDocs) => {
           var lessonData = lessonDocs.docs.map((doc) => {
             var lesson = doc.data();
             if (lesson.rules) {
@@ -223,7 +224,7 @@ const LessonProvider = ({ children }) => {
           setLessons(lessonData);
           //console.log('Lesson Data (Provider)', lessonData)
         });
-      });
+
       const getLessonSections = lessonSectionsCollection
         .get()
         .then((sectionDocs) => {
@@ -244,11 +245,14 @@ const LessonProvider = ({ children }) => {
         .collection('users')
         .doc(user.uid)
         .collection('customLessons')
-        .get()
-        .then((customLessonsRef) => {
-          var customLessonData = customLessonsRef.docs.map((doc) =>
-            doc.data(),
-          );
+        .onSnapshot((snap) => {
+          var customLessonData = snap.docs.map((doc) => {
+            var lesson = doc.data();
+            if (lesson.rules) {
+              lesson.rules = lesson.rules.map((rule) => rules[rule]);
+            }
+            return lesson;
+          });
 
           setCustomLessons(customLessonData);
         });
@@ -257,12 +261,10 @@ const LessonProvider = ({ children }) => {
         .collection('users')
         .doc(user.uid)
         .collection('customLessonSections')
-        .get()
-        .then((customLessonSectionsRef) => {
-          var customLessonSectionsData =
-            customLessonSectionsRef.docs.map((doc) => {
-              return { ...doc.data(), id: doc.id };
-            });
+        .onSnapshot((snap) => {
+          var customLessonSectionsData = snap.docs.map((doc) => {
+            return { ...doc.data(), id: doc.id };
+          });
 
           setCustomLessonSections(customLessonSectionsData);
         });
@@ -275,7 +277,7 @@ const LessonProvider = ({ children }) => {
         setLessonsLoading(false);
       });
     }
-  }, [userData]);
+  }, [userData, rules]);
 
   return (
     <LessonContext.Provider
