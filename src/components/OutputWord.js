@@ -134,6 +134,15 @@ export default function OutputWord({ wordString, index }) {
     return wordDataBySyllable;
   };
 
+  const triggerEnableInput = () => {
+    return setTimeout(async () => {
+      await playStartBells();
+      simulateEvent.simulate(document.body, 'keydown', {
+        key: 'esc',
+      });
+    }, 1000);
+  };
+
   useEffect(() => {
     wordsCollection
       .doc(wordString)
@@ -143,12 +152,8 @@ export default function OutputWord({ wordString, index }) {
           wordDoc.exists &&
           currentLesson.lesson.lesson_section > 1
         ) {
-          var {
-            word,
-            phonemes,
-            graphemes,
-            syllables,
-          } = wordDoc.data();
+          var { word, phonemes, graphemes, syllables } =
+            wordDoc.data();
           // xample:  ["D", "EY", "-", "T", "AH"]
           // ["D", "A", "T", "A"]
           // ["da", "ta"]
@@ -182,13 +187,14 @@ export default function OutputWord({ wordString, index }) {
                               syllable.phonemesInSyllable[i + 1],
                             );
                             syllable.phonemesInSyllable[i] = 'YUW';
-                            syllable.phonemesInSyllable = syllable.phonemesInSyllable
-                              .slice(0, i + 1)
-                              .concat(
-                                syllable.phonemesInSyllable.slice(
-                                  i + 2,
-                                ),
-                              );
+                            syllable.phonemesInSyllable =
+                              syllable.phonemesInSyllable
+                                .slice(0, i + 1)
+                                .concat(
+                                  syllable.phonemesInSyllable.slice(
+                                    i + 2,
+                                  ),
+                                );
                           } else {
                             await speakPhoneme(
                               syllable.phonemesInSyllable[i],
@@ -211,12 +217,7 @@ export default function OutputWord({ wordString, index }) {
                   }
                 }
 
-                setTimeout(async () => {
-                  await playStartBells();
-                  simulateEvent.simulate(document.body, 'keydown', {
-                    key: 'esc',
-                  });
-                }, 500);
+                triggerEnableInput();
               });
               break;
             case 2:
@@ -224,19 +225,12 @@ export default function OutputWord({ wordString, index }) {
                 for (const phoneme of word.phonemes) {
                   await speakPhoneme(phoneme);
                 }
-                setTimeout(async () => {
-                  await playStartBells();
-                  simulateEvent.simulate(document.body, 'keydown', {
-                    key: 'esc',
-                  });
-                }, 1000);
+                triggerEnableInput();
               });
               break;
             case 3:
               speakWord(word, index === 0).then(() => {
-                setTimeout(async () => {
-                  await playStartBells();
-                }, 1000);
+                triggerEnableInput();
               });
               break;
             default:
@@ -258,7 +252,6 @@ export default function OutputWord({ wordString, index }) {
               }
               break;
             case 2:
-              //TODO: how do we handle level 4 ?
               for (const phoneme of phonemes) {
                 await speakPhoneme(phoneme);
               }
@@ -266,12 +259,7 @@ export default function OutputWord({ wordString, index }) {
             default:
               return;
           }
-          setTimeout(async () => {
-            await playStartBells();
-            simulateEvent.simulate(document.body, 'keydown', {
-              key: 'esc',
-            });
-          }, 1000);
+          triggerEnableInput();
         }
       });
   }, [wordString]);
