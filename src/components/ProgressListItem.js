@@ -34,7 +34,6 @@ export default function ProgressListItem({
   const [open, setOpen] = useState(isOpen);
   const [status, setStatus] = useState('');
   const [button, setButton] = useState('');
-  const [lessonRules, setLessonRules] = useState(null);
 
   const [totalScore, setTotalScore] = useState(0);
   const [totalPossibleScore, setTotalPossibleScore] = useState(1);
@@ -92,10 +91,6 @@ export default function ProgressListItem({
             lesson.words.length * 20;
 
       setTotalPossibleScore(total_possible_score);
-
-      //TODO: this should just happen in our lesson provider. When we get lessons, we should expand the rules asap
-      const lesson_rules = lesson.rules.map((rule) => rules[rule]);
-      setLessonRules(lesson_rules);
     }
   }, [lesson, progress, lessonsLoading]);
 
@@ -135,32 +130,29 @@ export default function ProgressListItem({
         >
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box margin={1}>
-              //TODO: there is a bug here. if you access progress list
-              by hitting "back", r is undefined in the loop
-              {lessonRules &&
-                lessonRules.map((r) => (
-                  <Card
-                    className={classes.rule}
-                    variant="outlined"
-                    raised
-                  >
-                    <CardContent>
-                      <Typography color="textSecondary" gutterBottom>
-                        Rule {r.rule_id}
-                      </Typography>
-                      <Typography variant="h5" component="h2">
-                        {r.rule_title}
-                      </Typography>
-                      <Typography
-                        variant="body1"
-                        component="p"
-                        style={{ whiteSpace: 'pre-wrap' }}
-                      >
-                        {r.rule}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                ))}
+              {lesson.rules.map((r) => (
+                <Card
+                  className={classes.rule}
+                  variant="outlined"
+                  raised
+                >
+                  <CardContent>
+                    <Typography color="textSecondary" gutterBottom>
+                      Rule {r.rule_id}
+                    </Typography>
+                    <Typography variant="h5" component="h2">
+                      {r.rule_title}
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      component="p"
+                      style={{ whiteSpace: 'pre-wrap' }}
+                    >
+                      {r.rule}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              ))}
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>

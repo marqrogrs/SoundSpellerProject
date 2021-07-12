@@ -23,7 +23,7 @@ const LessonProvider = ({ children }) => {
   const [lessonsLoading, setLessonsLoading] = useState(true);
   const [lessons, setLessons] = useState([]);
   const [lessonSections, setLessonSections] = useState([]);
-  const [rules, setRules] = useState([]);
+  const [rules, setRules] = useState(null);
 
   const [customLessons, setCustomLessons] = useState([]);
   const [customLessonSections, setCustomLessonSections] = useState(
@@ -34,10 +34,8 @@ const LessonProvider = ({ children }) => {
   const { user, isEducator } = useAuth();
 
   const [currentLesson, setCurrentLesson] = useState();
-  const [
-    currentLessonProgress,
-    setCurrentLessonProgress,
-  ] = useState();
+  const [currentLessonProgress, setCurrentLessonProgress] =
+    useState();
   const [currentLessonLevel, setCurrentLessonLevel] = useState();
 
   const setLesson = ({ lesson_id }) => {
@@ -46,12 +44,6 @@ const LessonProvider = ({ children }) => {
       .filter((lesson) => {
         return lesson.lesson_id === lesson_id;
       })[0];
-
-    if (selectedLesson.rules) {
-      selectedLesson.rules = selectedLesson.rules.map(
-        (rule) => rules[rule],
-      );
-    }
 
     const { lesson_section } = selectedLesson;
     const levelsQuantity = lesson_section === '1' ? 3 : 4;
@@ -211,18 +203,33 @@ const LessonProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (userData) {
-      // console.log('Getting lessons')
+    rulesCollection.get().then((ruleDocs) => {
+      var rules = {};
+
+      ruleDocs.docs.forEach((doc) => {
+        rules[doc.id] = doc.data();
+      });
+      setRules(rules);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (userData && rules) {
       const getLessons = lessonsCollection
         .get()
         .then((lessonDocs) => {
-          var lessonData = lessonDocs.docs.map((doc) => doc.data());
+          var lessonData = lessonDocs.docs.map((doc) => {
+            var lesson = doc.data();
+            if (lesson.rules) {
+              lesson.rules = lesson.rules.map((rule) => rules[rule]);
+            }
+            return lesson;
+          });
           lessonData = _.sortBy(lessonData, [
             function (doc) {
               return parseInt(doc.lesson_id);
             },
           ]);
-
           setLessons(lessonData);
           //console.log('Lesson Data (Provider)', lessonData)
         });
@@ -240,54 +247,41 @@ const LessonProvider = ({ children }) => {
           //console.log('Section Data (Provider)',sections)
           setLessonSections(sections);
         });
-      const getRules = rulesCollection.get().then((ruleDocs) => {
-        var rules = {};
-
-        ruleDocs.docs.forEach((doc) => {
-          rules[doc.id] = doc.data();
-        });
-        setRules(rules);
-      });
-
       // TODO: this only gets the custom lessons created by the current signed in user, as opposed to ALL the custom lessons they should be seeing
       const getCustomLessons = db
         .collection('users')
         .doc(user.uid)
         .collection('customLessons')
-        .get()
-        .then((customLessonsRef) => {
-          var customLessonData = customLessonsRef.docs.map((doc) =>
-            doc.data(),
-          );
-
+        .onSnapshot((snap) => {
+          var customLessonData = snap.docs.map((doc) => {
+            var lesson = doc.data();
+            if (lesson.rules) {
+              lesson.rules = lesson.rules.map((rule) => rules[rule]);
+            }
+            return lesson;
+          });
           setCustomLessons(customLessonData);
         });
-
       const getCustomLessonSections = db
         .collection('users')
         .doc(user.uid)
         .collection('customLessonSections')
-        .get()
-        .then((customLessonSectionsRef) => {
-          var customLessonSectionsData = customLessonSectionsRef.docs.map(
-            (doc) => {
-              return { ...doc.data(), id: doc.id };
-            },
-          );
-
+        .onSnapshot((snap) => {
+          var customLessonSectionsData = snap.docs.map((doc) => {
+            return { ...doc.data(), id: doc.id };
+          });
           setCustomLessonSections(customLessonSectionsData);
         });
       Promise.all([
         getLessons,
         getLessonSections,
-        getRules,
         getCustomLessons,
         getCustomLessonSections,
       ]).then(() => {
         setLessonsLoading(false);
       });
     }
-  }, [userData]);
+  }, [userData, rules]);
 
   return (
     <LessonContext.Provider

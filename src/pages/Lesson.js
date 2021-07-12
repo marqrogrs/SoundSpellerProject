@@ -229,8 +229,6 @@ export default function Lesson() {
     currentWordIndex,
   ]);
 
-  //console.log(currentLessonProgress?.[currentLessonLevel]);
-
   return (
     <>
       <Prompt

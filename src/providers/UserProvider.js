@@ -27,6 +27,7 @@ export default function UserProvider({ children }) {
       if (user) {
         console.log(`Subscribing to ${user.uid}`);
         unsubscribeUser = userDoc.onSnapshot((snap) => {
+          setUserDataLoaded(false);
           const data = isEducator ? snap.data() : snap.docs[0].data();
           setUserData(data);
 
