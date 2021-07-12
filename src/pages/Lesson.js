@@ -237,8 +237,6 @@ export default function Lesson() {
     currentWordIndex,
   ]);
 
-  console.log(currentLesson?.lesson.rules);
-
   return (
     <>
       <Prompt
