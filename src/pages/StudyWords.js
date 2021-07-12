@@ -8,17 +8,16 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-
-import useStudyWords from '../hooks/useStudyWords';
+var _ = require('lodash');
 
 const StudyWords = () => {
-  const { userData, userDataLoaded } = useContext(UserContext);
-  const studyWords = useStudyWords(userData, userDataLoaded);
+  const { userData, userDataLoaded, studyWords } =
+    useContext(UserContext);
 
   return (
     <>
       <h1>Study Words</h1>
-      {studyWords.length > 0 ? (
+      {studyWords && studyWords.length > 0 ? (
         <TableContainer>
           <Table size="medium">
             <TableHead>
@@ -29,23 +28,18 @@ const StudyWords = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {studyWords.map((studyWord) => (
-                <TableRow key={JSON.stringify(studyWord)}>
-                  <TableCell align="center">
-                    {studyWord.word}
-                  </TableCell>
-                  <TableCell align="center">
-                    {studyWord.lesson}
-                  </TableCell>
-                  <TableCell align="center">
-                    {studyWord.level}
-                  </TableCell>
+              {studyWords.map((sw) => (
+                <TableRow key={JSON.stringify(sw)}>
+                  <TableCell align="center">{sw.word}</TableCell>
+                  <TableCell align="center">{sw.lesson}</TableCell>
+                  <TableCell align="center">{sw.level}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </TableContainer>
       ) : (
+        // TODO: fix this flashing - need loading module
         <Typography variant="h6">No words to study</Typography>
       )}
     </>

@@ -3,6 +3,7 @@ import { useAuth } from '../hooks/useAuth';
 import { usersCollection } from '../firebase';
 import { useHistory } from 'react-router-dom';
 import { createStudentAccount } from '../firebase';
+var _ = require('lodash');
 
 const UserContext = React.createContext({});
 
@@ -10,6 +11,9 @@ export default function UserProvider({ children }) {
   const { user, authLoaded } = useAuth();
   const history = useHistory();
   const [userData, setUserData] = useState(null);
+
+  const [studyWords, setStudyWords] = useState(null);
+
   const [classrooms, setClassrooms] = useState(null);
   const [totalScore, setTotalScore] = useState(0);
   const [lessonsCompleted, setLessonsCompleted] = useState(0);
@@ -61,6 +65,28 @@ export default function UserProvider({ children }) {
             return (acc += lessons_completed);
           }, 0);
           setLessonsCompleted(lessons_completed);
+
+          //Get study words
+          const { progress } = data;
+          var study_words = [];
+          Object.entries(progress).forEach(([lesson_id, levels]) => {
+            Object.entries(levels).forEach(([level_id, level]) => {
+              var level_study_words = level.study_words;
+              if (!_.isEmpty(level_study_words)) {
+                Object.entries(level_study_words).forEach(
+                  ([w, w_data]) =>
+                    study_words.push({
+                      lesson: lesson_id,
+                      level: level_id,
+                      word: w,
+                      attempts_needed: w_data.correct_attempts_needed,
+                    }),
+                );
+              }
+            });
+          });
+
+          setStudyWords(study_words);
           setUserDataLoaded(true);
         });
         if (isEducator) {
@@ -98,6 +124,7 @@ export default function UserProvider({ children }) {
         classrooms,
         totalScore,
         lessonsCompleted,
+        studyWords,
       }}
     >
       {children}
