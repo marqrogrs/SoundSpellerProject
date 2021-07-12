@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
-import { db, usersCollection } from '../firebase';
+import { usersCollection } from '../firebase';
 import { useHistory } from 'react-router-dom';
 import { createStudentAccount } from '../firebase';
 

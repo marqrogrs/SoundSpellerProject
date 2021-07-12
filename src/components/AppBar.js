@@ -83,8 +83,12 @@ export default function AppBar({ user }) {
     history.push('/');
   };
 
-  const handleSpellingPatterns = () => {
+  const handleViewSpellingPatterns = () => {
     history.push('/spelling-patterns');
+  };
+
+  const handleViewStudyWords = () => {
+    history.push('/study-words');
   };
 
   return (
@@ -172,9 +176,16 @@ export default function AppBar({ user }) {
                 <MenuItem onClick={handleCreateLesson}>
                   Create Lesson
                 </MenuItem>
-                <MenuItem onClick={handleSpellingPatterns}>
+                <MenuItem
+                  onClick={() => handleViewSpellingPatterns('alô')}
+                >
                   Spelling Patterns
                 </MenuItem>
+
+                <MenuItem onClick={handleViewStudyWords}>
+                  Study Words
+                </MenuItem>
+
                 <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
                 {/* <MenuItem onClick={() => history.push('/contact-us')}>
                   Contact Us

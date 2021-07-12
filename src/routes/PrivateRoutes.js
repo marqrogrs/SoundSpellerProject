@@ -16,6 +16,7 @@ import SpellingPatterns from '../pages/SpellingPatterns';
 import AppBar from '../components/AppBar';
 import { LessonProvider } from '../providers/LessonProvider';
 import UserProvider from '../providers/UserProvider';
+import StudyWords from './../pages/StudyWords';
 
 export default function PrivateRoutes({ user, isEducator }) {
   return (
@@ -55,6 +56,11 @@ export default function PrivateRoutes({ user, isEducator }) {
           <Route exact path="/create-lesson">
             <CreateLesson />
           </Route>
+
+          <Route exact path="/study-words">
+            <StudyWords />
+          </Route>
+
           {/* <Route exact path='/contact-us'>
             <ContactUs />
           </Route> */}

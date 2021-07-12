@@ -14,7 +14,7 @@ export const createInitProgress = (lessonQtd) => {
   };
   const lessonObject = {};
   for (let i = 0; i < lessonQtd; i++) {
-    lessonObject[i] = { ...sectionSchema };
+    lessonObject[i] = JSON.parse(JSON.stringify(sectionSchema));
   }
   return lessonObject;
 };
