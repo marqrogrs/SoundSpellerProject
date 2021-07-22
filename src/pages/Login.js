@@ -6,9 +6,10 @@ import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
 import { Typography } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
+import swal from 'sweetalert';
 
 import { useFormik } from 'formik'
-
+import { PAYPAL_URL } from '../util/constants'
 var Snake = require('../img/Welcome.png')
 
 //TODO: not a fan of the styling here
@@ -27,18 +28,19 @@ export default function Login() {
       console.log('Signing in')
       auth.signInStudent(values.name, values.password)
     } else {
-      // swal({
-      //   title: 'Donate',
-      //   text: 'Would you like to donate before continuing?',
-      //   buttons: ['Not today', true],
-      // }).then((redirectToPaypal) => {
-      //   if (redirectToPaypal) {
-      //     window.open(PAYPAL_URL, '_blank')
-      //   }
-      auth.signInWithEmailAndPassword(
-        formik.values.email,
-        formik.values.password
-      )
+      swal({
+        title: 'Donate',
+        text: 'Would you like to donate before continuing?',
+        buttons: ['Not today', true],
+      }).then((redirectToPaypal) => {
+        if (redirectToPaypal) {
+          window.open(PAYPAL_URL, '_blank')
+        }
+        auth.signInWithEmailAndPassword(
+          formik.values.email,
+          formik.values.password
+        )
+      })
     }
   }
 
@@ -73,14 +75,14 @@ export default function Login() {
   const formik = useFormik({
     initialValues: isStudentLogin
       ? {
-          name: '',
-          password: '',
-        }
+        name: '',
+        password: '',
+      }
       : {
-          email: '',
-          password: '',
-          confirmPassword: '',
-        },
+        email: '',
+        password: '',
+        confirmPassword: '',
+      },
     validate,
   })
 
