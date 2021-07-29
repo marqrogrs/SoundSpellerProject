@@ -6,30 +6,19 @@ import { useStyles } from '../styles/material';
 import { default as MaterialAppBar } from '@material-ui/core/AppBar';
 import MenuIcon from '@material-ui/icons/Menu';
 import {
-  Breadcrumbs,
-  Link,
   Menu,
   MenuItem,
   Typography,
   Toolbar,
-  Drawer,
-  List,
-  ListItem,
-  ListItemText,
 } from '@material-ui/core';
 
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
-import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import Settings from '@material-ui/icons/Settings';
-import SpeechSlider from '../components/SpeechSlider';
 
 import { useAuth } from '../hooks/useAuth';
 import { UserContext } from '../providers/UserProvider';
 
-import { PAYPAL_URL, SOUNDSPELLER_URL } from '../util/constants';
+import { SOUNDSPELLER_URL } from '../util/constants';
 
 export default function AppBar({ user }) {
   const classes = useStyles();
@@ -67,10 +56,6 @@ export default function AppBar({ user }) {
     auth.signOut();
   };
 
-  // const handleViewLessons = () => {
-  //   history.push('/lessons')
-  // }
-
   const handleCreateLesson = () => {
     history.push('/create-lesson');
   };
@@ -93,7 +78,7 @@ export default function AppBar({ user }) {
 
   return (
     <div>
-      <MaterialAppBar position="static">
+      <MaterialAppBar position="static" color="transparent">
         <Toolbar>
           <IconButton
             edge="start"
@@ -135,13 +120,15 @@ export default function AppBar({ user }) {
               Contact Us
             </MenuItem>
           </Menu>
-          <Typography
-            variant="h6"
-            className={classes.menuTitle}
-            onClick={handleRedirectToHome}
-          >
-            Sound Speller
-          </Typography>
+          {user && (
+            <Typography
+              variant="h6"
+              className={classes.menuTitle}
+              onClick={handleRedirectToHome}
+            >
+              Sound Speller
+            </Typography>
+          )}
           {user && (
             <>
               <IconButton
@@ -196,43 +183,6 @@ export default function AppBar({ user }) {
           )}
         </Toolbar>
       </MaterialAppBar>
-      {/* {user && (
-        <Breadcrumbs aria-label='breadcrumb'>
-          {pathname.split('/').map((path, index) => {
-            const last = pathname.split('/').length - 1
-            if (index === 0) {
-              return (
-                <Link
-                  color="inherit"
-                  onClick={() => history.push("/")}
-                  key={path}
-                >
-                  Sound Speller
-                </Link>
-              );
-            }
-            return (
-              <Link
-                color={index === last ? "textPrimary" : "textSecondary"}
-                onClick={() =>
-                  history.push(
-                    pathname
-                      .split("/")
-                      .slice(0, index + 1)
-                      .join("/")
-                  )
-                }
-                aria-current="page"
-                key={path}
-              >
-                {typeof path === "string"
-                  ? path.charAt(0).toUpperCase() + path.slice(1)
-                  : path}
-              </Link>
-            );
-          })}
-        </Breadcrumbs>
-      )} */}
     </div>
   );
 }

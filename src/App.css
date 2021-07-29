@@ -10,15 +10,20 @@ a {
 }
 
 #landing-container {
-  width: 100vw;
-  height: 100vh;
-  background-color: #fff;
+  width: 100%;
+  height: 100%;
+  padding: 0 7rem 7rem 7rem;
+  background-color: #fafafa;
   display: flex;
+  flex-direction: column;
   align-items: center;
 }
 
 #landing-container img {
-  height: 100vh;
+  height: auto;
+  width: 400px;
+  align-self: center;
+  margin: -3rem 0 -2rem 0;
 }
 
 #landing-container .right-panel,
@@ -43,7 +48,8 @@ a {
 
 #landing-container .lower-text {
   font-family: 'Short Stack';
-  font-size: 90px;
+  font-size: 60px;
+  margin-top: 1rem;
 }
 
 #landing-container .user-type {
@@ -52,8 +58,9 @@ a {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 3rem;
+  margin: 0.5rem;
   padding: 1rem;
+  width: 400px;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 }
