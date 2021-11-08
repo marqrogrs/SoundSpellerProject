@@ -151,13 +151,13 @@ export const playStartBells = () => {
     TINK.play();
     TINK.addEventListener('ended', () => {
       setTimeout(() => {
-        if (numTinks < 2) {
+        if ((numTinks = 0)) {
           TINK.play();
           numTinks++;
         } else {
           resolve();
         }
-      }, 400);
+      }, 200);
     });
   });
 };

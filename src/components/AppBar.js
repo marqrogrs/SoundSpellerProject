@@ -18,7 +18,8 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import { useAuth } from '../hooks/useAuth';
 import { UserContext } from '../providers/UserProvider';
 
-import { SOUNDSPELLER_URL } from '../util/constants';
+//import { SOUNDSPELLER_URL } from '../util/constants';
+var SSBannerLong = require('../img/SSBannerLong.png');
 
 export default function AppBar({ user }) {
   const classes = useStyles();
@@ -104,20 +105,32 @@ export default function AppBar({ user }) {
             open={leftMenuOpen}
             onClose={() => handleClose('left')}
           >
-            <MenuItem
-              onClick={() => window.open(SOUNDSPELLER_URL, '_blank')}
-            >
-              About
+            
+             <MenuItem
+             onClick={() => window.open('/About', '_blank')}
+
+              >About
             </MenuItem>
-            {/* <MenuItem onClick={() => window.open(PAYPAL_URL, '_blank')}>
-              Donate
-            </MenuItem> */}
+<MenuItem
+             onClick={() => window.open('/Method', '_blank')}
+            >
+              Method
+            </MenuItem>
+<MenuItem
+             onClick={() => window.open('/Contents', '_blank')}
+            >
+              Contents
+            </MenuItem>
+
             <MenuItem
               onClick={() =>
                 window.location.assign('mailto:mark@birdhaven.us')
               }
             >
               Contact Us
+            </MenuItem>
+            <MenuItem onClick={() => history.push('/')}>
+              Login
             </MenuItem>
           </Menu>
           {user && (
@@ -160,23 +173,28 @@ export default function AppBar({ user }) {
                     My Students
                   </MenuItem>
                 )}
-                <MenuItem onClick={handleCreateLesson}>
+                {/* <MenuItem onClick={handleCreateLesson}>
                   Create Lesson
-                </MenuItem>
+                </MenuItem> */}
                 <MenuItem
                   onClick={() => handleViewSpellingPatterns('alô')}
                 >
                   Spelling Patterns
-                </MenuItem>
-
-                <MenuItem onClick={handleViewStudyWords}>
+                </MenuItem>{' '}
+                {/*  <MenuItem onClick={handleViewStudyWords}>
                   Study Words
-                </MenuItem>
-
-                <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
-                {/* <MenuItem onClick={() => history.push('/contact-us')}>
-                  Contact Us
                 </MenuItem> */}
+                <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
+                {/* {
+                  <MenuItem
+                    onClick={() => history.push('/contact-us')}
+                  >
+                    Contact Us
+                  </MenuItem>
+                } */}
+                <MenuItem onClick={() => history.push('/home')}>
+                  About
+                </MenuItem>
               </Menu>
               <Typography>Score: {totalScore}</Typography>
             </>

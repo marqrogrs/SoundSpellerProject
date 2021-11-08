@@ -12,6 +12,7 @@
     "dotenv": "^8.2.0",
     "firebase": "^7.21.0",
     "formik": "^2.2.1",
+    "gatsby": "^3.14.2",
     "lodash": "^4.17.20",
     "notistack": "^1.0.1",
     "react": "^17.0.2",
@@ -23,7 +24,8 @@
     "realm-web": "^0.6.0",
     "speak-tts": "^2.0.8",
     "sweetalert": "^2.1.2",
-    "typescript": "^3.9.6"
+    "typescript": "^3.9.6",
+    "uuid": "^8.3.2"
   },
   "scripts": {
     "start": "react-scripts start",

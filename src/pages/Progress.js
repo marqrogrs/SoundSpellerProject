@@ -10,9 +10,9 @@ export default function Progress() {
   return (
     <>
       <Container maxWidth="md">
-        <ProgressList student={student} type="standard" />
-        <ProgressList student={student} type="custom" />
+        <ProgressList student={student} type="Sections    - " />
       </Container>
     </>
   );
 }
+ //<ProgressList student={student} type="custom" /> . // for container for custom lessons

@@ -35,10 +35,10 @@ export const DEFAULT_BUTTONS_THEME = [
     class: 'grey light',
     buttons: 'N B H G Y T n b h y g t',
   },
-]
+];
 
-export const LEVELS = Array.apply(null, Array(4))
-export const LESSON_SECTIONS = Array.apply(null, Array(13)) //TODO: this can be more programatic
+export const LEVELS = Array.apply(null, Array(4));
+export const LESSON_SECTIONS = Array.apply(null, Array(13)); //TODO: this can be more programatic
 export const PHONEMES = {
   AE: 'a.mp3',
   AIR: 'air.mp3',
@@ -83,7 +83,7 @@ export const PHONEMES = {
   Y: 'y.mp3',
   Z: 'z.mp3',
   ZH: 'zh.mp3',
-}
+};
 
 //Don't use this unless you want to create a custom clone or json parse/stringify - it WILL get mutated
 //https://stackoverflow.com/questions/43074256/changes-to-object-made-with-object-assign-mutates-source-object
@@ -112,7 +112,7 @@ export const INIT_PROGRESS_OBJ = {
     high_score: 0,
     completed: false,
   },
-}
+};
 
 export const COMMON_PHONEMES = {
   a: 'a.mp3',
@@ -141,7 +141,7 @@ export const COMMON_PHONEMES = {
   x: ['k.mp3', 's.mp3'],
   y: 'y.mp3',
   z: 'z.mp3',
-}
+};
 
 export const SUCCESS_MESSAGES = [
   'Yippee!',
@@ -156,7 +156,7 @@ export const SUCCESS_MESSAGES = [
   'Keep it up!',
   'Wow!',
   "You're doing great!",
-]
+];
 
 export const FAILURE_MESSAGES = [
   'Uh oh!',
@@ -168,7 +168,7 @@ export const FAILURE_MESSAGES = [
   'Maybe next time...',
   'Almost got it.',
   'Oh no!',
-]
+];
 
 export const FUN_FACTS = [
   'There are over 7,000 languages worldwide -- Wow!',
@@ -202,9 +202,11 @@ export const FUN_FACTS = [
   'The QWERTY keyboard layout was invented in 1872 for the typewriter.',
   '18 percent of all keyboard strokes are the Spacebar.',
   'The only country whose name can be typed on one row of a keyboard is Peru. The only US state is Alaska.',
-]
+];
 
-export const PAYPAL_URL =
-  'https://www.paypal.com/donate/?cmd=_donations&business=donate%40soundspeller.com&currency_code=USD'
+//export const PAYPAL_URL =
+//  'https://www.paypal.com/donate/?cmd=_donations&business=donate%40soundspeller.com&currency_code=USD';
 
-export const SOUNDSPELLER_URL = 'https://www.soundspeller.com/about'
+//export const SOUNDSPELLER_URL = 'https://www.soundspeller.com/about';
+/* export const SOUNDSPELLER_URL = 'https://www.soundspeller.com/about' */
+//i//

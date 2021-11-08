@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button';
 import swal from 'sweetalert';
 
 import { useFormik } from 'formik';
-import { PAYPAL_URL } from '../util/constants';
+//import { PAYPAL_URL } from '../util/constants';
 
 var SSLogo = require('../img/SSLogo.png');
 
@@ -34,7 +34,7 @@ export default function Login() {
         buttons: ['Not today', true],
       }).then((redirectToPaypal) => {
         if (redirectToPaypal) {
-          window.open(PAYPAL_URL, '_blank');
+         // window.open(PAYPAL_URL, '_blank');
         }
         auth.signInWithEmailAndPassword(
           formik.values.email,

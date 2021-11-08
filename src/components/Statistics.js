@@ -14,11 +14,19 @@ export default function Statistics() {
   const classes = useStyles();
   return (
     <>
-      <Typography variant="h5" style={{ marginBottom: 20 }}>
+      <Typography
+        variant="h4"
+        style={{ marginBottom: 20, textAlign: 'center' }}
+      >
         My Stats
       </Typography>
       <Paper className={classes.statistics}>
-        <Grid container spacing={3} direction="column">
+        <Grid
+          container
+          spacing={3}
+          direction="column"
+          style={{ textAlign: 'center' }}
+        >
           <Grid item>
             <Typography variant="h2" color="primary">
               {totalScore}
@@ -33,13 +41,13 @@ export default function Statistics() {
             <Typography variant="h6">Lessons Completed</Typography>
             {/* <Divider variant='middle' /> */}
           </Grid>
-          <Grid item>
-            <Typography variant="h2" color="primary">
-              0
-            </Typography>
-            <Typography variant="h6">Words Mastered</Typography>
-            {/* <Divider variant='middle' /> */}
-          </Grid>
+          {/* <Grid item> */}
+          {/* <Typography variant="h2" color="primary"> */}
+          {/* 0 */}
+          {/* </Typography> */}
+          {/* <Typography variant="h6">Words Mastered</Typography> */}
+          {/* <Divider variant='middle' /> */}
+          {/* </Grid> */}
         </Grid>
       </Paper>
     </>

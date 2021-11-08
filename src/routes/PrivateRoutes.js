@@ -38,7 +38,7 @@ export default function PrivateRoutes({ user, isEducator }) {
           <Route exact path="/progress">
             <Progress />
           </Route>
-          <Route exact path="/spelling-patterns">
+          <Route exact path="/spellingpatterns">
             <SpellingPatterns />
           </Route>
           {isEducator && (
