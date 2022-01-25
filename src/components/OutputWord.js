@@ -222,8 +222,19 @@ export default function OutputWord({ wordString, index }) {
               break;
             case 2:
               speakWord(word, index === 0).then(async () => {
-                for (const phoneme of word.phonemes) {
-                  await speakPhoneme(phoneme);
+                debugger;
+                for (const phoneme of phonemes) {
+                  if (phoneme !== '-'){
+                    //speake the phoneme as long as it is a valid phoneme with an associated existing audio
+                    await speakPhoneme(phoneme);
+                  }else{
+                    console.log('hiphen silence triggered to pause for a moment')
+                    await setTimeout(()=> {
+                      //waiting for a brief moment due to presence of hiphen "-"
+                    },500)
+
+                  }
+
                 }
                 triggerEnableInput();
               });
@@ -253,6 +264,8 @@ export default function OutputWord({ wordString, index }) {
               break;
             case 2:
               for (const phoneme of phonemes) {
+                // TODO: phoneme audio may break if '-' hyphen is prensent since hiphen has no associated audio sound, 
+                // resolve if problem manisfest by filtering '-' or only play audio as long as phoneme is not a hiphen, consolt code above in case '3 -1' ;
                 await speakPhoneme(phoneme);
               }
               break;
