@@ -14,7 +14,6 @@ const Landing = () => {
 
   return (
     <div id='landing-container'>
-      <img src={Snake} />
       <div className='right-panel'>
         <div className='welcome-text'>
           <Typography className='upper-text'>WELCOME TO</Typography>
