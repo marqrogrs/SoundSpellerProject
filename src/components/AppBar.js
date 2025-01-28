@@ -124,7 +124,6 @@ export default function AppBar({ user }) {
           <Typography
             variant='h6'
             className={classes.menuTitle}
-            onClick={handleRedirectToHome}
           >
             Sound Speller
           </Typography>

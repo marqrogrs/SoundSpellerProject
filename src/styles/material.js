@@ -23,6 +23,44 @@ export const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(4),
     paddingRight: theme.spacing(4),
   },
+  landingContainer: {
+    backgroundColor: '#fff',
+    width: '100vw',
+    height: '100vh',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  rightPanel: {
+    textAlign: 'center',
+  },
+  welcomeText: {
+    marginBottom: theme.spacing(4),
+    '& .upper-text': {
+      fontSize: '2rem', // Increase the font size
+    },
+    '& .lower-text': {
+      fontSize: '3rem', // Increase the font size
+    },
+  },
+  userType: {
+    marginBottom: theme.spacing(2),
+    cursor: 'pointer',
+    padding: '20px', // Increase padding for larger buttons
+    '&.kid': {
+      fontSize: '5rem', // Increase font size for button text
+      '& .upper-text': {
+        fontSize: '1.5rem', // Decrease the font size
+      },
+    },
+    '&.adult': {
+      fontSize: '5rem', // Increase font size for button text
+      // ...existing styles...
+      '& .upper-text': {
+        fontSize: '1.5rem', // Decrease the font size
+      },
+    },
+  },
   // signUpForm: {
   //   position: 'absolute',
   //   top: '25%',

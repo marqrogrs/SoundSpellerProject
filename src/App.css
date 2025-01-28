@@ -46,6 +46,10 @@ a {
   font-size: 90px;
 }
 
+.text-american-typewriter {
+  font-family: 'American Typewriter', serif;
+}
+
 #landing-container .user-type {
   color: #fff;
   display: flex;

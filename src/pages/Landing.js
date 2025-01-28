@@ -2,36 +2,24 @@ import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { useStyles } from '../styles/material'
 
-//Material UI
-import { Typography } from '@material-ui/core'
-
-var Snake = require('../img/Welcome.png')
-// var Landing = require('../img/Landing.png')
-
 const Landing = () => {
   const history = useHistory()
   const classes = useStyles()
 
-  return (
-    <div id='landing-container'>
-      <div className='right-panel'>
-        <div className='welcome-text'>
-          <Typography className='upper-text'>WELCOME TO</Typography>
-          <Typography className='lower-text'>SoundSpeller</Typography>
+return (
+    <div className={classes.landingContainer}>
+      <div className={classes.rightPanel}>
+        <div className={classes.welcomeText}>
+          <img src={require('../img/SoundSpeller_Banner_Cropped.png')} alt="SoundSpeller Banner" />
         </div>
 
-        <div className='user-type kid' onClick={() => history.push('/student')}>
-          <Typography className='upper-text'>I AM A</Typography>
-          <Typography className='lower-text'>Kid</Typography>
+        <div className={`${classes.userType} kid`} onClick={() => history.push('/student')}>
+          <div className='upper-text text-american-typewriter'>I am a</div>
+          <div className='lower-text text-american-typewriter'>Kid</div>
         </div>
-        <div
-          className='user-type adult'
-          onClick={() => history.push('/educator')}
-        >
-          <Typography className='upper-text'>I AM AN</Typography>
-          <Typography className='lower-text' style={{ fontFamily: 'Roboto' }}>
-            Adult
-          </Typography>
+        <div className={`${classes.userType} adult`} onClick={() => history.push('/educator')}>
+          <div className='upper-text text-american-typewriter'>I am an</div>
+          <div className='lower-text text-american-typewriter'>Adult</div>
         </div>
       </div>
     </div>
